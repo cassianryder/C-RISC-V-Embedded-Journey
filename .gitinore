@@ -1,0 +1,7 @@
+# C编译垃圾
+*.o
+*.out
+a.out
+build/
+bin/
+*.exe
