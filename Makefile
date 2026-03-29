@@ -4,7 +4,7 @@ TARGET = bin/program
 
 all: $(TARGET)
 
-$(TARGET): exercises/01-basics/hello.c
+$(TARGET): exercises/01-basics/1.c
 	mkdir -p bin
 	$(CC) $(CFLAGS) $< -o $@
 

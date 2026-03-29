@@ -1,0 +1,2 @@
+## 学习进度
+- 2026-03-29：Day X - 01-basics：掌握关键字、标识符、数据类型（int/float/char/unsigned）、常量（数值/字符/字符串 + 转义）、变量、const、算术运算符。代码在 exercises/01-basics/1.c
