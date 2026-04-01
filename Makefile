@@ -4,8 +4,11 @@ BIN = bin/program
 
 # --- 快捷映射区：在这里添加你的练习题简写 ---
 # 格式: 简写: s = 路径
-11: s = exercises/01-basics/1.c
+11: s = exercises/01-basics/1.c 
 12: s = exercises/01-basics/2.c
+13: s = exercises/01-basics/3.c 
+14: s = exercises/01-basics/4.c 
+15: s = exercises/01-basics/5.c
 21: s = exercises/02-pointers/1.c
 # ---------------------------------------
 
