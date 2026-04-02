@@ -1,4 +1,5 @@
 ## 学习进度
 - 2026-03-29：Day 1 - 01-basics：掌握关键字、标识符、数据类型（int/float/char/unsigned）、常量（数值/字符/字符串 + 转义）、变量、const、算术运算符。代码在 exercises/01-basics/1.c
 - 2026-03-30：Day 2 - 01-basics：算术运算符，自增，自减（前置与后置，分别在printf中先计算后赋值，先赋值后计算），关系运算符，逻辑运算符，位运算符，补码（模运算）。代码在 exercises/01-basics/2.c 
-- 2026-04-01: Day 3 -01-basics：赋值运算符，其他运算符（sizeof，三目运算符，逗号运算符），运算符的优先级和结合性，使用括号括起来的优先级最高，结合性只有三类是右结合性，分别位单目运算符号、赋值运算符号和三目运算符，表达式，语句（空语句，流程控制语句，表达式语句，复合语句，函数调用语句），流程控制语句（if语句）。代码在exercises/01-basics/3.c exercises/01-basics/4.c exercises/01-basics/5.c 
+- 2026-04-01: Day 3 -01-basics：赋值运算符，其他运算符（sizeof，三目运算符，逗号运算符），运算符的优先级和结合性，使用括号括起来的优先级最高，结合性只有三类是右结合性，分别位单目运算符号、赋值运算符号和三目运算符，表达式，语句（空语句，流程控制语句，表达式语句，复合语句，函数调用语句），流程控制语句（if语句）。代码在exercises/01-basics/3.c exercises/01-basics/4.c exercises/01-basics/5.c
+- 2026-04-02: Day 3 -01-basics：if语句（if else语句，if else if语句），switch语句，if else if语句与switch语句的区别，for 语句，while语句，do while语句，跳转语句。代码在exercises/01-basics/6.c exercises/01-basics/7.c 

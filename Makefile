@@ -8,7 +8,12 @@ BIN = bin/program
 12: s = exercises/01-basics/2.c
 13: s = exercises/01-basics/3.c 
 14: s = exercises/01-basics/4.c 
-15: s = exercises/01-basics/5.c
+15: s = exercises/01-basics/5.c 
+16: s = exercises/01-basics/6.c 
+17: s = exercises/01-basics/7.c 
+18: s = exercises/01-basics/8.c 
+19: s = exercises/01-basics/9.c 
+
 21: s = exercises/02-pointers/1.c
 # ---------------------------------------
 
