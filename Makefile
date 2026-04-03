@@ -13,7 +13,7 @@ BIN = bin/program
 17: s = exercises/01-basics/7.c 
 18: s = exercises/01-basics/8.c 
 19: s = exercises/01-basics/9.c 
-
+110: s = exercises/01-basics/10.c 
 21: s = exercises/02-pointers/1.c
 # ---------------------------------------
 
