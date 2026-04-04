@@ -13,14 +13,20 @@ int main(void){
  //  printf("%d\n",++age);
  //  printf("%d\n",age++);
  //  printf("%d\n",age);
-  int a = 2;
-  int b = 3;
-  // printf("%d\n",a&b);
-  // printf("%ud\n",~a);
-  // printf("%d\n",a>>2);
-  a = a ^ b;
-  b = a ^ b;
-  a = a ^ b;
-  printf("a=%d,b=%d\n",a,b);
+
+  // int a = 2;
+  // int b = 3;
+  // // printf("%d\n",a&b);
+  // // printf("%ud\n",~a);
+  // // printf("%d\n",a>>2);
+  // a = a ^ b;
+  // b = a ^ b;
+  // a = a ^ b;
+  // printf("a=%d,b=%d\n",a,b);
+  
+  char ch = 'd';
+  printf("%c\n",ch);
+  printf("%d\n",ch);
+
   return 0;
 }

@@ -33,4 +33,7 @@ clean:
 	rm -rf bin build
 
 .PHONY: clean
+	# 单独 gdb 启动（已有 bin） gdb: gdb -q $(BIN) # 查看汇编（理解底层必备)
+	asm: @[ -z "$(s)" ] && { echo "用法: make asm s=path/to/file.c"; exit 1; } || true $(CC) -S -O0 -fverbose-asm $(s) -o - clean: rm -rf bin
+
 
