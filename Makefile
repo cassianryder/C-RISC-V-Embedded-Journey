@@ -1,39 +1,79 @@
+# ========= 基础配置 =========
 CC = gcc
 CFLAGS = -Wall -g
-BIN = bin/program
+BIN_DIR = bin
+BIN = $(BIN_DIR)/program
 
-# --- 快捷映射区：在这里添加你的练习题简写 ---
-# 格式: 简写: s = 路径
-11: s = exercises/01-basics/1.c 
-12: s = exercises/01-basics/2.c
-13: s = exercises/01-basics/3.c 
-14: s = exercises/01-basics/4.c 
-15: s = exercises/01-basics/5.c 
-16: s = exercises/01-basics/6.c 
-17: s = exercises/01-basics/7.c 
-18: s = exercises/01-basics/8.c 
-19: s = exercises/01-basics/9.c 
-110: s = exercises/01-basics/10.c 
-21: s = exercises/02-pointers/1.c
-# ---------------------------------------
+# ========= 【唯一维护区】=========
+MAP = \
+11:exercises/01-basics/1.c \
+12:exercises/01-basics/2.c \
+13:exercises/01-basics/3.c \
+14:exercises/01-basics/4.c \
+15:exercises/01-basics/5.c \
+16:exercises/01-basics/6.c \
+17:exercises/01-basics/7.c \
+18:exercises/01-basics/8.c \
+19:exercises/01-basics/9.c \
+110:exercises/01-basics/10.c \
+21:exercises/02-pointers/1.c
 
-# 通用编译运行逻辑
-# 当你输入 make 11 时，MAKECMDGOALS 就是 11
-$(MAKECMDGOALS):
-	@mkdir -p bin
-	@if [ -z "$(s)" ]; then \
-		echo "错误: 未定义的简写或路径。请在 Makefile 中检查映射。"; \
-	else \
-		echo "正在编译并运行: $(s)"; \
-		$(CC) $(CFLAGS) $(s) -o $(BIN) && ./$(BIN); \
-	fi
+# ========= 内部解析 =========
+get_src = $(word 2,$(subst :, ,$(filter $1:%,$(MAP))))
+IDS = $(foreach pair,$(MAP),$(word 1,$(subst :, ,$(pair))))
 
-# 传统的 clean 依然保留
+# ========= 核心执行函数 =========
+# 👉 直接使用 $(call get_src,$1) 替代 Shell 变量，避开展开陷阱
+define exec_template
+	@mkdir -p $(BIN_DIR)
+	@echo "🚀 [$2] $(call get_src,$1)"
+	$(CC) $(CFLAGS) $(call get_src,$1) -o $(BIN)
+	$3
+endef
+
+# ========= 自动生成逻辑 =========
+
+# 👉 run
+$(foreach id,$(IDS),\
+  $(eval $(id): ; $(call exec_template,$(id),RUN,./$(BIN))))
+
+# 👉 gdb (替换为 lldb)
+$(foreach id,$(IDS),\
+  $(eval $(id)g: ; $(call exec_template,$(id),GDB,lldb $(BIN))))
+
+# 👉 asm
+$(foreach id,$(IDS),\
+  $(eval $(id)asm: ; \
+    @echo "🔍 [ASM] $(call get_src,$(id))"; \
+    $(CC) -S -O0 -fverbose-asm $(call get_src,$(id)) -o -))
+
+# 👉 mem 
+# ⚠️ 注意这里：必须使用 $$$$sp。
+# eval 解析后变成 $$sp，Make 运行时变成 $sp 传给 Shell，最终 GDB 才能正确接收到 $sp
+# 👉 mem (针对 macOS aarch64 的 LLDB 优化指令)
+# 👉 mem (终极转义修复版)
+$(foreach id,$(IDS),\
+  $(eval $(id)mem: ; $(call exec_template,$(id),MEM,\
+    lldb $(BIN) -o "b main" \
+                -o "run" \
+                -o "register read" \
+								-o 'memory read -s 8 -f x -c 12 $sp')))
+# ========= 工具命令 =========
+
+.PHONY: clean list help
+
+help: list
+
+list:
+	@echo "🛠️ 可用命令格式:"
+	@echo "  make <ID>      (例: make 18)    -> 编译并运行"
+	@echo "  make <ID>g     (例: make 18g)   -> 启动 GDB 调试"
+	@echo "  make <ID>asm   (例: make 18asm) -> 输出汇编代码"
+	@echo "  make <ID>mem   (例: make 18mem) -> GDB 查看寄存器与栈"
+	@echo ""
+	@echo "📌 当前已配置的 ID 列表:"
+	@echo "  $(IDS)"
+
 clean:
-	rm -rf bin build
-
-.PHONY: clean
-	# 单独 gdb 启动（已有 bin） gdb: gdb -q $(BIN) # 查看汇编（理解底层必备)
-	asm: @[ -z "$(s)" ] && { echo "用法: make asm s=path/to/file.c"; exit 1; } || true $(CC) -S -O0 -fverbose-asm $(s) -o - clean: rm -rf bin
-
-
+	@echo "🧹 正在清理..."
+	rm -rf $(BIN_DIR) build

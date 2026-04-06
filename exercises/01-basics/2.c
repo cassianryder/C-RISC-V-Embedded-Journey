@@ -24,9 +24,13 @@ int main(void){
   // a = a ^ b;
   // printf("a=%d,b=%d\n",a,b);
   
-  char ch = 'd';
+  // char ch = 'd';//char常量與變量補充
+  // printf("%c\n",ch);
+  // printf("%d\n",ch);
+  
+  char ch;
+  scanf("%c",&ch);
   printf("%c\n",ch);
   printf("%d\n",ch);
-
   return 0;
 }

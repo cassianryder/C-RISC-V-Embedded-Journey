@@ -4,4 +4,6 @@
 - 2026-04-01: Day 3 -01-basics:赋值运算符，其他运算符（sizeof，三目运算符，逗号运算符），运算符的优先级和结合性，使用括号括起来的优先级最高，结合性只有三类是右结合性，分别位单目运算符号、赋值运算符号和三目运算符，表达式，语句（空语句，流程控制语句，表达式语句，复合语句，函数调用语句），流程控制语句（if语句）。代码在exercises/01-basics/3.c exercises/01-basics/4.c exercises/01-basics/5.c
 - 2026-04-02: Day 4 -01-basics:if语句（if else语句，if else if语句），switch语句，if else if语句与switch语句的区别，for 语句，while语句，do while语句，跳转语句。代码在exercises/01-basics/6.c exercises/01-basics/7.c
 - 2026-04-03: Day 5 -01-basics:跳转语句（break,continue,goto),数组，内存地址。代码在exercises/01-basics/7.c exercises/01-basics/8.c
-- 2026-04-04: Day 6 -01-basics:int类型与进制输出，char类型常量变量补充。代码在exercises/01-basics/1.c exercis/01-basics/2.c 
+- 2026-04-04: Day 6 -01-basics:int类型与进制输出，char类型常量变量补充。代码在exercises/01-basics/1.c exercis/01-basics/2.c
+- 2026-04-06: Day 7 -01-basics:将char常量与变量补充部分完结，二维数组（初始化的三种方式，给出所有元素的值，给出部分元素的值，剩余的为0值，给出所有元素，可缺省最高维），makefile添加功能（make g，make asm，make mem）。代码在exercises/01-basics/2.c exercis/01-basics/8.c
+
