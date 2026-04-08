@@ -6,4 +6,6 @@
 - 2026-04-03: Day 5 -01-basics:跳转语句（break,continue,goto),数组，内存地址。代码在exercises/01-basics/7.c exercises/01-basics/8.c
 - 2026-04-04: Day 6 -01-basics:int类型与进制输出，char类型常量变量补充。代码在exercises/01-basics/1.c exercis/01-basics/2.c
 - 2026-04-06: Day 7 -01-basics:将char常量与变量补充部分完结，二维数组（初始化的三种方式，给出所有元素的值，给出部分元素的值，剩余的为0值，给出所有元素，可缺省最高维），makefile添加功能（make g，make asm，make mem）。代码在exercises/01-basics/2.c exercis/01-basics/8.c
-- 2026-04-07: Day 8 -01-basics:字符数组(赋值方式，字符串使用 \0表示结束)。代码在exercises/01-basics/8.c 
+- 2026-04-07: Day 8 -01-basics:字符数组(赋值方式，字符串使用 \0表示结束)。代码在exercises/01-basics/8.c
+- 2026-04-08: Day 9 -01-basics:函数（函数的定义和声明），函数的基本格式（函数返回值类型，函数名，参数列表，函数体），函数的调用（库函数先导入头文件，自定义函数先定义或者先声明），声明格式（函数名+形参列表）。代码在在exercises/01-basics/1.c exercis/01-basics/8.c
+
