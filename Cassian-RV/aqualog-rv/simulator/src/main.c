@@ -1,0 +1,84 @@
+/*
+ * File: main.c
+ * Purpose: 驱动 AquaLog-RV 模拟器主循环，串联采样、告警和日志写入。
+ * Learning: 主循环设计、结构体使用、文件写入、时间处理、函数协作。
+ * Date: 2026-04-10
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include "alert.h"
+#include "config.h"
+#include "logger.h"
+#include "sensor_hub.h"
+#include "sensor_types.h"
+
+static void wait_seconds(int seconds)
+{
+	time_t start_time;
+
+	start_time = time(NULL);
+	while (time(NULL) - start_time < seconds)
+		;
+}
+
+static void print_banner(void)
+{
+	printf("Cassian-RV AquaLog Simulator\n");
+	printf("sample interval: %d seconds\n", SAMPLE_INTERVAL_SECONDS);
+	printf("log file: %s\n\n", LOG_FILE_NAME);
+}
+
+static int should_quit(void)
+{
+	char input[32];
+
+	printf("Press Enter to continue, or input q to quit: ");
+	if (fgets(input, (int) sizeof(input), stdin) == NULL)
+		return 1;
+
+	if (input[0] == 'q' || input[0] == 'Q')
+		return 1;
+
+	return 0;
+}
+
+int main(void)
+{
+	SensorData data;
+	char alert_message[128];
+
+	srand((unsigned int) time(NULL));
+
+	if (!ensure_log_header(LOG_FILE_NAME)) {
+		fprintf(stderr, "failed to initialize log file: %s\n", LOG_FILE_NAME);
+		return 1;
+	}
+
+	print_banner();
+
+	for (;;) {
+		collect_sensor_data(&data);
+		build_alert_message(&data, alert_message, (int) sizeof(alert_message));
+
+		if (!append_log_entry(LOG_FILE_NAME, &data, alert_message)) {
+			fprintf(stderr, "failed to append log entry\n");
+			return 1;
+		}
+
+		print_console_status(&data, alert_message);
+		printf("\n");
+
+		if (should_quit())
+			break;
+
+		printf("waiting %d seconds for next sample...\n\n", SAMPLE_INTERVAL_SECONDS);
+		wait_seconds(SAMPLE_INTERVAL_SECONDS);
+	}
+
+	printf("simulator stopped\n");
+	return 0;
+}
