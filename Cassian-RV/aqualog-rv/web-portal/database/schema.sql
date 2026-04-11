@@ -1,0 +1,86 @@
+CREATE TABLE IF NOT EXISTS portal_overview (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	site_name VARCHAR(120) NOT NULL,
+	farm_mode VARCHAR(64) NOT NULL,
+	water_quality_score INT NOT NULL,
+	active_alerts INT NOT NULL,
+	online_devices INT NOT NULL,
+	prediction_confidence INT NOT NULL,
+	last_sync DATETIME NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS latest_metrics (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	metric_name VARCHAR(64) NOT NULL,
+	metric_value DECIMAL(10,2) NOT NULL,
+	metric_unit VARCHAR(32) NOT NULL,
+	metric_status VARCHAR(32) NOT NULL,
+	metric_trend VARCHAR(32) NOT NULL,
+	display_order INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS alerts (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	severity VARCHAR(32) NOT NULL,
+	title VARCHAR(120) NOT NULL,
+	message TEXT NOT NULL,
+	alert_time VARCHAR(16) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS devices (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	device_name VARCHAR(120) NOT NULL,
+	device_type VARCHAR(64) NOT NULL,
+	device_status VARCHAR(32) NOT NULL,
+	location VARCHAR(120) NOT NULL,
+	last_seen VARCHAR(32) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS predictions (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	model_name VARCHAR(120) NOT NULL,
+	forecast_window VARCHAR(64) NOT NULL,
+	prediction_result VARCHAR(255) NOT NULL,
+	confidence VARCHAR(64) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS quality_timeline (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	time_label VARCHAR(32) NOT NULL,
+	quality_score INT NOT NULL,
+	point_order INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS users (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(64) NOT NULL UNIQUE,
+	display_name VARCHAR(120) NOT NULL,
+	role VARCHAR(32) NOT NULL,
+	password_hash VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS telemetry_samples (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	sampled_at DATETIME NOT NULL UNIQUE,
+	temperature DECIMAL(10,2) NULL,
+	ph DECIMAL(10,2) NULL,
+	do_value DECIMAL(10,2) NULL,
+	turbidity DECIMAL(10,2) NULL,
+	water_level DECIMAL(10,2) NULL,
+	alert_text VARCHAR(255) NOT NULL DEFAULT 'normal',
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS control_commands (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	device_name VARCHAR(120) NOT NULL,
+	action_name VARCHAR(64) NOT NULL,
+	operator_name VARCHAR(120) NOT NULL,
+	command_status VARCHAR(32) NOT NULL DEFAULT 'queued',
+	issued_at DATETIME NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
