@@ -7,11 +7,12 @@ return [
 	'default_locale' => 'zh-CN',
 	'supported_locales' => ['zh-CN', 'zh-TW', 'en', 'ja'],
 	'db' => [
-		'host' => '127.0.0.1',
+		'host' => 'localhost',
 		'port' => 3306,
+		'unix_socket' => '/tmp/mysql.sock',
 		'database' => 'aqualog_rv',
-		'username' => 'root',
-		'password' => '',
+		'username' => 'aqualog_app',
+		'password' => 'ShrimpPortal2026!',
 		'charset' => 'utf8mb4',
 	],
 ];

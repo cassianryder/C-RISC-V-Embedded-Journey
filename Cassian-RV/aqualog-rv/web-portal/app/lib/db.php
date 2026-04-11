@@ -16,6 +16,15 @@ function get_pdo(array $config)
 		$config['db']['charset']
 	);
 
+	if (isset($config['db']['unix_socket']) && $config['db']['unix_socket'] !== '') {
+		$dsn = sprintf(
+			'mysql:unix_socket=%s;dbname=%s;charset=%s',
+			$config['db']['unix_socket'],
+			$config['db']['database'],
+			$config['db']['charset']
+		);
+	}
+
 	try {
 		$pdo = new PDO(
 			$dsn,

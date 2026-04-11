@@ -271,3 +271,100 @@ function save_control_command(array $config, $device, $action, $operator)
 		return false;
 	}
 }
+
+function fetch_latest_weather(array $config)
+{
+	$pdo = get_pdo($config);
+
+	if ($pdo === false)
+		return sample_weather_data();
+
+	try {
+		$row = $pdo->query(
+			"SELECT recorded_at, air_temperature, rainfall_mm, humidity, forecast_summary, stress_risk
+			 FROM weather_snapshots
+			 ORDER BY recorded_at DESC
+			 LIMIT 1"
+		)->fetch();
+	} catch (Throwable $exception) {
+		return sample_weather_data();
+	}
+
+	return $row ?: sample_weather_data();
+}
+
+function fetch_camera_feeds(array $config)
+{
+	$pdo = get_pdo($config);
+
+	if ($pdo === false)
+		return sample_camera_feeds();
+
+	try {
+		$rows = $pdo->query(
+			"SELECT camera_name, location, stream_status, visibility_score, shrimp_activity_index, last_frame_at
+			 FROM camera_feeds
+			 ORDER BY camera_name ASC"
+		)->fetchAll();
+	} catch (Throwable $exception) {
+		return sample_camera_feeds();
+	}
+
+	return $rows ?: sample_camera_feeds();
+}
+
+function fetch_medication_recommendations(array $config)
+{
+	$pdo = get_pdo($config);
+
+	if ($pdo === false)
+		return sample_medication_recommendations();
+
+	try {
+		$rows = $pdo->query(
+			"SELECT recommendation_title, recommendation_text, recommended_window, risk_level, status
+			 FROM medication_recommendations
+			 ORDER BY created_at DESC
+			 LIMIT 6"
+		)->fetchAll();
+	} catch (Throwable $exception) {
+		return sample_medication_recommendations();
+	}
+
+	return $rows ?: sample_medication_recommendations();
+}
+
+function save_uploaded_telemetry(array $config, array $payload)
+{
+	$pdo = get_pdo($config);
+
+	if ($pdo === false)
+		return false;
+
+	$statement = $pdo->prepare(
+		"INSERT INTO telemetry_samples
+		 (sampled_at, temperature, ph, do_value, turbidity, water_level, alert_text)
+		 VALUES (:sampled_at, :temperature, :ph, :do_value, :turbidity, :water_level, :alert_text)
+		 ON DUPLICATE KEY UPDATE
+		 temperature = VALUES(temperature),
+		 ph = VALUES(ph),
+		 do_value = VALUES(do_value),
+		 turbidity = VALUES(turbidity),
+		 water_level = VALUES(water_level),
+		 alert_text = VALUES(alert_text)"
+	);
+
+	try {
+		return $statement->execute([
+			'sampled_at' => $payload['sampled_at'],
+			'temperature' => normalize_float($payload['temperature']),
+			'ph' => normalize_float($payload['ph']),
+			'do_value' => normalize_float($payload['do_value']),
+			'turbidity' => normalize_float($payload['turbidity']),
+			'water_level' => normalize_float($payload['water_level']),
+			'alert_text' => isset($payload['alert_text']) && $payload['alert_text'] !== '' ? $payload['alert_text'] : 'normal',
+		]);
+	} catch (Throwable $exception) {
+		return false;
+	}
+}

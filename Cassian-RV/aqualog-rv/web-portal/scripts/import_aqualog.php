@@ -27,7 +27,7 @@ if ($handle === false) {
 	exit(1);
 }
 
-$header = fgetcsv($handle);
+$header = fgetcsv($handle, 0, ',', '"', '\\');
 if ($header === false) {
 	fclose($handle);
 	fwrite(STDERR, "CSV header missing.\n");
@@ -49,7 +49,7 @@ $statement = $pdo->prepare(
 
 $count = 0;
 
-while (($row = fgetcsv($handle)) !== false) {
+while (($row = fgetcsv($handle, 0, ',', '"', '\\')) !== false) {
 	if (count($row) < 7)
 		continue;
 

@@ -54,3 +54,20 @@ INSERT INTO control_commands
 VALUES
 	('Aerator Pump A', 'start', 'Cassian Admin', 'queued', '2026-04-11 09:21:10'),
 	('Alarm Beacon', 'trigger_alarm', 'Cassian Admin', 'sent', '2026-04-11 09:18:33');
+
+INSERT INTO weather_snapshots
+	(recorded_at, air_temperature, rainfall_mm, humidity, forecast_summary, stress_risk)
+VALUES
+	('2026-04-11 09:30:00', 19.60, 12.40, 83.00, 'Rain band expected in the next 3 hours; dissolved oxygen stress may rise overnight.', 'medium');
+
+INSERT INTO camera_feeds
+	(camera_name, location, stream_status, visibility_score, shrimp_activity_index, last_frame_at)
+VALUES
+	('Underwater Cam A1', 'Pond A', 'online', 76, 0.62, '2026-04-11 09:31:00'),
+	('Underwater Cam B1', 'Pond B', 'warning', 54, 0.41, '2026-04-11 09:30:42');
+
+INSERT INTO medication_recommendations
+	(recommendation_title, recommendation_text, recommended_window, risk_level, status)
+VALUES
+	('Medication timing watch', 'Delay dosing during the current rain window and reassess after dissolved oxygen stabilizes.', 'After 14:00 if DO remains above 5.0 mg/L', 'warning', 'pending_review'),
+	('Stress-sensitive feeding plan', 'Reduce aggressive feeding and observe shrimp activity after rainfall passes.', 'Next 6 hours', 'medium', 'active');

@@ -82,3 +82,31 @@ function sample_control_commands()
 		['device_name' => 'Alarm Beacon', 'action_name' => 'trigger_alarm', 'operator_name' => 'Cassian Admin', 'command_status' => 'sent', 'issued_at' => '2026-04-11 09:18:33'],
 	];
 }
+
+function sample_weather_data()
+{
+	return [
+		'recorded_at' => '2026-04-11 09:30:00',
+		'air_temperature' => 19.60,
+		'rainfall_mm' => 12.40,
+		'humidity' => 83.00,
+		'forecast_summary' => 'Rain band expected in the next 3 hours; dissolved oxygen stress may rise overnight.',
+		'stress_risk' => 'medium',
+	];
+}
+
+function sample_camera_feeds()
+{
+	return [
+		['camera_name' => 'Underwater Cam A1', 'location' => 'Pond A', 'stream_status' => 'online', 'visibility_score' => 76, 'shrimp_activity_index' => 0.62, 'last_frame_at' => '2026-04-11 09:31:00'],
+		['camera_name' => 'Underwater Cam B1', 'location' => 'Pond B', 'stream_status' => 'warning', 'visibility_score' => 54, 'shrimp_activity_index' => 0.41, 'last_frame_at' => '2026-04-11 09:30:42'],
+	];
+}
+
+function sample_medication_recommendations()
+{
+	return [
+		['recommendation_title' => 'Medication timing watch', 'recommendation_text' => 'Delay dosing during the current rain window and reassess after dissolved oxygen stabilizes.', 'recommended_window' => 'After 14:00 if DO remains above 5.0 mg/L', 'risk_level' => 'warning', 'status' => 'pending_review'],
+		['recommendation_title' => 'Stress-sensitive feeding plan', 'recommendation_text' => 'Reduce aggressive feeding and observe shrimp activity after rainfall passes.', 'recommended_window' => 'Next 6 hours', 'risk_level' => 'medium', 'status' => 'active'],
+	];
+}

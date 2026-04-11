@@ -84,3 +84,35 @@ CREATE TABLE IF NOT EXISTS control_commands (
 	issued_at DATETIME NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS weather_snapshots (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	recorded_at DATETIME NOT NULL,
+	air_temperature DECIMAL(10,2) NOT NULL,
+	rainfall_mm DECIMAL(10,2) NOT NULL,
+	humidity DECIMAL(10,2) NOT NULL,
+	forecast_summary VARCHAR(255) NOT NULL,
+	stress_risk VARCHAR(64) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS camera_feeds (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	camera_name VARCHAR(120) NOT NULL,
+	location VARCHAR(120) NOT NULL,
+	stream_status VARCHAR(32) NOT NULL,
+	visibility_score INT NOT NULL,
+	shrimp_activity_index DECIMAL(10,2) NOT NULL,
+	last_frame_at DATETIME NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS medication_recommendations (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	recommendation_title VARCHAR(160) NOT NULL,
+	recommendation_text TEXT NOT NULL,
+	recommended_window VARCHAR(120) NOT NULL,
+	risk_level VARCHAR(32) NOT NULL,
+	status VARCHAR(32) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
