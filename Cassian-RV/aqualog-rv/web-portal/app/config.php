@@ -15,4 +15,8 @@ return [
 		'password' => 'ShrimpPortal2026!',
 		'charset' => 'utf8mb4',
 	],
+	'bin' => [
+		'mysql' => '/opt/homebrew/bin/mysql',
+		'mysqldump' => '/opt/homebrew/bin/mysqldump',
+	],
 ];

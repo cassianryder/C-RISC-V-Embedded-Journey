@@ -2,21 +2,12 @@
 
 function initialize_locale(array $config)
 {
-	$default = $config['default_locale'];
-	$supported = $config['supported_locales'];
-	$selected = $default;
-
-	if (isset($_GET['lang']) && in_array($_GET['lang'], $supported, true))
-		$selected = $_GET['lang'];
-	else if (isset($_SESSION['locale']) && in_array($_SESSION['locale'], $supported, true))
-		$selected = $_SESSION['locale'];
-
-	$_SESSION['locale'] = $selected;
+	$_SESSION['locale'] = 'zh-CN';
 }
 
 function current_locale()
 {
-	return isset($_SESSION['locale']) ? $_SESSION['locale'] : 'zh-CN';
+	return 'zh-CN';
 }
 
 function supported_locales()

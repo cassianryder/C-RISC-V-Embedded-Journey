@@ -46,7 +46,7 @@ int ensure_log_header(const char *file_name)
 		if (fp == NULL)
 			return 0;
 
-		fprintf(fp, "timestamp,temperature,ph,do,turbidity,water_level,alert\n");
+		fprintf(fp, "timestamp,pond_code,temperature,ph,do,turbidity,water_level,ammonia_nitrogen,nitrite,salinity,alkalinity,alert\n");
 		fclose(fp);
 		return 1;
 	}
@@ -61,7 +61,7 @@ int ensure_log_header(const char *file_name)
 	if (fp == NULL)
 		return 0;
 
-	fprintf(fp, "timestamp,temperature,ph,do,turbidity,water_level,alert\n");
+	fprintf(fp, "timestamp,pond_code,temperature,ph,do,turbidity,water_level,ammonia_nitrogen,nitrite,salinity,alkalinity,alert\n");
 	fclose(fp);
 	return 1;
 }
@@ -80,7 +80,7 @@ int append_log_entry(const char *file_name, const SensorData *data, const char *
 
 	format_timestamp(data->timestamp, timestamp_text, (int) sizeof(timestamp_text));
 
-	fprintf(fp, "%s,", timestamp_text);
+	fprintf(fp, "%s,%s,", timestamp_text, data->pond_code);
 	write_value_or_na(fp, data->temperature_ok, data->temperature, "%.2f");
 	fprintf(fp, ",");
 	write_value_or_na(fp, data->ph_ok, data->ph, "%.2f");
@@ -90,6 +90,14 @@ int append_log_entry(const char *file_name, const SensorData *data, const char *
 	write_value_or_na(fp, data->turbidity_ok, data->turbidity, "%.2f");
 	fprintf(fp, ",");
 	write_value_or_na(fp, data->water_level_ok, data->water_level, "%.2f");
+	fprintf(fp, ",");
+	write_value_or_na(fp, data->ammonia_nitrogen_ok, data->ammonia_nitrogen, "%.2f");
+	fprintf(fp, ",");
+	write_value_or_na(fp, data->nitrite_ok, data->nitrite, "%.2f");
+	fprintf(fp, ",");
+	write_value_or_na(fp, data->salinity_ok, data->salinity, "%.2f");
+	fprintf(fp, ",");
+	write_value_or_na(fp, data->alkalinity_ok, data->alkalinity, "%.2f");
 	fprintf(fp, ",%s\n", alert_message);
 
 	fclose(fp);

@@ -11,20 +11,28 @@ $alerts = fetch_alerts($config);
 
 require __DIR__ . '/partials/header.php';
 ?>
-<section class="content-card">
-	<h3><?= h(t('open_alerts')); ?></h3>
-	<?php foreach ($alerts as $alert): ?>
-		<div class="alert-detail-card">
-			<div class="alert-detail-header">
-				<span class="pill <?= h(format_status_class($alert['severity'])); ?>"><?= h($alert['severity']); ?></span>
-				<span><?= h($alert['time']); ?></span>
-			</div>
-			<h4><?= h($alert['title']); ?></h4>
-			<p><?= h($alert['message']); ?></p>
-			<div class="action-line">
-				<a class="button-secondary" href="<?= h(url_with_locale('control.php')); ?>"><?= h(t('open_control_panel')); ?></a>
-			</div>
+<section class="ui segment card dashboard portal-section">
+	<div class="dashboard-header">
+		<div>
+			<p class="portal-eyebrow"><?= h(t('open_alerts')); ?></p>
+			<h3><?= h(t('nav_alerts')); ?></h3>
 		</div>
-	<?php endforeach; ?>
+		<a class="ui button" href="<?= h(url_with_locale('control.php')); ?>"><?= h(t('open_control_panel')); ?></a>
+	</div>
+	<div class="dashboard-card-grid">
+		<?php foreach ($alerts as $alert): ?>
+			<div class="ui segment card dashboard">
+				<div class="dashboard-header">
+					<div class="ui <?= h(semantic_label_class($alert['severity'])); ?> label"><?= h(chinese_status_text($alert['severity'])); ?></div>
+					<span class="portal-muted"><?= h($alert['time']); ?></span>
+				</div>
+				<h4><?= h($alert['title']); ?></h4>
+				<p class="portal-muted"><?= h($alert['message']); ?></p>
+				<div class="portal-inline-actions">
+					<a class="ui button" href="<?= h(url_with_locale('control.php')); ?>"><?= h(t('open_control_panel')); ?></a>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
 </section>
 <?php require __DIR__ . '/partials/footer.php'; ?>

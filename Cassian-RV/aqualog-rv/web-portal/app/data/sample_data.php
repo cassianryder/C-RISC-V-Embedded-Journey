@@ -16,31 +16,31 @@ function sample_overview_data()
 function sample_readings_data()
 {
 	return [
-		['name' => 'Temperature', 'value' => '28.4', 'unit' => 'C', 'status' => 'healthy', 'trend' => '+0.3'],
+		['name' => '温度', 'value' => '28.4', 'unit' => '°C', 'status' => 'healthy', 'trend' => '+0.3'],
 		['name' => 'pH', 'value' => '7.3', 'unit' => '', 'status' => 'healthy', 'trend' => '-0.1'],
-		['name' => 'Dissolved Oxygen', 'value' => '4.1', 'unit' => 'mg/L', 'status' => 'warning', 'trend' => '-0.5'],
-		['name' => 'Turbidity', 'value' => '22', 'unit' => 'NTU', 'status' => 'healthy', 'trend' => '+2'],
-		['name' => 'Water Level', 'value' => '84', 'unit' => 'cm', 'status' => 'healthy', 'trend' => '+1'],
+		['name' => '溶氧', 'value' => '4.1', 'unit' => 'mg/L', 'status' => 'warning', 'trend' => '-0.5'],
+		['name' => '浊度', 'value' => '22', 'unit' => 'NTU', 'status' => 'healthy', 'trend' => '+2'],
+		['name' => '水位', 'value' => '84', 'unit' => 'cm', 'status' => 'healthy', 'trend' => '+1'],
 	];
 }
 
 function sample_alerts_data()
 {
 	return [
-		['severity' => 'critical', 'title' => 'Night-time oxygen risk', 'message' => 'Predicted DO may drop below 3.8 mg/L within 45 minutes.', 'time' => '09:12'],
-		['severity' => 'warning', 'title' => 'Aerator response recommended', 'message' => 'Expert rule suggests opening pump group B for pond #2.', 'time' => '09:06'],
-		['severity' => 'warning', 'title' => 'Camera visibility degraded', 'message' => 'Underwater vision stream quality dropped due to turbidity rise.', 'time' => '08:54'],
+		['severity' => 'critical', 'title' => '夜间溶氧风险', 'message' => '预计 45 分钟内溶氧可能低于 3.8 mg/L。', 'time' => '09:12'],
+		['severity' => 'warning', 'title' => '建议启动增氧组', 'message' => '建议优先开启 2 号塘增氧泵 B 组。', 'time' => '09:06'],
+		['severity' => 'warning', 'title' => '摄像头可视度下降', 'message' => '浊度上升导致水下画面质量下降。', 'time' => '08:54'],
 	];
 }
 
 function sample_devices_data()
 {
 	return [
-		['name' => 'Edge Node - Milk-V Duo S', 'type' => 'RISC-V collector', 'status' => 'online', 'location' => 'Pond A', 'last_seen' => '09:18:24'],
-		['name' => 'Aerator Pump A', 'type' => 'Actuator', 'status' => 'online', 'location' => 'Pond A', 'last_seen' => '09:18:02'],
-		['name' => 'Aerator Pump B', 'type' => 'Actuator', 'status' => 'maintenance', 'location' => 'Pond B', 'last_seen' => '09:05:48'],
-		['name' => 'Alarm Beacon', 'type' => 'Actuator', 'status' => 'online', 'location' => 'Control Room', 'last_seen' => '09:17:55'],
-		['name' => 'Vision Camera 01', 'type' => 'Underwater camera', 'status' => 'online', 'location' => 'Pond A', 'last_seen' => '09:18:19'],
+		['name' => '边缘采集节点 01', 'type' => 'RISC-V collector', 'status' => 'online', 'location' => '塘口 1', 'last_seen' => '09:18:24'],
+		['name' => '增氧泵 A 组', 'type' => 'Actuator', 'status' => 'online', 'location' => '塘口 1', 'last_seen' => '09:18:02'],
+		['name' => '增氧泵 B 组', 'type' => 'Actuator', 'status' => 'maintenance', 'location' => '塘口 2', 'last_seen' => '09:05:48'],
+		['name' => '声光报警器', 'type' => 'Actuator', 'status' => 'online', 'location' => '控制室', 'last_seen' => '09:17:55'],
+		['name' => '水下摄像头 01', 'type' => 'Underwater camera', 'status' => 'online', 'location' => '塘口 1', 'last_seen' => '09:18:19'],
 	];
 }
 
@@ -64,15 +64,41 @@ function sample_timeline_data()
 	];
 }
 
-function sample_history_data()
+function sample_history_data($pond_code = 'pond_01')
 {
-	return [
-		['sampled_at' => '2026-04-10 21:29:47', 'temperature' => null, 'ph' => 6.48, 'do_value' => 3.00, 'turbidity' => 70.24, 'water_level' => 18.78, 'alert_text' => 'temperature_error;ph_out_of_range;do_low;turbidity_high;water_level_low'],
-		['sampled_at' => '2026-04-10 21:29:52', 'temperature' => 26.57, 'ph' => 7.98, 'do_value' => 0.76, 'turbidity' => 47.23, 'water_level' => 116.25, 'alert_text' => 'do_low'],
-		['sampled_at' => '2026-04-11 08:24:51', 'temperature' => 18.73, 'ph' => 7.70, 'do_value' => 4.08, 'turbidity' => 92.75, 'water_level' => 18.56, 'alert_text' => 'turbidity_high;water_level_low'],
-		['sampled_at' => '2026-04-11 08:25:19', 'temperature' => 28.64, 'ph' => 7.06, 'do_value' => 6.60, 'turbidity' => 55.28, 'water_level' => 179.60, 'alert_text' => 'normal'],
-		['sampled_at' => '2026-04-11 08:25:34', 'temperature' => 32.56, 'ph' => 6.76, 'do_value' => 6.24, 'turbidity' => 32.74, 'water_level' => null, 'alert_text' => 'temperature_high;water_level_error'],
+	$index = (int) str_replace('pond_', '', $pond_code);
+	if ($index < 1)
+		$index = 1;
+
+	$base = [
+		['sampled_at' => '2026-04-10 21:29:47', 'temperature' => 26.18, 'ph' => 6.48, 'do_value' => 3.00, 'turbidity' => 70.24, 'water_level' => 18.78, 'ammonia_nitrogen' => 0.21, 'nitrite' => 0.09, 'salinity' => 1.80, 'alkalinity' => 122.00, 'alert_text' => 'do_low;turbidity_high;water_level_low'],
+		['sampled_at' => '2026-04-10 21:29:52', 'temperature' => 26.57, 'ph' => 7.98, 'do_value' => 4.76, 'turbidity' => 47.23, 'water_level' => 116.25, 'ammonia_nitrogen' => 0.18, 'nitrite' => 0.06, 'salinity' => 1.82, 'alkalinity' => 124.00, 'alert_text' => 'normal'],
+		['sampled_at' => '2026-04-11 08:24:51', 'temperature' => 28.73, 'ph' => 7.70, 'do_value' => 4.08, 'turbidity' => 62.75, 'water_level' => 108.56, 'ammonia_nitrogen' => 0.25, 'nitrite' => 0.11, 'salinity' => 1.85, 'alkalinity' => 126.00, 'alert_text' => 'normal'],
+		['sampled_at' => '2026-04-11 08:25:19', 'temperature' => 28.64, 'ph' => 7.06, 'do_value' => 6.60, 'turbidity' => 55.28, 'water_level' => 129.60, 'ammonia_nitrogen' => 0.23, 'nitrite' => 0.08, 'salinity' => 1.88, 'alkalinity' => 129.00, 'alert_text' => 'normal'],
+		['sampled_at' => '2026-04-11 08:25:34', 'temperature' => 32.56, 'ph' => 6.76, 'do_value' => 6.24, 'turbidity' => 32.74, 'water_level' => 121.34, 'ammonia_nitrogen' => 0.28, 'nitrite' => 0.12, 'salinity' => 1.90, 'alkalinity' => 131.00, 'alert_text' => 'temperature_high'],
 	];
+
+	$offset = ($index - 1) * 0.07;
+	$rows = [];
+
+	foreach ($base as $row) {
+		$rows[] = [
+			'sampled_at' => $row['sampled_at'],
+			'pond_code' => $pond_code,
+			'temperature' => round($row['temperature'] + ($index % 3) * 0.35, 2),
+			'ph' => round($row['ph'] + (($index % 4) - 1) * 0.03, 2),
+			'do_value' => round($row['do_value'] - (($index % 5) * 0.18), 2),
+			'turbidity' => round($row['turbidity'] + ($index * 1.6), 2),
+			'water_level' => round($row['water_level'] + ($index * 1.25), 2),
+			'ammonia_nitrogen' => round($row['ammonia_nitrogen'] + $offset, 2),
+			'nitrite' => round($row['nitrite'] + ($index * 0.01), 2),
+			'salinity' => round($row['salinity'] + ($index * 0.04), 2),
+			'alkalinity' => round($row['alkalinity'] + ($index * 1.8), 2),
+			'alert_text' => $row['alert_text'],
+		];
+	}
+
+	return $rows;
 }
 
 function sample_control_commands()
@@ -108,5 +134,23 @@ function sample_medication_recommendations()
 	return [
 		['recommendation_title' => 'Medication timing watch', 'recommendation_text' => 'Delay dosing during the current rain window and reassess after dissolved oxygen stabilizes.', 'recommended_window' => 'After 14:00 if DO remains above 5.0 mg/L', 'risk_level' => 'warning', 'status' => 'pending_review'],
 		['recommendation_title' => 'Stress-sensitive feeding plan', 'recommendation_text' => 'Reduce aggressive feeding and observe shrimp activity after rainfall passes.', 'recommended_window' => 'Next 6 hours', 'risk_level' => 'medium', 'status' => 'active'],
+	];
+}
+
+function sample_custom_cards()
+{
+	return [];
+}
+
+function sample_backup_snapshots()
+{
+	return [];
+}
+
+function sample_system_logs()
+{
+	return [
+		['log_level' => 'info', 'log_source' => 'portal', 'message' => '门户当前运行在演示模式。', 'created_at' => '2026-04-11 10:20:00'],
+		['log_level' => 'info', 'log_source' => 'telemetry', 'message' => '采样导入链路已完成配置。', 'created_at' => '2026-04-11 10:21:00'],
 	];
 }

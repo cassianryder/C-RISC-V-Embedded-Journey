@@ -8,57 +8,64 @@ $user = current_user();
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?= h(page_title($page_title, $config)); ?></title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
 	<link rel="stylesheet" href="<?= h(asset_url('css/styles.css')); ?>">
 </head>
-<body>
-	<div class="site-shell">
-		<aside class="sidebar">
-			<div class="brand-block">
-				<div class="brand-mark">ARV</div>
-				<div>
-					<p class="eyebrow"><?= h(t('brand_subtitle')); ?></p>
-					<h1><?= h(t('brand_name')); ?></h1>
-				</div>
-			</div>
-			<nav class="sidebar-nav">
-				<a class="<?= h(nav_is_active($current_page, 'home')); ?>" href="<?= h(url_with_locale('index.php')); ?>"><?= h(t('nav_overview')); ?></a>
-				<a class="<?= h(nav_is_active($current_page, 'dashboard')); ?>" href="<?= h(url_with_locale('dashboard.php')); ?>"><?= h(t('nav_dashboard')); ?></a>
-				<a class="<?= h(nav_is_active($current_page, 'devices')); ?>" href="<?= h(url_with_locale('devices.php')); ?>"><?= h(t('nav_devices')); ?></a>
-				<a class="<?= h(nav_is_active($current_page, 'alerts')); ?>" href="<?= h(url_with_locale('alerts.php')); ?>"><?= h(t('nav_alerts')); ?></a>
-				<a class="<?= h(nav_is_active($current_page, 'analytics')); ?>" href="<?= h(url_with_locale('analytics.php')); ?>"><?= h(t('nav_analytics')); ?></a>
-				<a class="<?= h(nav_is_active($current_page, 'history')); ?>" href="<?= h(url_with_locale('history.php')); ?>"><?= h(t('nav_history')); ?></a>
-				<a class="<?= h(nav_is_active($current_page, 'control')); ?>" href="<?= h(url_with_locale('control.php')); ?>"><?= h(t('nav_control')); ?></a>
-			</nav>
-			<div class="language-switcher">
-				<?php foreach (supported_locales() as $locale_code => $locale_label): ?>
-					<a class="locale-chip <?= current_locale() === $locale_code ? 'is-active' : ''; ?>" href="<?= h(locale_switch_url($locale_code)); ?>"><?= h($locale_label); ?></a>
-				<?php endforeach; ?>
-			</div>
-			<div class="sidebar-note">
-				<p><?= h(t('future_stack')); ?>:</p>
-				<p><?= h(t('stack_note')); ?></p>
-			</div>
-		</aside>
-		<main class="main-panel">
-			<header class="topbar">
-				<div>
-					<p class="eyebrow"><?= h($page_tagline); ?></p>
-					<h2><?= h($page_heading); ?></h2>
-				</div>
-				<div class="topbar-meta topbar-meta-stack">
-					<?php if ($user !== null): ?>
-						<div class="user-chip">
-							<span><?= h($user['display_name']); ?></span>
-							<a href="<?= h(url_with_locale('logout.php')); ?>"><?= h(t('nav_logout')); ?></a>
+<body class="<?= h(body_theme_class()); ?>" data-theme="<?= h(body_theme_name()); ?>">
+	<div class="portal-shell">
+		<div class="ui grid portal-grid">
+			<div class="four wide computer five wide large screen sixteen wide mobile column portal-sidebar-column">
+				<aside class="portal-sidebar">
+					<div class="brand-block">
+						<div class="brand-mark">ARV</div>
+						<div>
+							<p class="portal-eyebrow"><?= h(t('brand_subtitle')); ?></p>
+							<h1><?= h(t('brand_name')); ?></h1>
 						</div>
-					<?php else: ?>
-						<a class="pill status-neutral" href="<?= h(url_with_locale('login.php')); ?>"><?= h(t('nav_login')); ?></a>
+					</div>
+					<div class="ui vertical fluid menu portal-menu">
+						<a class="item <?= h(nav_is_active($current_page, 'home')); ?>" href="<?= h(url_with_locale('index.php')); ?>"><i class="<?= h(nav_icon('home')); ?> icon"></i><span><?= h(t('nav_overview')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'dashboard')); ?>" href="<?= h(url_with_locale('dashboard.php')); ?>"><i class="<?= h(nav_icon('dashboard')); ?> icon"></i><span><?= h(t('nav_dashboard')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'devices')); ?>" href="<?= h(url_with_locale('devices.php')); ?>"><i class="<?= h(nav_icon('devices')); ?> icon"></i><span><?= h(t('nav_devices')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'alerts')); ?>" href="<?= h(url_with_locale('alerts.php')); ?>"><i class="<?= h(nav_icon('alerts')); ?> icon"></i><span><?= h(t('nav_alerts')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'analytics')); ?>" href="<?= h(url_with_locale('analytics.php')); ?>"><i class="<?= h(nav_icon('analytics')); ?> icon"></i><span><?= h(t('nav_analytics')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'history')); ?>" href="<?= h(url_with_locale('history.php')); ?>"><i class="<?= h(nav_icon('history')); ?> icon"></i><span><?= h(t('nav_history')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'control')); ?>" href="<?= h(url_with_locale('control.php')); ?>"><i class="<?= h(nav_icon('control')); ?> icon"></i><span><?= h(t('nav_control')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'cards')); ?>" href="<?= h(url_with_locale('cards.php')); ?>"><i class="<?= h(nav_icon('cards')); ?> icon"></i><span><?= h(t('nav_cards')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'backup')); ?>" href="<?= h(url_with_locale('backup.php')); ?>"><i class="<?= h(nav_icon('backup')); ?> icon"></i><span><?= h(t('nav_backup')); ?></span></a>
+						<a class="item <?= h(nav_is_active($current_page, 'logs')); ?>" href="<?= h(url_with_locale('logs.php')); ?>"><i class="<?= h(nav_icon('logs')); ?> icon"></i><span><?= h(t('nav_logs')); ?></span></a>
+					</div>
+				</aside>
+			</div>
+			<div class="twelve wide computer eleven wide large screen sixteen wide mobile column portal-main-column">
+				<main class="portal-main">
+					<div class="ui segment card portal-topbar">
+						<div class="portal-topbar-row">
+							<div class="portal-title-row">
+								<div>
+									<p class="portal-eyebrow"><?= h($page_tagline); ?></p>
+									<h2><?= h($page_heading); ?></h2>
+								</div>
+							</div>
+							<div class="portal-toolbar">
+								<a class="ui icon basic button portal-theme-button" href="<?= h(next_theme_url()); ?>" aria-label="<?= h(current_theme() === 'night' ? t('theme_day') : t('theme_night')); ?>">
+									<span class="theme-icon-stack" aria-hidden="true">
+										<i class="sun outline icon theme-sun"></i>
+										<i class="moon icon theme-moon"></i>
+									</span>
+								</a>
+								<span class="ui <?= h(semantic_label_class(database_is_available($config) ? 'success' : 'warning')); ?> label"><?= database_is_available($config) ? h(t('db_connected')) : h(t('sample_mode')); ?></span>
+								<?php if ($user !== null): ?>
+									<div class="ui compact menu portal-user-menu">
+										<div class="item"><?= h($user['display_name']); ?></div>
+										<a class="item" href="<?= h(url_with_locale('logout.php')); ?>"><?= h(t('nav_logout')); ?></a>
+									</div>
+								<?php else: ?>
+									<a class="ui button" href="<?= h(url_with_locale('login.php')); ?>"><?= h(t('nav_login')); ?></a>
+								<?php endif; ?>
+							</div>
+						</div>
+					</div>
+					<?php if ($flash !== null): ?>
+						<div class="ui info message"><?= h($flash); ?></div>
 					<?php endif; ?>
-					<span class="pill <?= database_is_available($config) ? 'status-healthy' : 'status-warning'; ?>">
-						<?= database_is_available($config) ? h(t('db_connected')) : h(t('sample_mode')); ?>
-					</span>
-				</div>
-			</header>
-			<?php if ($flash !== null): ?>
-				<div class="flash-banner"><?= h($flash); ?></div>
-			<?php endif; ?>

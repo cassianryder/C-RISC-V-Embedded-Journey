@@ -65,14 +65,20 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS telemetry_samples (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-	sampled_at DATETIME NOT NULL UNIQUE,
+	sampled_at DATETIME NOT NULL,
+	pond_code VARCHAR(32) NOT NULL DEFAULT 'pond_01',
 	temperature DECIMAL(10,2) NULL,
 	ph DECIMAL(10,2) NULL,
 	do_value DECIMAL(10,2) NULL,
 	turbidity DECIMAL(10,2) NULL,
 	water_level DECIMAL(10,2) NULL,
+	ammonia_nitrogen DECIMAL(10,2) NULL,
+	nitrite DECIMAL(10,2) NULL,
+	salinity DECIMAL(10,2) NULL,
+	alkalinity DECIMAL(10,2) NULL,
 	alert_text VARCHAR(255) NOT NULL DEFAULT 'normal',
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE KEY uniq_telemetry_pond_time (pond_code, sampled_at)
 );
 
 CREATE TABLE IF NOT EXISTS control_commands (
@@ -114,5 +120,32 @@ CREATE TABLE IF NOT EXISTS medication_recommendations (
 	recommended_window VARCHAR(120) NOT NULL,
 	risk_level VARCHAR(32) NOT NULL,
 	status VARCHAR(32) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS custom_cards (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	card_title VARCHAR(120) NOT NULL,
+	card_value VARCHAR(120) NOT NULL,
+	card_note VARCHAR(255) NOT NULL,
+	card_style VARCHAR(32) NOT NULL DEFAULT 'neutral',
+	display_order INT NOT NULL DEFAULT 0,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS backup_snapshots (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	file_name VARCHAR(255) NOT NULL,
+	file_path VARCHAR(255) NOT NULL,
+	created_by VARCHAR(120) NOT NULL,
+	backup_status VARCHAR(32) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS system_logs (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	log_level VARCHAR(32) NOT NULL,
+	log_source VARCHAR(64) NOT NULL,
+	message TEXT NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -13,7 +13,7 @@ $raw_body = file_get_contents('php://input');
 $json = json_decode($raw_body, true);
 $payload = is_array($json) ? $json : $_POST;
 
-$required = ['sampled_at', 'temperature', 'ph', 'do_value', 'turbidity', 'water_level', 'alert_text'];
+$required = ['sampled_at', 'temperature', 'ph', 'do_value', 'turbidity', 'water_level'];
 
 foreach ($required as $field) {
 	if (!array_key_exists($field, $payload)) {

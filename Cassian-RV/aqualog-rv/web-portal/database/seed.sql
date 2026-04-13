@@ -71,3 +71,15 @@ INSERT INTO medication_recommendations
 VALUES
 	('Medication timing watch', 'Delay dosing during the current rain window and reassess after dissolved oxygen stabilizes.', 'After 14:00 if DO remains above 5.0 mg/L', 'warning', 'pending_review'),
 	('Stress-sensitive feeding plan', 'Reduce aggressive feeding and observe shrimp activity after rainfall passes.', 'Next 6 hours', 'medium', 'active');
+
+INSERT INTO custom_cards
+	(card_title, card_value, card_note, card_style, display_order)
+VALUES
+	('今日投喂批次', '3', '上午批次已完成，夜间批次待确认', 'neutral', 1),
+	('重点池塘', 'Pond B', '建议优先观察溶氧与降雨影响', 'warning', 2);
+
+INSERT INTO system_logs
+	(log_level, log_source, message)
+VALUES
+	('info', 'seed', 'Initial portal seed data loaded.'),
+	('info', 'telemetry', 'Historical telemetry import pipeline ready.');

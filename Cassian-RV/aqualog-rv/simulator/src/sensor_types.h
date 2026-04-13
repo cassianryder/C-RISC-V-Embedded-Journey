@@ -11,17 +11,26 @@
 #include <time.h>
 
 typedef struct {
+	char pond_code[16];
 	double temperature;
 	double ph;
 	double do_value;
 	double turbidity;
 	double water_level;
+	double ammonia_nitrogen;
+	double nitrite;
+	double salinity;
+	double alkalinity;
 	time_t timestamp;
 	int temperature_ok;
 	int ph_ok;
 	int do_ok;
 	int turbidity_ok;
 	int water_level_ok;
+	int ammonia_nitrogen_ok;
+	int nitrite_ok;
+	int salinity_ok;
+	int alkalinity_ok;
 } SensorData;
 
 #endif

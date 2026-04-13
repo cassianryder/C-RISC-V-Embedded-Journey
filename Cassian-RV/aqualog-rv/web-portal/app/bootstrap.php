@@ -13,3 +13,4 @@ require_once __DIR__ . '/data/sample_data.php';
 require_once __DIR__ . '/lib/repositories.php';
 
 initialize_locale($config);
+initialize_theme();

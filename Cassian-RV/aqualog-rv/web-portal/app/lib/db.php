@@ -8,16 +8,10 @@ function get_pdo(array $config)
 		return $pdo;
 	}
 
-	$dsn = sprintf(
-		'mysql:host=%s;port=%d;dbname=%s;charset=%s',
-		$config['db']['host'],
-		$config['db']['port'],
-		$config['db']['database'],
-		$config['db']['charset']
-	);
+	$dsns = [];
 
 	if (isset($config['db']['unix_socket']) && $config['db']['unix_socket'] !== '') {
-		$dsn = sprintf(
+		$dsns[] = sprintf(
 			'mysql:unix_socket=%s;dbname=%s;charset=%s',
 			$config['db']['unix_socket'],
 			$config['db']['database'],
@@ -25,18 +19,31 @@ function get_pdo(array $config)
 		);
 	}
 
-	try {
-		$pdo = new PDO(
-			$dsn,
-			$config['db']['username'],
-			$config['db']['password'],
-			[
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-			]
-		);
-	} catch (Throwable $exception) {
-		$pdo = false;
+	$dsns[] = sprintf(
+		'mysql:host=%s;port=%d;dbname=%s;charset=%s',
+		$config['db']['host'],
+		$config['db']['port'],
+		$config['db']['database'],
+		$config['db']['charset']
+	);
+
+	$pdo = false;
+
+	foreach ($dsns as $dsn) {
+		try {
+			$pdo = new PDO(
+				$dsn,
+				$config['db']['username'],
+				$config['db']['password'],
+				[
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+					PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+				]
+			);
+			break;
+		} catch (Throwable $exception) {
+			$pdo = false;
+		}
 	}
 
 	return $pdo;

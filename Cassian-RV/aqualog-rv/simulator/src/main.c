@@ -32,6 +32,22 @@ static void print_banner(void)
 	printf("log file: %s\n\n", LOG_FILE_NAME);
 }
 
+static void format_timestamp_text(time_t raw_time, char *buffer, int buffer_size)
+{
+	struct tm *local_time_info;
+
+	if (buffer == NULL || buffer_size <= 0)
+		return;
+
+	local_time_info = localtime(&raw_time);
+	if (local_time_info == NULL) {
+		snprintf(buffer, (size_t) buffer_size, "%s", "1970-01-01 00:00:00");
+		return;
+	}
+
+	strftime(buffer, (size_t) buffer_size, "%Y-%m-%d %H:%M:%S", local_time_info);
+}
+
 static int should_quit(void)
 {
 	char input[32];
@@ -44,6 +60,64 @@ static int should_quit(void)
 		return 1;
 
 	return 0;
+}
+
+static void sync_portal_from_csv(void)
+{
+	int result;
+
+	result = system(PORTAL_IMPORT_COMMAND);
+	if (result != 0)
+		fprintf(stderr, "warning: portal sync command failed\n");
+}
+
+static void upload_portal_telemetry(const SensorData *data, const char *alert_message)
+{
+	char command[2048];
+	char timestamp_text[32];
+	int result;
+
+	if (data == NULL || alert_message == NULL)
+		return;
+
+	format_timestamp_text(data->timestamp, timestamp_text, (int) sizeof(timestamp_text));
+
+	snprintf(
+		command,
+		(size_t) sizeof(command),
+		"curl -s -o /dev/null -X POST %s "
+		"-d 'sampled_at=%s' "
+		"-d 'pond_code=%s' "
+		"-d 'temperature=%.2f' "
+		"-d 'ph=%.2f' "
+		"-d 'do_value=%.2f' "
+		"-d 'turbidity=%.2f' "
+		"-d 'water_level=%.2f' "
+		"-d 'ammonia_nitrogen=%.2f' "
+		"-d 'nitrite=%.2f' "
+		"-d 'salinity=%.2f' "
+		"-d 'alkalinity=%.2f' "
+		"-d 'alert_text=%s'",
+		PORTAL_API_URL,
+		timestamp_text,
+		data->pond_code,
+		data->temperature,
+		data->ph,
+		data->do_value,
+		data->turbidity,
+		data->water_level,
+		data->ammonia_nitrogen,
+		data->nitrite,
+		data->salinity,
+		data->alkalinity,
+		alert_message
+	);
+
+	result = system(command);
+	if (result != 0) {
+		fprintf(stderr, "warning: portal api upload failed, fallback to csv import\n");
+		sync_portal_from_csv();
+	}
 }
 
 int main(void)
@@ -68,6 +142,8 @@ int main(void)
 			fprintf(stderr, "failed to append log entry\n");
 			return 1;
 		}
+
+		upload_portal_telemetry(&data, alert_message);
 
 		print_console_status(&data, alert_message);
 		printf("\n");
