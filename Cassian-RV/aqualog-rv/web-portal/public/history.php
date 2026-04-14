@@ -7,96 +7,62 @@ $page_title = t('nav_history');
 $page_heading = t('history_title');
 $page_tagline = t('history_tagline');
 
-$samples = fetch_history_series($config, 24);
+$pond_code = current_pond_code();
+$samples = fetch_history_series($config, 24, $pond_code);
 $bounds = sensor_bounds();
+$metrics = [
+	['field' => 'temperature', 'unit' => '°C'],
+	['field' => 'ph', 'unit' => 'pH'],
+	['field' => 'do_value', 'unit' => 'mg/L'],
+	['field' => 'turbidity', 'unit' => 'NTU'],
+];
 
 require __DIR__ . '/partials/header.php';
 ?>
-<div class="ui stackable two column grid portal-section">
-	<div class="column">
-		<section class="ui segment card dashboard chart">
-			<div class="dashboard-header">
-				<div>
-					<p class="portal-eyebrow"><?= h(metric_label('temperature')); ?></p>
-					<h3><?= h(t('quality_timeline')); ?></h3>
+<div class="portal-stack">
+	<section class="ui segment card dashboard">
+		<div class="dashboard-header portal-dashboard-header">
+			<div>
+				<p class="portal-eyebrow">当前塘口</p>
+				<h3><?= h(pond_name($pond_code)); ?></h3>
+			</div>
+		</div>
+		<div class="ui small compact menu portal-pond-menu">
+			<?php foreach (pond_options() as $pond): ?>
+				<a class="item <?= $pond['code'] === $pond_code ? 'active' : ''; ?>" href="<?= h(url_with_locale('history.php', ['pond' => $pond['code']])); ?>"><?= h($pond['name']); ?></a>
+			<?php endforeach; ?>
+		</div>
+	</section>
+
+	<section class="dashboard-card-grid portal-history-grid">
+		<?php foreach ($metrics as $metric): ?>
+			<section class="ui segment card dashboard chart">
+				<div class="dashboard-header">
+					<div>
+						<p class="portal-eyebrow"><?= h(metric_label($metric['field'])); ?></p>
+						<h3><?= h(t('quality_timeline')); ?></h3>
+					</div>
+					<span class="ui blue basic label"><?= h($metric['unit']); ?></span>
 				</div>
-				<span class="ui blue basic label">°C</span>
-			</div>
-			<div class="chart-frame">
-				<svg class="chart-svg" viewBox="0 0 520 220" preserveAspectRatio="none">
-					<g class="chart-grid">
-						<line x1="0" y1="40" x2="520" y2="40"></line>
-						<line x1="0" y1="110" x2="520" y2="110"></line>
-						<line x1="0" y1="180" x2="520" y2="180"></line>
-					</g>
-					<polyline class="chart-line" points="<?= h(build_line_points($samples, 'temperature', $bounds['temperature']['min'], $bounds['temperature']['max'])); ?>"></polyline>
-				</svg>
-			</div>
-		</section>
-	</div>
-	<div class="column">
-		<section class="ui segment card dashboard chart">
-			<div class="dashboard-header">
-				<div>
-					<p class="portal-eyebrow"><?= h(metric_label('ph')); ?></p>
-					<h3><?= h(t('quality_timeline')); ?></h3>
+				<div class="chart-frame portal-history-chart-frame">
+					<div class="portal-chart-tooltip"></div>
+					<svg class="chart-svg" viewBox="0 0 520 220" preserveAspectRatio="none">
+						<g class="chart-grid">
+							<line x1="0" y1="40" x2="520" y2="40"></line>
+							<line x1="0" y1="110" x2="520" y2="110"></line>
+							<line x1="0" y1="180" x2="520" y2="180"></line>
+						</g>
+						<polyline class="chart-line" points="<?= h(build_line_points($samples, $metric['field'], $bounds[$metric['field']]['min'], $bounds[$metric['field']]['max'])); ?>"></polyline>
+						<g class="chart-dots">
+							<?php foreach (build_chart_dots($samples, $metric['field'], $bounds[$metric['field']]['min'], $bounds[$metric['field']]['max']) as $dot): ?>
+								<circle class="chart-dot" cx="<?= h((string) $dot['x']); ?>" cy="<?= h((string) $dot['y']); ?>" r="5" data-time="<?= h($dot['time']); ?>" data-value="<?= h($dot['value']); ?>" data-label="<?= h(metric_label($metric['field'])); ?>"></circle>
+							<?php endforeach; ?>
+						</g>
+					</svg>
 				</div>
-				<span class="ui blue basic label">pH</span>
-			</div>
-			<div class="chart-frame">
-				<svg class="chart-svg" viewBox="0 0 520 220" preserveAspectRatio="none">
-					<g class="chart-grid">
-						<line x1="0" y1="40" x2="520" y2="40"></line>
-						<line x1="0" y1="110" x2="520" y2="110"></line>
-						<line x1="0" y1="180" x2="520" y2="180"></line>
-					</g>
-					<polyline class="chart-line" points="<?= h(build_line_points($samples, 'ph', $bounds['ph']['min'], $bounds['ph']['max'])); ?>"></polyline>
-				</svg>
-			</div>
-		</section>
-	</div>
-	<div class="column">
-		<section class="ui segment card dashboard chart">
-			<div class="dashboard-header">
-				<div>
-					<p class="portal-eyebrow"><?= h(metric_label('do_value')); ?></p>
-					<h3><?= h(t('quality_timeline')); ?></h3>
-				</div>
-				<span class="ui blue basic label">mg/L</span>
-			</div>
-			<div class="chart-frame">
-				<svg class="chart-svg" viewBox="0 0 520 220" preserveAspectRatio="none">
-					<g class="chart-grid">
-						<line x1="0" y1="40" x2="520" y2="40"></line>
-						<line x1="0" y1="110" x2="520" y2="110"></line>
-						<line x1="0" y1="180" x2="520" y2="180"></line>
-					</g>
-					<polyline class="chart-line" points="<?= h(build_line_points($samples, 'do_value', $bounds['do_value']['min'], $bounds['do_value']['max'])); ?>"></polyline>
-				</svg>
-			</div>
-		</section>
-	</div>
-	<div class="column">
-		<section class="ui segment card dashboard chart">
-			<div class="dashboard-header">
-				<div>
-					<p class="portal-eyebrow"><?= h(metric_label('turbidity')); ?></p>
-					<h3><?= h(t('quality_timeline')); ?></h3>
-				</div>
-				<span class="ui blue basic label">NTU</span>
-			</div>
-			<div class="chart-frame">
-				<svg class="chart-svg" viewBox="0 0 520 220" preserveAspectRatio="none">
-					<g class="chart-grid">
-						<line x1="0" y1="40" x2="520" y2="40"></line>
-						<line x1="0" y1="110" x2="520" y2="110"></line>
-						<line x1="0" y1="180" x2="520" y2="180"></line>
-					</g>
-					<polyline class="chart-line" points="<?= h(build_line_points($samples, 'turbidity', $bounds['turbidity']['min'], $bounds['turbidity']['max'])); ?>"></polyline>
-				</svg>
-			</div>
-		</section>
-	</div>
+			</section>
+		<?php endforeach; ?>
+	</section>
 </div>
 
 <section class="ui segment card dashboard portal-section">

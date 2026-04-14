@@ -7,6 +7,7 @@
 
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 #include "config.h"
@@ -73,12 +74,15 @@ static void fill_derived_parameters(SensorData *data)
 	data->alkalinity_ok = 1;
 }
 
-void collect_sensor_data(SensorData *data)
+void collect_sensor_data(SensorData *data, const char *pond_code)
 {
 	if (data == NULL)
 		return;
 
-	snprintf(data->pond_code, (size_t) sizeof(data->pond_code), "%s", POND_CODE);
+	if (pond_code != NULL && pond_code[0] != '\0')
+		snprintf(data->pond_code, (size_t) sizeof(data->pond_code), "%s", pond_code);
+	else
+		snprintf(data->pond_code, (size_t) sizeof(data->pond_code), "%s", DEFAULT_POND_CODE);
 	data->timestamp = time(NULL);
 
 	data->temperature_ok = read_temperature(&data->temperature);

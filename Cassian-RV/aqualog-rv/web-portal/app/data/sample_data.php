@@ -104,8 +104,8 @@ function sample_history_data($pond_code = 'pond_01')
 function sample_control_commands()
 {
 	return [
-		['device_name' => 'Aerator Pump A', 'action_name' => 'start', 'operator_name' => 'Cassian Admin', 'command_status' => 'queued', 'issued_at' => '2026-04-11 09:21:10'],
-		['device_name' => 'Alarm Beacon', 'action_name' => 'trigger_alarm', 'operator_name' => 'Cassian Admin', 'command_status' => 'sent', 'issued_at' => '2026-04-11 09:18:33'],
+		['command_uuid' => 'cmd_demo_001', 'pond_code' => 'pond_01', 'device_type' => '增氧机', 'device_no' => 1, 'device_name' => '增氧机 1 号', 'action_name' => 'start', 'operator_name' => '调度中心', 'command_status' => 'queued', 'issued_at' => '2026-04-11 09:21:10', 'dispatched_at' => null, 'acknowledged_at' => null, 'executed_at' => null, 'device_response' => '等待设备拉取'],
+		['command_uuid' => 'cmd_demo_002', 'pond_code' => 'pond_02', 'device_type' => '水泵', 'device_no' => 2, 'device_name' => '水泵 2 号', 'action_name' => 'start', 'operator_name' => '调度中心', 'command_status' => 'executed', 'issued_at' => '2026-04-11 09:18:33', 'dispatched_at' => '2026-04-11 09:18:40', 'acknowledged_at' => '2026-04-11 09:18:45', 'executed_at' => '2026-04-11 09:18:52', 'device_response' => '设备执行完成'],
 	];
 }
 

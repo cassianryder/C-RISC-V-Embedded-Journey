@@ -46,7 +46,7 @@ function format_status_class($status)
 		return 'status-critical';
 	if ($status === 'warning' || $status === 'maintenance')
 		return 'status-warning';
-	if ($status === 'healthy' || $status === 'online' || $status === 'normal' || $status === 'queued' || $status === 'sent')
+	if ($status === 'healthy' || $status === 'online' || $status === 'normal' || $status === 'queued' || $status === 'sent' || $status === 'acknowledged' || $status === 'executed')
 		return 'status-healthy';
 
 	return 'status-neutral';
@@ -60,7 +60,7 @@ function semantic_label_class($status)
 		return 'red';
 	if ($status === 'warning' || $status === 'maintenance')
 		return 'orange';
-	if ($status === 'healthy' || $status === 'online' || $status === 'normal' || $status === 'queued' || $status === 'sent' || $status === 'success')
+	if ($status === 'healthy' || $status === 'online' || $status === 'normal' || $status === 'queued' || $status === 'sent' || $status === 'acknowledged' || $status === 'executed' || $status === 'success')
 		return 'green';
 
 	return 'grey';
@@ -82,6 +82,9 @@ function chinese_status_text($status)
 		'offline' => '离线',
 		'queued' => '排队中',
 		'sent' => '已发送',
+		'acknowledged' => '已确认',
+		'executed' => '已执行',
+		'failed' => '执行失败',
 		'start' => '启动',
 		'stop' => '停止',
 		'manual_override' => '人工接管',

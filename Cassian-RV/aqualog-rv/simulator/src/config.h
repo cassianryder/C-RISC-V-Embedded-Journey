@@ -10,7 +10,7 @@
 
 #define SAMPLE_INTERVAL_SECONDS 5
 
-#define POND_CODE "pond_01"
+#define DEFAULT_POND_CODE "pond_01"
 
 #define TEMP_MIN_VALUE 15.0
 #define TEMP_MAX_VALUE 35.0

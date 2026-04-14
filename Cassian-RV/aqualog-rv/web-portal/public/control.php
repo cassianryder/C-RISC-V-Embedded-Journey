@@ -8,6 +8,7 @@ $page_heading = t('control_title');
 $page_tagline = t('control_tagline');
 
 if (request_method() === 'POST') {
+	$pond_code = current_pond_code();
 	$device_type = isset($_POST['device_type']) ? trim((string) $_POST['device_type']) : '增氧机';
 	$device_no = isset($_POST['device_no']) ? trim((string) $_POST['device_no']) : '1';
 	$device = $device_type . ' ' . $device_no . ' 号';
@@ -15,8 +16,8 @@ if (request_method() === 'POST') {
 	$user = current_user();
 	$operator = $user !== null ? $user['display_name'] : 'CLI';
 
-	save_control_command($config, $device, $action, $operator);
-	$_SESSION['flash_message'] = t('queued_command') . ': ' . $device . ' -> ' . chinese_status_text($action);
+	save_control_command($config, $pond_code, $device_type, $device_no, $action, $operator);
+	$_SESSION['flash_message'] = t('queued_command') . ': ' . pond_name($pond_code) . ' / ' . $device . ' -> ' . chinese_status_text($action);
 
 	if (!is_cli()) {
 		header('Location: ' . url_with_locale('control.php'));
@@ -53,6 +54,10 @@ require __DIR__ . '/partials/header.php';
 							<option value="<?= h((string) $i); ?>"><?= h((string) $i); ?> 号</option>
 						<?php endfor; ?>
 					</select>
+				</div>
+				<div class="field">
+					<label>当前塘口</label>
+					<div class="ui basic label"><?= h(pond_name(current_pond_code())); ?></div>
 				</div>
 				<div class="field">
 					<label><?= h(t('requested_action')); ?></label>
@@ -99,19 +104,31 @@ require __DIR__ . '/partials/header.php';
 	<div class="dashboard-header">
 		<div>
 			<p class="portal-eyebrow"><?= h(t('command_history')); ?></p>
-			<h3><?= h(t('nav_control')); ?></h3>
+			<h3>设备下发队列</h3>
 		</div>
 	</div>
 	<div class="ui list portal-info-list">
 		<?php foreach ($commands as $command): ?>
 			<div class="item">
 				<div class="portal-info-main">
-					<strong><?= h($command['device_name']); ?></strong>
-					<p><?= h(chinese_status_text($command['action_name'])); ?> | <?= h(t('operator')); ?>: <?= h($command['operator_name']); ?></p>
+					<strong><?= h((isset($command['device_type']) ? $command['device_type'] : '设备') . ' ' . (isset($command['device_no']) ? (string) $command['device_no'] : '1') . ' 号'); ?></strong>
+					<p><?= h(pond_name(isset($command['pond_code']) ? $command['pond_code'] : 'pond_01')); ?> | <?= h(chinese_status_text($command['action_name'])); ?> | <?= h(t('operator')); ?>: <?= h($command['operator_name']); ?></p>
+					<?php if (isset($command['command_uuid'])): ?>
+						<p>命令编号：<?= h($command['command_uuid']); ?></p>
+					<?php endif; ?>
+					<?php if (!empty($command['device_response'])): ?>
+						<p>设备回执：<?= h($command['device_response']); ?></p>
+					<?php endif; ?>
 				</div>
 				<div class="portal-info-side">
 					<div class="ui <?= h(semantic_label_class($command['command_status'])); ?> label"><?= h(chinese_status_text($command['command_status'])); ?></div>
 					<div><?= h($command['issued_at']); ?></div>
+					<?php if (!empty($command['dispatched_at'])): ?>
+						<div>下发：<?= h($command['dispatched_at']); ?></div>
+					<?php endif; ?>
+					<?php if (!empty($command['executed_at'])): ?>
+						<div>执行：<?= h($command['executed_at']); ?></div>
+					<?php endif; ?>
 				</div>
 			</div>
 		<?php endforeach; ?>

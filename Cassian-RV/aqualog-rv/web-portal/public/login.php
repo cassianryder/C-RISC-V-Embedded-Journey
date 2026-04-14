@@ -34,38 +34,41 @@ if (request_method() === 'POST') {
 <body class="login-body" data-theme="<?= h(body_theme_name()); ?>">
 	<div class="portal-login-shell">
 		<div class="ui segment card dashboard portal-login-card">
-			<div class="brand-block">
-				<div class="brand-mark">ARV</div>
-				<div>
-					<p class="portal-eyebrow"><?= h(t('brand_subtitle')); ?></p>
-					<h1><?= h(t('brand_name')); ?></h1>
+			<div class="portal-login-header">
+				<div class="brand-block">
+					<div class="brand-mark">ARV</div>
+					<div>
+						<p class="portal-eyebrow"><?= h(t('brand_subtitle')); ?></p>
+						<h1><?= h(t('brand_name')); ?></h1>
+					</div>
 				</div>
+				<a class="ui icon basic button portal-theme-button" href="<?= h(next_theme_url()); ?>" aria-label="<?= h(current_theme() === 'night' ? t('theme_day') : t('theme_night')); ?>">
+					<span class="theme-icon-stack" aria-hidden="true">
+						<i class="sun outline icon theme-sun"></i>
+						<i class="moon icon theme-moon"></i>
+					</span>
+				</a>
 			</div>
-			<div class="portal-login-locale">
-				<?php foreach (supported_locales() as $locale_code => $locale_label): ?>
-					<a class="ui button <?= current_locale() === $locale_code ? 'primary' : ''; ?>" href="<?= h(locale_switch_url($locale_code)); ?>"><?= h($locale_label); ?></a>
-				<?php endforeach; ?>
+			<div class="portal-login-meta">
+				<span class="ui basic label">塘口实时监控</span>
+				<span class="ui basic label">设备队列下发</span>
+				<span class="ui basic label">水质联动预警</span>
 			</div>
-			<h2><?= h(t('login_heading')); ?></h2>
-			<p class="portal-muted"><?= h(t('login_subtitle')); ?></p>
-			<p class="portal-muted"><?= h(t('default_demo_credentials')); ?></p>
+			<div class="portal-login-copy">
+				<h2><?= h(t('login_heading')); ?></h2>
+				<p class="portal-muted">进入控制台后可查看塘口实时参数、设备队列和历史曲线。</p>
+			</div>
 			<?php if ($error_message !== null): ?>
 				<div class="ui negative message"><?= h($error_message); ?></div>
 			<?php endif; ?>
 			<form class="ui form portal-form" method="post">
 				<div class="field">
 					<label><?= h(t('username')); ?></label>
-					<input type="text" name="username" value="admin">
+					<input type="text" name="username" value="admin" placeholder="请输入用户名">
 				</div>
 				<div class="field">
 					<label><?= h(t('password')); ?></label>
-					<input type="password" name="password" value="Shrimp123!">
-				</div>
-				<div class="field">
-					<div class="ui toggle checkbox theme-toggle" data-day-url="<?= h(theme_switch_url('day')); ?>" data-night-url="<?= h(theme_switch_url('night')); ?>">
-						<input type="checkbox" <?= current_theme() === 'night' ? 'checked' : ''; ?>>
-						<label><?= h(current_theme() === 'night' ? t('theme_night') : t('theme_day')); ?></label>
-					</div>
+					<input type="password" name="password" value="Shrimp123!" placeholder="请输入密码">
 				</div>
 				<button class="ui primary fluid button" type="submit"><?= h(t('sign_in')); ?></button>
 			</form>
@@ -76,14 +79,6 @@ if (request_method() === 'POST') {
 	<script>
 	$(function () {
 		$('.ui.checkbox').checkbox();
-		$('.theme-toggle').checkbox({
-			onChecked: function () {
-				window.location.href = $('.theme-toggle').data('night-url');
-			},
-			onUnchecked: function () {
-				window.location.href = $('.theme-toggle').data('day-url');
-			}
-		});
 	});
 	</script>
 </body>

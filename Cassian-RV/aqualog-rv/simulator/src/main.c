@@ -27,9 +27,9 @@ static void wait_seconds(int seconds)
 
 static void print_banner(void)
 {
-	printf("Cassian-RV AquaLog Simulator\n");
-	printf("sample interval: %d seconds\n", SAMPLE_INTERVAL_SECONDS);
-	printf("log file: %s\n\n", LOG_FILE_NAME);
+	printf("Cassian-RV 水质模拟器\n");
+	printf("采样间隔: %d 秒\n", SAMPLE_INTERVAL_SECONDS);
+	printf("日志文件: %s\n\n", LOG_FILE_NAME);
 }
 
 static void format_timestamp_text(time_t raw_time, char *buffer, int buffer_size)
@@ -52,7 +52,7 @@ static int should_quit(void)
 {
 	char input[32];
 
-	printf("Press Enter to continue, or input q to quit: ");
+	printf("按回车继续采样，输入 q 退出: ");
 	if (fgets(input, (int) sizeof(input), stdin) == NULL)
 		return 1;
 
@@ -60,6 +60,33 @@ static int should_quit(void)
 		return 1;
 
 	return 0;
+}
+
+static void select_pond_code(char *buffer, int buffer_size)
+{
+	char input[32];
+	int pond_number;
+
+	if (buffer == NULL || buffer_size <= 0)
+		return;
+
+	snprintf(buffer, (size_t) buffer_size, "%s", DEFAULT_POND_CODE);
+	printf("请输入塘口编号 (1-10，默认 1): ");
+
+	if (fgets(input, (int) sizeof(input), stdin) == NULL)
+		return;
+
+	if (input[0] == '\n' || input[0] == '\0')
+		return;
+
+	pond_number = atoi(input);
+	if (pond_number < 1 || pond_number > 10) {
+		printf("输入无效，已使用默认塘口 1。\n\n");
+		return;
+	}
+
+	snprintf(buffer, (size_t) buffer_size, "pond_%02d", pond_number);
+	printf("当前采样塘口: %s\n\n", buffer);
 }
 
 static void sync_portal_from_csv(void)
@@ -124,6 +151,7 @@ int main(void)
 {
 	SensorData data;
 	char alert_message[128];
+	char pond_code[16];
 
 	srand((unsigned int) time(NULL));
 
@@ -133,9 +161,10 @@ int main(void)
 	}
 
 	print_banner();
+	select_pond_code(pond_code, (int) sizeof(pond_code));
 
 	for (;;) {
-		collect_sensor_data(&data);
+		collect_sensor_data(&data, pond_code);
 		build_alert_message(&data, alert_message, (int) sizeof(alert_message));
 
 		if (!append_log_entry(LOG_FILE_NAME, &data, alert_message)) {
@@ -151,10 +180,10 @@ int main(void)
 		if (should_quit())
 			break;
 
-		printf("waiting %d seconds for next sample...\n\n", SAMPLE_INTERVAL_SECONDS);
+		printf("等待 %d 秒后进行下一次采样...\n\n", SAMPLE_INTERVAL_SECONDS);
 		wait_seconds(SAMPLE_INTERVAL_SECONDS);
 	}
 
-	printf("simulator stopped\n");
+	printf("模拟器已停止\n");
 	return 0;
 }

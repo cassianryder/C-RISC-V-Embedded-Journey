@@ -41,28 +41,31 @@ $user = current_user();
 				<main class="portal-main">
 					<div class="ui segment card portal-topbar">
 						<div class="portal-topbar-row">
-							<div class="portal-title-row">
+							<div class="portal-title-row portal-title-panel">
 								<div>
 									<p class="portal-eyebrow"><?= h($page_tagline); ?></p>
 									<h2><?= h($page_heading); ?></h2>
+									<p class="portal-title-note">面向塘口实时巡检、告警联动与设备控制的一体化监控界面</p>
 								</div>
 							</div>
 							<div class="portal-toolbar">
-								<a class="ui icon basic button portal-theme-button" href="<?= h(next_theme_url()); ?>" aria-label="<?= h(current_theme() === 'night' ? t('theme_day') : t('theme_night')); ?>">
-									<span class="theme-icon-stack" aria-hidden="true">
-										<i class="sun outline icon theme-sun"></i>
-										<i class="moon icon theme-moon"></i>
-									</span>
-								</a>
-								<span class="ui <?= h(semantic_label_class(database_is_available($config) ? 'success' : 'warning')); ?> label"><?= database_is_available($config) ? h(t('db_connected')) : h(t('sample_mode')); ?></span>
-								<?php if ($user !== null): ?>
-									<div class="ui compact menu portal-user-menu">
-										<div class="item"><?= h($user['display_name']); ?></div>
-										<a class="item" href="<?= h(url_with_locale('logout.php')); ?>"><?= h(t('nav_logout')); ?></a>
-									</div>
-								<?php else: ?>
-									<a class="ui button" href="<?= h(url_with_locale('login.php')); ?>"><?= h(t('nav_login')); ?></a>
-								<?php endif; ?>
+								<div class="portal-toolbar-strip">
+									<a class="ui icon basic button portal-theme-button" href="<?= h(next_theme_url()); ?>" aria-label="<?= h(current_theme() === 'night' ? t('theme_day') : t('theme_night')); ?>">
+										<span class="theme-icon-stack" aria-hidden="true">
+											<i class="sun outline icon theme-sun"></i>
+											<i class="moon icon theme-moon"></i>
+										</span>
+									</a>
+									<span class="ui <?= h(semantic_label_class(database_is_available($config) ? 'success' : 'warning')); ?> label"><?= database_is_available($config) ? h(t('db_connected')) : h(t('sample_mode')); ?></span>
+									<?php if ($user !== null): ?>
+										<div class="ui compact menu portal-user-menu">
+											<div class="item"><?= h($user['display_name']); ?></div>
+											<a class="item" href="<?= h(url_with_locale('logout.php')); ?>"><?= h(t('nav_logout')); ?></a>
+										</div>
+									<?php else: ?>
+										<a class="ui button" href="<?= h(url_with_locale('login.php')); ?>"><?= h(t('nav_login')); ?></a>
+									<?php endif; ?>
+								</div>
 							</div>
 						</div>
 					</div>

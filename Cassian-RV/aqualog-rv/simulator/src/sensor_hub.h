@@ -10,6 +10,6 @@
 
 #include "sensor_types.h"
 
-void collect_sensor_data(SensorData *data);
+void collect_sensor_data(SensorData *data, const char *pond_code);
 
 #endif

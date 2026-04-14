@@ -83,11 +83,19 @@ CREATE TABLE IF NOT EXISTS telemetry_samples (
 
 CREATE TABLE IF NOT EXISTS control_commands (
 	id INT AUTO_INCREMENT PRIMARY KEY,
+	command_uuid VARCHAR(64) NOT NULL,
+	pond_code VARCHAR(32) NOT NULL DEFAULT 'pond_01',
+	device_type VARCHAR(64) NOT NULL DEFAULT '增氧机',
+	device_no INT NOT NULL DEFAULT 1,
 	device_name VARCHAR(120) NOT NULL,
 	action_name VARCHAR(64) NOT NULL,
 	operator_name VARCHAR(120) NOT NULL,
 	command_status VARCHAR(32) NOT NULL DEFAULT 'queued',
 	issued_at DATETIME NOT NULL,
+	dispatched_at DATETIME NULL,
+	acknowledged_at DATETIME NULL,
+	executed_at DATETIME NULL,
+	device_response TEXT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

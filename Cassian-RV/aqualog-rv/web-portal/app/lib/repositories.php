@@ -248,7 +248,8 @@ function fetch_control_commands(array $config, $limit = 10)
 		return sample_control_commands();
 
 	$statement = $pdo->prepare(
-		"SELECT device_name, action_name, operator_name, command_status, issued_at
+		"SELECT id, command_uuid, pond_code, device_type, device_no, device_name, action_name, operator_name,
+		        command_status, issued_at, dispatched_at, acknowledged_at, executed_at, device_response
 		 FROM control_commands
 		 ORDER BY issued_at DESC
 		 LIMIT :limit_value"
@@ -264,26 +265,119 @@ function fetch_control_commands(array $config, $limit = 10)
 	return $rows ?: sample_control_commands();
 }
 
-function save_control_command(array $config, $device, $action, $operator)
+function save_control_command(array $config, $pond_code, $device_type, $device_no, $action, $operator)
 {
 	$pdo = get_pdo($config);
+	$device_name = $device_type . ' ' . (int) $device_no . ' 号';
+	$command_uuid = uniqid('cmd_', true);
 
 	if ($pdo === false)
 		return true;
 
 	$statement = $pdo->prepare(
 		"INSERT INTO control_commands
-		 (device_name, action_name, operator_name, command_status, issued_at)
-		 VALUES (:device_name, :action_name, :operator_name, :command_status, NOW())"
+		 (command_uuid, pond_code, device_type, device_no, device_name, action_name, operator_name, command_status, issued_at)
+		 VALUES (:command_uuid, :pond_code, :device_type, :device_no, :device_name, :action_name, :operator_name, :command_status, NOW())"
 	);
 
 	try {
-		return $statement->execute([
-			'device_name' => $device,
+		$result = $statement->execute([
+			'command_uuid' => $command_uuid,
+			'pond_code' => $pond_code,
+			'device_type' => $device_type,
+			'device_no' => (int) $device_no,
+			'device_name' => $device_name,
 			'action_name' => $action,
 			'operator_name' => $operator,
 			'command_status' => 'queued',
 		]);
+		if ($result)
+			log_system_event($config, 'info', 'control_queue', '命令入队: ' . $pond_code . ' / ' . $device_name . ' / ' . $action);
+		return $result;
+	} catch (Throwable $exception) {
+		return false;
+	}
+}
+
+function fetch_device_queue(array $config, $pond_code, $device_type, $device_no, $limit = 10, $claim = false)
+{
+	$pdo = get_pdo($config);
+
+	if ($pdo === false)
+		return [];
+
+	try {
+		if ($claim) {
+			$claim_statement = $pdo->prepare(
+				"UPDATE control_commands
+				 SET command_status = 'sent',
+				     dispatched_at = NOW()
+				 WHERE pond_code = :pond_code
+				   AND device_type = :device_type
+				   AND device_no = :device_no
+				   AND command_status = 'queued'
+				 ORDER BY issued_at ASC
+				 LIMIT 1"
+			);
+			$claim_statement->execute([
+				'pond_code' => $pond_code,
+				'device_type' => $device_type,
+				'device_no' => (int) $device_no,
+			]);
+		}
+
+		$statement = $pdo->prepare(
+			"SELECT id, command_uuid, pond_code, device_type, device_no, device_name, action_name,
+			        operator_name, command_status, issued_at, dispatched_at, acknowledged_at,
+			        executed_at, device_response
+			 FROM control_commands
+			 WHERE pond_code = :pond_code
+			   AND device_type = :device_type
+			   AND device_no = :device_no
+			   AND command_status IN ('queued', 'sent', 'acknowledged')
+			 ORDER BY issued_at ASC
+			 LIMIT :limit_value"
+		);
+		$statement->bindValue(':pond_code', $pond_code, PDO::PARAM_STR);
+		$statement->bindValue(':device_type', $device_type, PDO::PARAM_STR);
+		$statement->bindValue(':device_no', (int) $device_no, PDO::PARAM_INT);
+		$statement->bindValue(':limit_value', (int) $limit, PDO::PARAM_INT);
+		$statement->execute();
+		return $statement->fetchAll();
+	} catch (Throwable $exception) {
+		return [];
+	}
+}
+
+function update_control_command_status(array $config, $command_uuid, $status, $device_response)
+{
+	$pdo = get_pdo($config);
+
+	if ($pdo === false)
+		return false;
+
+	$allowed = ['acknowledged', 'executed', 'failed'];
+	if (!in_array($status, $allowed, true))
+		return false;
+
+	$time_field = $status === 'acknowledged' ? 'acknowledged_at' : 'executed_at';
+
+	try {
+		$statement = $pdo->prepare(
+			"UPDATE control_commands
+			 SET command_status = :command_status,
+			     {$time_field} = NOW(),
+			     device_response = :device_response
+			 WHERE command_uuid = :command_uuid"
+		);
+		$result = $statement->execute([
+			'command_status' => $status,
+			'device_response' => $device_response,
+			'command_uuid' => $command_uuid,
+		]);
+		if ($result)
+			log_system_event($config, 'info', 'control_queue', '命令回执: ' . $command_uuid . ' / ' . $status);
+		return $result;
 	} catch (Throwable $exception) {
 		return false;
 	}

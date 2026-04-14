@@ -63,18 +63,19 @@
 		});
 
 		function bindMiniChartDots() {
-			$('.portal-mini-chart-frame .chart-dot').off('.tooltip');
-			$('.portal-mini-chart-frame .chart-dot').on('mouseenter.tooltip', function () {
+			$('.portal-mini-chart-frame .chart-dot, .portal-history-chart-frame .chart-dot').off('.tooltip');
+			$('.portal-mini-chart-frame .chart-dot, .portal-history-chart-frame .chart-dot').on('mouseenter.tooltip', function () {
 				var dot = $(this);
-				var frame = dot.closest('.portal-mini-chart-frame');
+				var frame = dot.closest('.portal-mini-chart-frame, .portal-history-chart-frame');
 				var tooltip = frame.find('.portal-chart-tooltip');
+				var label = dot.data('label') || '';
 				var time = dot.data('time') || '';
 				var value = dot.data('value') || '';
-				tooltip.text(time + ' / ' + value).addClass('is-visible');
+				tooltip.text((label ? label + ' / ' : '') + time + ' / ' + value).addClass('is-visible');
 			});
-			$('.portal-mini-chart-frame .chart-dot').on('mousemove.tooltip', function (event) {
+			$('.portal-mini-chart-frame .chart-dot, .portal-history-chart-frame .chart-dot').on('mousemove.tooltip', function (event) {
 				var dot = $(this);
-				var frame = dot.closest('.portal-mini-chart-frame');
+				var frame = dot.closest('.portal-mini-chart-frame, .portal-history-chart-frame');
 				var tooltip = frame.find('.portal-chart-tooltip');
 				var offset = frame.offset();
 				tooltip.css({
@@ -82,8 +83,8 @@
 					top: event.pageY - offset.top - 26
 				});
 			});
-			$('.portal-mini-chart-frame .chart-dot').on('mouseleave.tooltip', function () {
-				$(this).closest('.portal-mini-chart-frame').find('.portal-chart-tooltip').removeClass('is-visible');
+			$('.portal-mini-chart-frame .chart-dot, .portal-history-chart-frame .chart-dot').on('mouseleave.tooltip', function () {
+				$(this).closest('.portal-mini-chart-frame, .portal-history-chart-frame').find('.portal-chart-tooltip').removeClass('is-visible');
 			});
 		}
 
