@@ -16,6 +16,11 @@ MAP = \
 18:exercises/01-basics/8.c \
 19:exercises/01-basics/9.c \
 110:exercises/01-basics/10.c \
+111:exercises/01-basics/11.c \
+112:exercises/01-basics/12.c \
+113:exercises/01-basics/13.c \
+114:exercises/01-basics/14.c \
+115:exercises/01-basics/15.c \
 21:exercises/02-pointers/1.c
 
 # ========= 内部解析 =========
