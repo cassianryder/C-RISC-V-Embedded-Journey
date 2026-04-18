@@ -61,27 +61,125 @@
 //   return 0;
 // }
 
-//9.1 lethead1.c 
-#include <stdio.h>
-#define NAME "GIGATHINK, INC."
-#define ADDRESS "101 Megabuck Plaza"
-#define PLACE "Megapolis, CA 94904"
-#define WIDTH 40
+// 9.1 lethead1.c 
+//  #include <stdio.h>
+//  #define NAME "GIGATHINK, INC."
+//  #define ADDRESS "101 Megabuck Plaza"
+//  #define PLACE "Megapolis, CA 94904"
+//  #define WIDTH 40
+//
+//  void starbar(void)
+//  {
+//      for(int count = 1;count < WIDTH;++count)
+//    {
+//      putchar('*');
+//    }//或者在这里不写大括号 单人座
+//      putchar('\n');
+//    
+//  }
+//
+//  int main(void){
+//    starbar();
+//  printf("%s\n", NAME);
+//  printf("%s\n", ADDRESS);
+//  printf("%s\n", PLACE);
+//    starbar();
+//  }
 
-void starbar(void)
+// #include <stdio.h>
+// int main(void){
+//   int a = 0;//初始化变量
+//   int b = 0;
+//   printf("Enter a integer:\n");
+//   if (scanf("%d%d",&a,&b) != 2)//检查输入是否合法
+//   {
+//    printf("Error: Invalid input. Please enter a number.\n");
+//    return 1;
+//   };
+//   printf("You entered: %d\n",a+b);
+//   return 0;
+//
+// }
+
+//putchar与getchar逻辑实现（缓冲区）
+//my_putchar
+#include <stdio.h>
+#include <unistd.h>
+#define BUF_SIZE 8
+
+char buf[BUF_SIZE];//int buf[BUF_SIZE];
+int buf_len = 0;
+
+void my_flush(void) {
+    if (buf_len > 0) {
+        write(1, buf, buf_len);
+        buf_len = 0;
+    }
+}
+
+int my_putchar(int c)
 {
-    for(int count = 1;count < WIDTH;++count)
+  buf[buf_len] = c;
+  buf_len++;
+
+  if (buf_len == BUF_SIZE || c == '\n')
   {
-    putchar('*');
-    putchar('\n');
+    write(1,buf,buf_len);//1(文件描述符)，在linux unix中0 stdin q stdout 2 stderr
+    //buf（缓冲区指针）；指向内存中存放数据的起始地址，即要发送出去的数据在哪里
+    //buf_len（写入字节数）；告诉系统从buf中连续取多少字节写入
+    buf_len = 0;
+  }
+  return c;
+}
+//局部变量会遮蔽同名全局变量
+
+int main(void){
+  // char a;
+  // if (scanf("%c",&a) != 1)
+  // {
+  //   printf("Error: Invalid input. Please enter a char.\n");
+  //  return 1;
+  // }
+  // my_putchar(a);
+  my_putchar('H');//my_putchar(72); mu_putchar('7');
+  my_putchar('i');
+  my_putchar('\n');
+  my_flush();
+  return 0;
+}
+
+//重写
+#include <stdio.h>
+#include <unistd.h>
+#define BUF_SIZE 8
+
+char buf[BUF_SIZE];
+int buf_len = 0;
+
+void my_flush(void)
+{
+  if(buf_len > 0){
+    write(1,buf,buf_len);
+    buf_len = 0;
   }
 }
 
-int main(void){
-  starbar();
-printf("%s\n", NAME);
-printf("%s\n", ADDRESS);
-printf("%s\n", PLACE);
-  starbar();
+int my_putchar(int c)
+{
+  buf[buf_len] = c;
+  buf_len++;
+  if (buf_len == BUF_SIZE || c = '\n')
+  {
+    write(1,buf,buf_len);
+    buf_len = 0;
+  }
+  return c;
 }
+
+int main(void){
+ putchar('H');
+ my_flush();
+  reutrn 0;
+}
+
 
