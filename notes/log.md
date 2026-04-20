@@ -12,3 +12,4 @@
 - - 2026-04-16: Day 11 -01-basics:函数形参与实参，函数的嵌套调用，指针，寻址，水产闭环小项目池塘水质监控系统（溶氧，温度，函数嵌调用）。代码在在exercises/01-basics/11.c 
 - - 2026-04-17: Day 12 -01-basics:函数形参与实参，函数的嵌套调用，水产闭环小项目池塘水质监控系统（溶氧，温度，函数嵌调用）优化两轮，c primer配套练习，getchar与putchar。代码在在exercises/01-basics/11.c
 - - 2026-04-18: Day 12 -01-basics:全局变量 静态变量（在静态内存空间随着程序的结束而终止）局部变量（随机，水调用结束二终止），函数的嵌套调用，c primer配套练习优化打印个人信息（for后面不加括号下一行，单人座），putchar实现（缓冲区buffer，文件io，系统调用（用户态内核态），write（）函数用法）。代码在在exercises/01-basics/11.c 
+- - 2026-04-20: Day 13 -01-basics:从11.c推进到12.c，完成自定义字符输出系统最小闭环：`my_putchar`、`my_flush`、`my_puts`、`my_putstr`、`my_ponds_status`。重点理解了 `getchar/putchar` 风格接口、`const char *s` 作为字符串入口、`'\0'` 作为字符串结束标记、`return c` 与 `return count` 的返回值链路、局部长度 `count` 与整行长度 `total` 的关系、`+=` 用于分段累计总长度、单字符输出与字符串输出的分层设计，以及 `printf` 和 `write` 混用时的缓冲与换行现象。水产耦合：输出单行池塘状态记录并统计记录长度。代码在 exercises/01-basics/12.c
