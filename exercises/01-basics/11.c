@@ -117,7 +117,7 @@ void my_flush(void) {
     }
 }
 
-int my_putchar(int c)
+int my_putchar(int c)//1.char 在传参时会提升成 int，2.可以表示EOF等特殊字符
 {
   buf[buf_len] = c;
   buf_len++;
@@ -126,7 +126,7 @@ int my_putchar(int c)
   {
     write(1,buf,buf_len);//1(文件描述符)，在linux unix中0 stdin q stdout 2 stderr
     //buf（缓冲区指针）；指向内存中存放数据的起始地址，即要发送出去的数据在哪里
-    //buf_len（写入字节数）；告诉系统从buf中连续取多少字节写入
+    //buf_len（写入字节数）；告  诉系统从buf中连续取多少字节写入
     buf_len = 0;
   }
   return c;
@@ -134,31 +134,34 @@ int my_putchar(int c)
 //局部变量会遮蔽同名全局变量
 
 int main(void){
-  // char a;
-  // if (scanf("%c",&a) != 1)
-  // {
-  //   printf("Error: Invalid input. Please enter a char.\n");
-  //  return 1;
-  // }
-  // my_putchar(a);
-  my_putchar('H');//my_putchar(72); mu_putchar('7');
-  my_putchar('i');
-  my_putchar('\n');
+  char a = '\0';//char a;
+  while(a != '\n'){//while (scanf("%c",&a) == 1)
+    if (scanf("%c",&a) != 1)//if (a == '\n') break
+    {
+    printf("Error: Invalid input. Please enter a char.\n");
+    return 1;
+    }
+  my_putchar(a);
+  }
+  // my_putchar('H');//my_putchar(72); mu_putchar('7');
+  // my_putchar('i');
+  // my_putchar('\n');
   my_flush();
   return 0;
 }
 
-//重写
-#include <stdio.h>
+
+//my_putchar逻辑实现
 #include <unistd.h>
-#define BUF_SIZE 8
+#define BUF_SIZE 8;
 
 char buf[BUF_SIZE];
 int buf_len = 0;
 
 void my_flush(void)
 {
-  if(buf_len > 0){
+  if(buf_len > 0)
+  {
     write(1,buf,buf_len);
     buf_len = 0;
   }
@@ -166,9 +169,10 @@ void my_flush(void)
 
 int my_putchar(int c)
 {
-  buf[buf_len] = c;
-  buf_len++;
-  if (buf_len == BUF_SIZE || c = '\n')
+   buf[buf_len] = c;
+   buf_len++;
+
+ if(buf_len == BUF_SIZE || c == '\n')
   {
     write(1,buf,buf_len);
     buf_len = 0;
@@ -177,9 +181,46 @@ int my_putchar(int c)
 }
 
 int main(void){
- putchar('H');
- my_flush();
-  reutrn 0;
+  char a = '\0';
+  while(a = getchar() != '\n' && a != EOF)
+  {
+    my_putchar(a);
+  }
+  my_flush();
+  return 0;
 }
+//重写
+// #include <stdio.h>
+// #include <unistd.h>
+// #define BUF_SIZE 8
+//
+// char buf[BUF_SIZE];
+// int buf_len = 0;
+//
+// void my_flush(void)
+// {
+//   if(buf_len > 0){
+//     write(1,buf,buf_len);
+//     buf_len = 0;
+//   }
+// }
+//
+// int my_putchar(int c)
+// {
+//   buf[buf_len] = c;
+//   buf_len++;
+//   if (buf_len == BUF_SIZE || c == '\n')问题1，这里需用比较（关系）运算符而非赋值运算符
+//   {
+//     write(1,buf,buf_len);
+//     buf_len = 0;
+//   }
+//   return c;
+// }
+//
+// int main(void){
+//  my_putchar('H');
+//  my_flush();
+//   return 0;
+// }
 
 
