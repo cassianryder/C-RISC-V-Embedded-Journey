@@ -152,43 +152,46 @@ int main(void){
 
 
 //my_putchar逻辑实现
-#include <unistd.h>
-#define BUF_SIZE 8;
+// #include <unistd.h>
+// #define BUF_SIZE 8;
+//
+// char buf[BUF_SIZE];
+// int buf_len = 0;
+//
+// void my_flush(void)
+// {
+//   if(buf_len > 0)
+//   {
+//     write(1,buf,buf_len);
+//     buf_len = 0;
+//   }
+// }
+//
+// int my_putchar(int c)
+// {
+//    buf[buf_len] = c;
+//    buf_len++;
+//
+//  if(buf_len == BUF_SIZE || c == '\n')
+//   {
+//     write(1,buf,buf_len);
+//     buf_len = 0;
+//   }
+//   return c;
+// }
+//
+// int main(void){
+//   char a = '\0';
+//   while(a = getchar() != '\n' && a != EOF)
+//   {
+//     my_putchar(a);
+//   }
+//   my_flush();
+//   return 0;
+// }
 
-char buf[BUF_SIZE];
-int buf_len = 0;
 
-void my_flush(void)
-{
-  if(buf_len > 0)
-  {
-    write(1,buf,buf_len);
-    buf_len = 0;
-  }
-}
 
-int my_putchar(int c)
-{
-   buf[buf_len] = c;
-   buf_len++;
-
- if(buf_len == BUF_SIZE || c == '\n')
-  {
-    write(1,buf,buf_len);
-    buf_len = 0;
-  }
-  return c;
-}
-
-int main(void){
-  char a = '\0';
-  while(a = getchar() != '\n' && a != EOF)
-  {
-    my_putchar(a);
-  }
-  my_flush();
-  return 0;
-}
 //重写
 // #include <stdio.h>
 // #include <unistd.h>
