@@ -14,6 +14,10 @@
 - `12.c` 中从固定字符串输出推进到“温度/溶氧自动判断输出”的问题整理，见：
 - [2026-04-21-status-judging-output.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-21-status-judging-output.md)
 
+## 2026-04-22
+- `13.c` 中结合 C Primer 练习时围绕递归、栈帧地址、输入缓冲、字符串/数组、`strlen` 与 `sizeof` 的问题整理，见：
+- [2026-04-22-cprimer-recursion-strings.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-22-cprimer-recursion-strings.md)
+
 
 ## Pending Deep Questions
 - 在内存中数据和信号如何区分？
