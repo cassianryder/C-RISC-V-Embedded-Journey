@@ -18,6 +18,10 @@
 - `13.c` 中结合 C Primer 练习时围绕递归、栈帧地址、输入缓冲、字符串/数组、`strlen` 与 `sizeof` 的问题整理，见：
 - [2026-04-22-cprimer-recursion-strings.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-22-cprimer-recursion-strings.md)
 
+## 2026-04-24
+- `14.c` 中结合 C Primer 习题时围绕函数声明、隐式类型转换、递归二进制输出、三目运算符与格式说明符匹配的问题整理，见：
+- [2026-04-24-cprimer-functions-binary.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-24-cprimer-functions-binary.md)
+
 
 ## Pending Deep Questions
 - 在内存中数据和信号如何区分？
