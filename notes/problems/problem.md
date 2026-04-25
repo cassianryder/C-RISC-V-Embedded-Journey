@@ -22,6 +22,10 @@
 - `14.c` 中结合 C Primer 习题时围绕函数声明、隐式类型转换、递归二进制输出、三目运算符与格式说明符匹配的问题整理，见：
 - [2026-04-24-cprimer-functions-binary.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-24-cprimer-functions-binary.md)
 
+## 2026-04-25
+- 结构体主线切换、结构体成员访问、函数职责边界、Makefile 映射整理与副线并入策略的问题整理，见：
+- [2026-04-25-structs-mainline-architecture.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-25-structs-mainline-architecture.md)
+
 
 ## Pending Deep Questions
 - 在内存中数据和信号如何区分？
