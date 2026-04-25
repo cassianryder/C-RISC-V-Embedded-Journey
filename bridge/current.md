@@ -2,22 +2,22 @@
 
 > Daily overwrite only. For GPT Project to read current mainline progress, unresolved problems, and natural next step.
 
-- Current main file: `exercises/01-basics/12.c`
+- Current main file: `exercises/03-structs/1.c`
 
-- Current focus: `numeric + status record output`, `judging layer -> recording layer`, `input buffer / string length / return-value fundamentals`
+- Current focus: `struct packs one record`, `struct as function parameter`, `main only handles control flow`
 
 - Recently completed:
-  - Finished the minimal judging-output loop in `12.c` based on temperature and oxygen values: `pond A temp:Normal oxygen:Low`.
-  - Narrowed `12.c` back to the actual mainline and mostly removed older test output from the main path.
-  - Used `13.c` to strengthen fundamentals around recursion stack frames, input-buffer cleanup, character vs string, and `strlen` vs `sizeof`.
+  - Split the pointer-focused code out of `10.c` into `exercises/02-pointers/1.c` and kept the key learning comments.
+  - Split the struct-focused mainline into `exercises/03-structs/1.c`, added a short file-purpose header, and made it the new main file.
+  - Split the pond-record CLI seed into `exercises/06-projects/1.c` and kept it as the clean project seed.
+  - Updated the `Makefile` entries so `make 21`, `make 31`, and `make 61` now run the pointer / struct / project tracks directly.
 
 - Current unresolved issues:
-  - `12.c` still outputs status only, not a fuller `value + status` record line.
-  - `my_ponds_status()` and the newer judging functions are still two separate approaches and need a cleaner unified interface.
-  - `printf` and `write` are still mixed.
+  - Input is still handled directly in `main`; it has not been wrapped into `read_pond_record(PondRecord *record)` yet.
+  - The next conceptual jump is struct pointer access with `->`.
   - Temperature and oxygen thresholds are not yet extracted as constants.
 
 - Natural next step:
-  - Push `12.c` to output a fuller line such as `pond A temp:27.5(normal) oxygen:4.2(low)`.
-  - If progress is good, extract thresholds into constants and tighten the record-output function.
-  - Then prepare for organizing one full pond record with a struct later.
+  - Continue directly in `exercises/03-structs/1.c` with `read_pond_record(PondRecord *record)`.
+  - Build a clean distinction between `record.temp` and `record->temp`.
+  - If progress is good, extract thresholds into constants.
