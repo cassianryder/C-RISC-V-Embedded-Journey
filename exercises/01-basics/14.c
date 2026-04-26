@@ -59,29 +59,34 @@
 //	return 0;
 //}
 
+// #include <stdio.h>
+// void to_binary(unsigned long n)
+// {
+// 	int r;
+// 	r = n % 2;
+// 	if(n >= 2)
+// 	to_binary(n / 2);
+// 	putchar(r == 0 ? '0' : '1');//这是什么运算符
+// 	return; 
+// }
+// int main(void)
+// {
+// 	unsigned long number;
+// 	printf("Enter an integer (q to quit):\n");
+// 	while (scanf("%lu",&number) == 1)
+// 	{
+// 		printf("Binary equivalent:");
+// 		to_binary(number);
+// 		putchar('\n');//无法使用printf，此函数用来打印字符串，相当与my_puts
+// 		printf("Enter a integer (q to quit):\n"); 
+// 	}
+// 	printf("Done\n");
+// 	return 0;
+// }
+//
+
+//C K&R 
+//
 #include <stdio.h>
-void to_binary(unsigned long n)
-{
-	int r;
-	r = n % 2;
-	if(n >= 2)
-	to_binary(n / 2);
-	putchar(r == 0 ? '0' : '1');//这是什么运算符
-	return; 
-}
-int main(void)
-{
-	unsigned long number;
-	printf("Enter an integer (q to quit):\n");
-	while (scanf("%lu",&number) == 1)
-	{
-		printf("Binary equivalent:");
-		to_binary(number);
-		putchar('\n');//无法使用printf，此函数用来打印字符串，相当与my_puts
-		printf("Enter a integer (q to quit):\n"); 
-	}
-	printf("Done\n");
-	return 0;
-}
 
 
