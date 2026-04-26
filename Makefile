@@ -21,7 +21,11 @@ MAP = \
 113:exercises/01-basics/13.c \
 114:exercises/01-basics/14.c \
 115:exercises/01-basics/15.c \
-21:exercises/02-pointers/1.c
+21:exercises/02-pointers/1.c \
+31:exercises/03-structs/1.c \
+51:exercises/05-embedded/1.c \
+61:exercises/06-projects/1.c \
+71:exercises/07-basics-add/1.c
 
 # ========= 内部解析 =========
 get_src = $(word 2,$(subst :, ,$(filter $1:%,$(MAP))))
