@@ -1,5 +1,9 @@
 # Problems Index
 
+## 2026-04-19
+- 从 `Pending Deep Questions` 中拆出的内存、信号、补码与最高位专题问题单，见：
+- [2026-04-19-deep-questions-memory-twos-complement.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-19-deep-questions-memory-twos-complement.md)
+
 ## 2026-04-18
 - C 标准库 `FILE` 缓冲区和内核缓冲区的区别？
 - 内核页缓存（page cache）是什么？`write()` 之后数据立刻到磁盘吗？
@@ -26,10 +30,10 @@
 - 结构体主线切换、结构体成员访问、函数职责边界、Makefile 映射整理与副线并入策略的问题整理，见：
 - [2026-04-25-structs-mainline-architecture.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-25-structs-mainline-architecture.md)
 
+## 2026-04-27
+- `03-structs/1.c` 中围绕结构体类型/对象/地址分层、`.` 与 `->`、值传递与指针传递、以及 `read_pond_record(PondRecord *record)` 输入封装的问题整理，见：
+- [2026-04-27-struct-object-pointer-semantics.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-27-struct-object-pointer-semantics.md)
+
 
 ## Pending Deep Questions
-- 在内存中数据和信号如何区分？
-- 在 `char` 中数值 `-1` 与 `255` 的补码关系是什么？
-- 补码为什么要取反加 1，背后的数学结构是什么？
-- 在补码没发明之前，计算机如何实现减法？
-- 在电路中如何识别最高位？
+- 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。

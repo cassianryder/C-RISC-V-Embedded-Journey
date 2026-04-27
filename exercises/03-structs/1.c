@@ -11,7 +11,7 @@ typedef struct
     float temp;
     float oxygen;
     char pond_id;
-} PondRecord;
+} PondRecord;//type
 
 void print_temp_status(float temperature)
 {
@@ -41,17 +41,28 @@ void print_pond_record(PondRecord record)
     putchar('\n');
 }
 
+int read_pond_record(PondRecord *record)
+{
+  printf("Enter temp, oxygen and id (q to quit):\n");
+  return scanf("%f %f %c",&record->temp,&record->oxygen,&record->pond_id) == 3;
+
+}
+
 int main(void)
 {
-    PondRecord record;
+    PondRecord record;//变量类型
 
-    printf("Enter temp, oxygen and id (q to quit):\n");
-    while (scanf("%f %f %c", &record.temp, &record.oxygen, &record.pond_id) == 3)
-    {
-        print_pond_record(record);
-        printf("Enter temp, oxygen and id (q to quit):\n");
-    }
-
+    // printf("Enter temp, oxygen and id (q to quit):\n");
+    // while (scanf("%f %f %c", &record.temp, &record.oxygen, &record.pond_id) == 3)
+    // {
+    //     print_pond_record(record);
+    //     printf("Enter temp, oxygen and id (q to quit):\n");
+    // }
+    
+    while(read_pond_record(&record))
+  {
+    print_pond_record(record);
+  }
     printf("Done\n");
     return 0;
 }
