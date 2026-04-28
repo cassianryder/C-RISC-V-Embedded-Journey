@@ -1,0 +1,92 @@
+{
+  "file_defaults": {
+    "2026-04-19-deep-questions-memory-twos-complement.md": [
+      "补码",
+      "内存",
+      "组成原理"
+    ],
+    "2026-04-20-buffered-output-11-12.md": [
+      "缓冲输出",
+      "字符输入输出",
+      "12.c"
+    ],
+    "2026-04-21-status-judging-output.md": [
+      "状态判断输出",
+      "12.c",
+      "项目映射"
+    ],
+    "2026-04-22-cprimer-recursion-strings.md": [
+      "c-primer",
+      "递归",
+      "字符串"
+    ],
+    "2026-04-24-cprimer-functions-binary.md": [
+      "c-primer",
+      "函数",
+      "递归"
+    ],
+    "2026-04-25-structs-mainline-architecture.md": [
+      "03-structs",
+      "项目架构"
+    ],
+    "2026-04-27-struct-object-pointer-semantics.md": [
+      "03-structs",
+      "结构体",
+      "结构体指针"
+    ]
+  },
+  "card_overrides": {
+    "2026-04-19-deep-questions-memory-twos-complement::问题 1": ["信号", "数据表示"],
+    "2026-04-19-deep-questions-memory-twos-complement::问题 2": ["char", "有符号无符号"],
+    "2026-04-19-deep-questions-memory-twos-complement::问题 3": ["模运算"],
+    "2026-04-19-deep-questions-memory-twos-complement::问题 4": ["补码历史"],
+    "2026-04-19-deep-questions-memory-twos-complement::问题 5": ["最高位", "位序"],
+
+    "2026-04-20-buffered-output-11-12::问题 1": ["my_putchar", "循环"],
+    "2026-04-20-buffered-output-11-12::问题 2": ["scanf", "输入缓冲"],
+    "2026-04-20-buffered-output-11-12::问题 3": ["getchar", "EOF", "int-vs-char"],
+    "2026-04-20-buffered-output-11-12::问题 4": ["EOF"],
+    "2026-04-20-buffered-output-11-12::问题 5": ["宏", "BUF_SIZE"],
+    "2026-04-20-buffered-output-11-12::问题 6": ["返回值", "my_putchar"],
+    "2026-04-20-buffered-output-11-12::问题 7": ["char-buffer", "write"],
+    "2026-04-20-buffered-output-11-12::问题 8": ["字符串入口", "指针"],
+    "2026-04-20-buffered-output-11-12::问题 9": ["字符串结束", "空字符"],
+    "2026-04-20-buffered-output-11-12::问题 10": ["my_puts", "字符串输出"],
+    "2026-04-20-buffered-output-11-12::问题 11": ["返回值", "长度累计"],
+    "2026-04-20-buffered-output-11-12::问题 12": ["长度累计", "返回值"],
+    "2026-04-20-buffered-output-11-12::问题 13": ["返回值", "显示层"],
+    "2026-04-20-buffered-output-11-12::问题 14": ["printf", "write", "缓冲混用", "文件I/O"],
+
+    "2026-04-21-status-judging-output::问题 1": ["函数调用", "字符串字面量"],
+    "2026-04-21-status-judging-output::问题 2": ["my_putchar", "my_putstr"],
+    "2026-04-21-status-judging-output::问题 3": ["scanf", "输入格式"],
+    "2026-04-21-status-judging-output::问题 4": ["输出格式", "空格"],
+    "2026-04-21-status-judging-output::问题 5": ["主线收口", "旧测试"],
+    "2026-04-21-status-judging-output::问题 6": ["接口设计", "函数复用"],
+
+    "2026-04-22-cprimer-recursion-strings::问题 1": ["栈帧", "地址", "%p"],
+    "2026-04-22-cprimer-recursion-strings::问题 2": ["输入缓冲", "getchar"],
+    "2026-04-22-cprimer-recursion-strings::问题 3": ["字符串", "字符常量", "空字符"],
+    "2026-04-22-cprimer-recursion-strings::问题 4": ["scanf", "返回值"],
+    "2026-04-22-cprimer-recursion-strings::问题 5": ["strlen", "sizeof", "格式说明符"],
+    "2026-04-22-cprimer-recursion-strings::问题 6": ["库函数", "返回值"],
+
+    "2026-04-24-cprimer-functions-binary::问题 1": ["函数声明"],
+    "2026-04-24-cprimer-functions-binary::问题 2": ["隐式类型转换", "类型匹配"],
+    "2026-04-24-cprimer-functions-binary::问题 3": ["递归", "二进制输出"],
+    "2026-04-24-cprimer-functions-binary::问题 4": ["三目运算符", "putchar"],
+    "2026-04-24-cprimer-functions-binary::问题 5": ["格式说明符", "unsigned long"],
+
+    "2026-04-25-structs-mainline-architecture::问题 1": ["结构体", "形参实参", "类型-变量-参数"],
+    "2026-04-25-structs-mainline-architecture::问题 2": ["结构体指针", "点和箭头"],
+    "2026-04-25-structs-mainline-architecture::问题 3": ["函数边界"],
+    "2026-04-25-structs-mainline-architecture::问题 4": ["Makefile"],
+    "2026-04-25-structs-mainline-architecture::问题 5": ["目录整理"],
+    "2026-04-25-structs-mainline-architecture::问题 6": ["副线并入"],
+
+    "2026-04-27-struct-object-pointer-semantics::问题 1": ["类型-对象-地址"],
+    "2026-04-27-struct-object-pointer-semantics::问题 2": ["点和箭头", "scanf"],
+    "2026-04-27-struct-object-pointer-semantics::问题 3": ["值传递", "指针传递"],
+    "2026-04-27-struct-object-pointer-semantics::问题 4": ["内存布局", "padding"]
+  }
+}

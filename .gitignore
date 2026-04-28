@@ -4,3 +4,12 @@ daily/
 prompts/
 skills/
 notes/aquaculture_coupling_layers.md
+
+# Publish only the local_review SRS implementation, keep personal review state local.
+!skills/
+skills/*
+!skills/local_review/
+skills/local_review/*
+!skills/local_review/skill_problem_spaced_review.md
+!skills/local_review/spaced_review.py
+!skills/local_review/review_tags.json
