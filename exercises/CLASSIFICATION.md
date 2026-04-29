@@ -26,18 +26,23 @@
 | `01-basics/12.c` | `06-projects` / `05-embedded` | 池塘记录原型 + 自定义输出系统混合演化文件 |
 | `01-basics/13.c` | `07-basics-add` | 递归、栈帧地址、输入缓冲、字符串长度补强 |
 | `01-basics/14.c` | `07-basics-add` | C Primer / K&R 过渡、递归二进制输出、函数声明与类型边界 |
-| `01-basics/15.c` | `03-structs` | 结构体主线的预留编号位 |
+| `01-basics/15.c` | `02-pointers` / `03-structs` / `04-data-structures` / `05-embedded` / `07-basics-add` | 混合了指针基础、数组组织、指针步长、结构体地址桥接和 C Primer 补强观察 |
 
 ## 当前恢复后的主题入口
 
 - `02-pointers/1.c`：从 `10.c` 抽出的指针主题
+- `02-pointers/2.c`：从 `15.c` 抽出的指针变量、解引用与 swap 示例
 - `03-structs/1.c`：结构体版池塘记录主线
+- `03-structs/2.c`：从 `15.c` 延伸出的结构体成员地址观察桥接文件
+- `04-data-structures/1.c`：从 `15.c` 抽出的数组组织与指定初始化观察
 - `05-embedded/1.c`：从 `11.c` 抽出的自定义字符输出桥接版
+- `05-embedded/2.c`：从 `15.c` 抽出的不同类型指针步长观察
 - `06-projects/1.c`：项目种子版本
 - `07-basics-add/1.c`：从 `13.c` 抽出的递归栈帧演示
+- `07-basics-add/2.c`：从 `15.c` 抽出的数组初始化、宽度输出和 `sizeof` 观察
 
 ## 暂时只建目录，不急着放稳定代码的主题
 
 - `04-data-structures/`
-  - 目前 `01-basics` 里还没有真正稳定的数据结构文件
-  - 现在只把它恢复为独立目录，等后续 ring queue、stack/queue、DFS 等能力回流时再放正式代码
+  - 现在已有基于数组组织的最小入口文件
+  - 后续 ring queue、stack/queue、DFS 等能力回流后继续扩展

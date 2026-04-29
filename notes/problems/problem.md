@@ -34,6 +34,10 @@
 - `03-structs/1.c` 中围绕结构体类型/对象/地址分层、`.` 与 `->`、值传递与指针传递、以及 `read_pond_record(PondRecord *record)` 输入封装的问题整理，见：
 - [2026-04-27-struct-object-pointer-semantics.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-27-struct-object-pointer-semantics.md)
 
+## 2026-04-29
+- `03-structs/1.c` 的结构体样板定位、`scanf` 返回值语义、`read_pond_record(&record)` / `print_pond_record(record)` 的接口边界，以及 `15.c` 向多主题目录拆分与项目种子线迁移的问题整理，见：
+- [2026-04-29-structs-project-migration-and-scanf.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-29-structs-project-migration-and-scanf.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。

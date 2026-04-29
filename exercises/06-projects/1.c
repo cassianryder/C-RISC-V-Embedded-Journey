@@ -1,8 +1,8 @@
 // 06-projects/1.c
 // 这份文件讲什么：
 // 1. 这是池塘记录 CLI 的项目种子版本
-// 2. 用结构体承载一条记录，再持续输出多条记录
-// 3. 后续可继续加输入封装、阈值常量、CSV、日志
+// 2. 用结构体承载一条记录，并把输入和输出分别封装
+// 3. main 只负责循环控制和收尾，后续可继续加阈值常量、CSV、日志
 
 #include <stdio.h>
 
@@ -41,15 +41,19 @@ void print_pond_record(PondRecord record)
     putchar('\n');
 }
 
+int read_pond_record(PondRecord *record)
+{
+    printf("Enter temp, oxygen and id (q to quit):\n");
+    return scanf("%f %f %c", &record->temp, &record->oxygen, &record->pond_id) == 3;
+}
+
 int main(void)
 {
     PondRecord record;
 
-    printf("Enter temp, oxygen and id (q to quit):\n");
-    while (scanf("%f %f %c", &record.temp, &record.oxygen, &record.pond_id) == 3)
+    while (read_pond_record(&record))
     {
         print_pond_record(record);
-        printf("Enter temp, oxygen and id (q to quit):\n");
     }
 
     printf("Done\n");
