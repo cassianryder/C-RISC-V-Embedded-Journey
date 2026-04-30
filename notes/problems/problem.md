@@ -38,6 +38,10 @@
 - `03-structs/1.c` 的结构体样板定位、`scanf` 返回值语义、`read_pond_record(&record)` / `print_pond_record(record)` 的接口边界，以及 `15.c` 向多主题目录拆分与项目种子线迁移的问题整理，见：
 - [2026-04-29-structs-project-migration-and-scanf.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-29-structs-project-migration-and-scanf.md)
 
+## 2026-04-30
+- `06-projects/1.c` 中状态文本返回、`const char *`、时间戳链路、`strftime` 缓冲区参数与 CSV 前置设计的问题整理，见：
+- [2026-04-30-project-time-and-status-layer.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-30-project-time-and-status-layer.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
