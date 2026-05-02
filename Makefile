@@ -23,6 +23,7 @@ MAP = \
 115:exercises/01-basics/15.c \
 21:exercises/02-pointers/1.c \
 31:exercises/03-structs/1.c \
+32:exercises/03-structs/2.c \
 51:exercises/05-embedded/1.c \
 61:exercises/06-projects/1.c \
 71:exercises/07-basics-add/1.c

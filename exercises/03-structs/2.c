@@ -16,7 +16,7 @@ typedef struct
 int main(void)
 {
     PondRecord record = {27.5f, 4.2f, 'A'};
-
+    printf("%lu\n", sizeof(PondRecord));
     printf("&record          = %p\n", &record);
     printf("&record.temp     = %p\n", &record.temp);
     printf("&record.oxygen   = %p\n", &record.oxygen);

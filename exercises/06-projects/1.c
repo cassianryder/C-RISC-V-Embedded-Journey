@@ -23,7 +23,7 @@ typedef struct
 
 int fill_record_timestamp(PondRecord *record)
 {
-    time_t now = time[NULL];
+    time_t now = time(NULL);
     struct tm *local = localtime(&now);
 
     if (local == NULL)
@@ -38,7 +38,7 @@ int read_pond_record(PondRecord *record)
 {
     printf("Enter temp, oxygen and id (q to quit):\n");
     // return scanf("%f %f %c", &record->temp, &record->oxygen, &record->pond_id) == 3;
-    if (scanf("%f %f %c",&record->temp,&record->oxygen,&record->pond_id) == 3)
+    if (scanf("%f %f %c",&record->temp,&record->oxygen,&record->pond_id) != 3)
     return 0;
     return fill_record_timestamp(record);
 }
@@ -102,17 +102,30 @@ void print_oxygen_status(float oxygen)
 //输出层
 void print_pond_record(PondRecord record)
 {
-    printf("[%s] Pond %c", record.timestamp,record.pond_id);
+    printf("[%s] Pond %c", record.sampled_at,record.pond_id);
     putchar(' ');
     print_temp_status(record.temp);
     putchar(' ');
     print_oxygen_status(record.oxygen);
-    putchar('\n');
+    putchar('\n'); 
 }
 
-void save_pond_record_csv(PondRecord record)
+int save_pond_record_csv(PondRecord record)
 {
+    FILE *fp = fopen("pond_records_csv","a");
+    
+    if (fp == NULL)
+    return 1;
 
+    fprintf(fp, "%s,%c,%.1f,%s,%.1f,%s\n",
+            record.sampled_at,
+            record.pond_id,
+            record.temp,
+            temp_status(record.temp),
+            record.oxygen,
+            oxygen_status(record.oxygen));
+    fclose(fp);
+    return 0;
 }
 
 
@@ -125,7 +138,7 @@ int main(void)
     {
         print_pond_record(record);
     }
-
+    save_pond_record_csv(record);
     printf("Done\n");
     return 0;
 }

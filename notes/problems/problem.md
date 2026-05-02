@@ -42,6 +42,10 @@
 - `06-projects/1.c` 中状态文本返回、`const char *`、时间戳链路、`strftime` 缓冲区参数与 CSV 前置设计的问题整理，见：
 - [2026-04-30-project-time-and-status-layer.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-30-project-time-and-status-layer.md)
 
+## 2026-05-02
+- `06-projects/1.c` 中 CSV 保存函数、文件 I/O、返回值合同、保存位置与运行产物边界的问题整理，见：
+- [2026-05-02-project-csv-return-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-02-project-csv-return-contract.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。

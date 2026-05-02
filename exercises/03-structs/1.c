@@ -56,7 +56,7 @@ int read_pond_record(PondRecord *record)
 int main(void)
 {
     PondRecord record;//变量类型
-
+    // printf("%lu\n", sizeof(PondRecord));
     // printf("Enter temp, oxygen and id (q to quit):\n");
     // while (scanf("%f %f %c", &record.temp, &record.oxygen, &record.pond_id) == 3)
     // {
