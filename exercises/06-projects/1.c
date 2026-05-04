@@ -115,7 +115,7 @@ int save_pond_record_csv(PondRecord record)
     FILE *fp = fopen("pond_records_csv","a");
     
     if (fp == NULL)
-    return 1;
+    return 0;
 
     fprintf(fp, "%s,%c,%.1f,%s,%.1f,%s\n",
             record.sampled_at,
@@ -125,7 +125,7 @@ int save_pond_record_csv(PondRecord record)
             record.oxygen,
             oxygen_status(record.oxygen));
     fclose(fp);
-    return 0;
+    return 1;
 }
 
 
@@ -137,8 +137,13 @@ int main(void)
     while (read_pond_record(&record))
     {
         print_pond_record(record);
+
+    if (save_pond_record_csv(record) == 0)
+    {
+      printf("Error: failed to save.\n");
     }
-    save_pond_record_csv(record);
+    }
+    // save_pond_record_csv(record);
     printf("Done\n");
     return 0;
 }
