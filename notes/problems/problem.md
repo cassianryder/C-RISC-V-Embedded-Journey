@@ -46,6 +46,10 @@
 - `06-projects/1.c` 中 CSV 保存函数、文件 I/O、返回值合同、保存位置与运行产物边界的问题整理，见：
 - [2026-05-02-project-csv-return-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-02-project-csv-return-contract.md)
 
+## 2026-05-05
+- SRS 时间段动态加权、理解校准门槛、结构体指针层级、`const char *`、指针大小/二级指针、宏与字符串字面量、CSV 运行产物边界的问题整理，见：
+- [2026-05-05-srs-pointer-csv-macro.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-05-srs-pointer-csv-macro.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。

@@ -11,6 +11,7 @@
 #define TEMP_HIGH_LIMIT 28.1f
 #define OXYGEN_LOW_LIMIT 5.0f
 #define TIMESTAMP_SIZE 20
+#define CSV_FILE_NAME "pond_records.csv"
 
 //数据层
 typedef struct
@@ -112,7 +113,8 @@ void print_pond_record(PondRecord record)
 
 int save_pond_record_csv(PondRecord record)
 {
-    FILE *fp = fopen("pond_records_csv","a");
+    // FILE *fp = fopen("pond_records_csv","a");
+    FILE *fp = fopen(CSV_FILE_NAME,"a");
     
     if (fp == NULL)
     return 0;
@@ -138,7 +140,8 @@ int main(void)
     {
         print_pond_record(record);
 
-    if (save_pond_record_csv(record) == 0)
+    // if (save_pond_record_csv(record) == 0)
+    if (!save_pond_record_csv(record))
     {
       printf("Error: failed to save.\n");
     }
