@@ -15,11 +15,113 @@ STATE_FILE = Path(__file__).resolve().with_name("review_state.json")
 TAG_FILE = Path(__file__).resolve().with_name("review_tags.json")
 TOPIC_PRESETS = {
     "03-structs": ["03-structs", "结构体", "结构体指针", "点和箭头", "值传递", "指针传递", "函数边界"],
-    "06-projects": ["06-projects", "项目映射", "状态判断输出", "接口设计", "日志", "CSV", "状态机", "队列"],
+    "06-projects": ["06-projects", "项目映射", "状态判断输出", "接口设计", "日志", "CSV", "状态机", "队列", "存储层", "时间戳", "返回值"],
     "补码": ["补码", "内存", "信号", "数据表示", "char", "有符号无符号", "模运算", "最高位", "位序", "组成原理"],
     "文件I/O": ["文件I/O", "缓冲输出", "字符输入输出", "输入缓冲", "scanf", "printf", "write", "getchar", "EOF"],
     "文件i/o": ["文件I/O", "缓冲输出", "字符输入输出", "输入缓冲", "scanf", "printf", "write", "getchar", "EOF"],
 }
+
+
+@dataclass
+class TimeBlock:
+    label: str
+    minutes: int
+
+
+def parse_time_block(raw: str) -> TimeBlock:
+    separators = [":", "="]
+    for separator in separators:
+        if separator in raw:
+            label, minutes_text = raw.split(separator, 1)
+            label = label.strip()
+            minutes_text = minutes_text.strip()
+            if not label:
+                raise argparse.ArgumentTypeError("time block label cannot be empty")
+            try:
+                minutes = int(minutes_text)
+            except ValueError as exc:
+                raise argparse.ArgumentTypeError("time block minutes must be an integer") from exc
+            if minutes <= 0:
+                raise argparse.ArgumentTypeError("time block minutes must be positive")
+            return TimeBlock(label=label, minutes=minutes)
+
+    raise argparse.ArgumentTypeError("time block must look like morning:60 or evening=120")
+
+
+def total_block_minutes(blocks: List[TimeBlock]) -> int:
+    return sum(block.minutes for block in blocks)
+
+
+def session_budget(total_minutes: int) -> Dict[str, int]:
+    """Return a small review budget that protects mainline project time."""
+    if total_minutes <= 0:
+        return {"review_minutes": 0, "card_limit": 0, "planning_minutes": 0, "mainline_minutes": 0, "close_minutes": 0}
+
+    review_minutes = round(total_minutes * 0.16)
+    if total_minutes <= 45:
+        review_minutes = min(8, max(5, review_minutes))
+    elif total_minutes <= 120:
+        review_minutes = min(18, max(10, review_minutes))
+    elif total_minutes <= 240:
+        review_minutes = min(30, max(18, review_minutes))
+    else:
+        review_minutes = min(40, max(25, review_minutes))
+
+    planning_minutes = 5 if total_minutes <= 45 else 8
+    close_minutes = 5 if total_minutes >= 60 else 3
+    card_limit = max(1, min(12, (review_minutes + 3) // 4))
+    mainline_minutes = max(0, total_minutes - review_minutes - planning_minutes - close_minutes)
+
+    return {
+        "review_minutes": review_minutes,
+        "card_limit": card_limit,
+        "planning_minutes": planning_minutes,
+        "mainline_minutes": mainline_minutes,
+        "close_minutes": close_minutes,
+    }
+
+
+def allocate_block_plan(blocks: List[TimeBlock], budget: Dict[str, int]) -> List[Dict[str, int | str]]:
+    """Allocate review/planning early, closeout late, and mainline in the gaps."""
+    rows: List[Dict[str, int | str]] = []
+    for block in blocks:
+        rows.append(
+            {
+                "label": block.label,
+                "minutes": block.minutes,
+                "review": 0,
+                "planning": 0,
+                "mainline": block.minutes,
+                "closeout": 0,
+            }
+        )
+
+    def take_forward(key: str, amount: int) -> None:
+        remaining = amount
+        for row in rows:
+            if remaining <= 0:
+                return
+            available = int(row["mainline"])
+            used = min(available, remaining)
+            row[key] = int(row[key]) + used
+            row["mainline"] = available - used
+            remaining -= used
+
+    def take_backward(key: str, amount: int) -> None:
+        remaining = amount
+        for row in reversed(rows):
+            if remaining <= 0:
+                return
+            available = int(row["mainline"])
+            used = min(available, remaining)
+            row[key] = int(row[key]) + used
+            row["mainline"] = available - used
+            remaining -= used
+
+    take_forward("review", budget["review_minutes"])
+    take_forward("planning", budget["planning_minutes"])
+    take_backward("closeout", budget["close_minutes"])
+    return rows
 
 
 @dataclass
@@ -257,6 +359,117 @@ def due_cards(
     return result
 
 
+def days_overdue(item: Dict) -> int:
+    try:
+        due = date.fromisoformat(item["due"])
+    except (KeyError, ValueError):
+        return 0
+    return max(0, (date.today() - due).days)
+
+
+def card_priority(item: Dict, main_topic: str | None = None) -> int:
+    """Score due cards for short daily sessions.
+
+    Higher means more useful today: current mainline, weak recall, recent cards,
+    and overdue cards rise to the top. This avoids old due cards consuming the
+    whole session when project momentum matters.
+    """
+    score = 0
+
+    if main_topic:
+        current_tags = set(item.get("tags", []))
+        if main_topic in current_tags:
+            score += 45
+        elif topic_match(item, main_topic):
+            score += 20
+
+    last_score = item.get("last_score")
+    if last_score is None:
+        score += 8
+    else:
+        try:
+            last_score_int = int(last_score)
+        except (TypeError, ValueError):
+            last_score_int = 3
+        if last_score_int <= 2:
+            score += 30
+        elif last_score_int == 3:
+            score += 18
+        elif last_score_int == 4:
+            score += 6
+        else:
+            score -= 4
+
+    score += min(12, days_overdue(item) * 2)
+    score += min(20, int(item.get("lapses", 0)) * 8)
+
+    try:
+        source_day = date.fromisoformat(item.get("source_date", ""))
+        age_days = (date.today() - source_day).days
+        if age_days <= 3:
+            score += 16
+        elif age_days <= 7:
+            score += 12
+        elif age_days <= 14:
+            score += 6
+    except ValueError:
+        pass
+
+    return score
+
+
+def source_ordinal(item: Dict) -> int:
+    try:
+        return date.fromisoformat(item.get("source_date", "")).toordinal()
+    except ValueError:
+        return 0
+
+
+def take_balanced(ordered: List[Dict], limit: int, max_per_file: int = 2) -> List[Dict]:
+    selected: List[Dict] = []
+    selected_ids = set()
+    counts: Dict[str, int] = {}
+
+    for item in ordered:
+        file_name = item.get("file_name", "")
+        if counts.get(file_name, 0) >= max_per_file:
+            continue
+        selected.append(item)
+        selected_ids.add(item["card_id"])
+        counts[file_name] = counts.get(file_name, 0) + 1
+        if len(selected) == limit:
+            return selected
+
+    for item in ordered:
+        if item["card_id"] in selected_ids:
+            continue
+        selected.append(item)
+        if len(selected) == limit:
+            break
+
+    return selected
+
+
+def smart_order(due: List[Dict], main_topic: str | None = None) -> List[Dict]:
+    ordered = []
+    for item in due:
+        item_with_score = dict(item)
+        item_with_score["_priority"] = card_priority(item_with_score, main_topic=main_topic)
+        ordered.append(item_with_score)
+
+    ordered.sort(
+        key=lambda x: (
+            -int(x.get("_priority", 0)),
+            -source_ordinal(x),
+            x.get("last_reviewed") or "",
+            x["due"],
+            x["file_name"],
+            x["question_heading"],
+        )
+    )
+    return ordered
+
+
 def update_schedule(payload: Dict, quality: int) -> None:
     today = date.today()
     ease = float(payload.get("ease", 2.5))
@@ -294,19 +507,106 @@ def cmd_list(
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    main_topic: str | None = None,
     this_week: bool = False,
     limit: int | None = None,
+    smart: bool = False,
 ) -> None:
     due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
+    if smart or main_topic:
+        due = smart_order(due, main_topic=main_topic)
     if limit is not None:
-        due = due[:limit]
+        if smart or main_topic:
+            due = take_balanced(due, limit)
+        else:
+            due = due[:limit]
     if not due:
         print("No due cards today.")
         return
     print(f"Due cards: {len(due)}")
     for item in due:
         tags = ", ".join(item.get("tags", []))
-        print(f"- {item['card_id']} | due {item['due']} | tags [{tags}] | {item['question_text']}")
+        priority = f" | priority {item['_priority']}" if "_priority" in item else ""
+        print(f"- {item['card_id']} | due {item['due']}{priority} | tags [{tags}] | {item['question_text']}")
+
+
+def cmd_plan(
+    state: Dict,
+    total_minutes: int,
+    blocks: List[TimeBlock] | None = None,
+    keyword: str | None = None,
+    tag: str | None = None,
+    topic: str | None = None,
+    main_topic: str | None = None,
+    this_week: bool = False,
+) -> None:
+    budget = session_budget(total_minutes)
+    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
+    ordered = smart_order(due, main_topic=main_topic)
+    selected = take_balanced(ordered, budget["card_limit"])
+
+    print(f"Available minutes: {total_minutes}")
+    print(f"Review budget: {budget['review_minutes']} min")
+    print(f"Suggested card limit: {budget['card_limit']}")
+    print(f"Planning budget: {budget['planning_minutes']} min")
+    print(f"Mainline budget: {budget['mainline_minutes']} min")
+    print(f"Closeout budget: {budget['close_minutes']} min")
+    if main_topic:
+        print(f"Main topic priority: {main_topic}")
+
+    if blocks:
+        print("\nTime blocks:")
+        for block in blocks:
+            print(f"- {block.label}: {block.minutes} min")
+
+        print("\nSuggested block split:")
+        for row in allocate_block_plan(blocks, budget):
+            print(
+                f"- {row['label']}: "
+                f"SRS {row['review']} min, "
+                f"planning {row['planning']} min, "
+                f"mainline {row['mainline']} min, "
+                f"closeout {row['closeout']} min"
+            )
+
+    if not selected:
+        print("No due cards for this plan.")
+        return
+
+    print("\nSuggested cards:")
+    for item in selected:
+        tags = ", ".join(item.get("tags", []))
+        print(f"- priority {item['_priority']} | {item['card_id']} | tags [{tags}] | {item['question_text']}")
+
+    print("\nAfter-review calibration gate:")
+    print("- I can explain the weak point in my own words.")
+    print("- I can name the exact misconception I had.")
+    print("- I can map it to today's mainline file/function/line.")
+    print("- If it involves a function, I can state input, output, return value, and side effects.")
+    print("- If it involves a pointer, I can separate object, address, pointer variable, and dereference.")
+    print("- If it involves storage/return codes, I can separate success path and failure path.")
+
+    print("\nDaily flow after SRS:")
+    print("1. Calibrate understanding until the gate above is met.")
+    print("2. Start daily mainline planning.")
+    print("3. Start heuristic guided practice with the main logic blanked out.")
+    print("4. Fill key conditions, loop body, return values, and call sites yourself before seeing hints.")
+
+    command = f"python3 {Path(__file__).name} today --smart --limit {budget['card_limit']}"
+    if blocks:
+        for block in blocks:
+            command += f" --block {block.label}:{block.minutes}"
+    if main_topic:
+        command += f" --main-topic {main_topic}"
+    if topic:
+        command += f" --topic {topic}"
+    if tag:
+        command += f" --tag {tag}"
+    if keyword:
+        command += f" --grep {keyword}"
+    if this_week:
+        command += " --this-week"
+    print(f"\nRecommended command from skills/local_review/: {command}")
 
 
 def cmd_stats(
@@ -354,12 +654,19 @@ def review_session(
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    main_topic: str | None = None,
     this_week: bool = False,
     limit: int | None = None,
+    smart: bool = False,
 ) -> None:
     due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
+    if smart or main_topic:
+        due = smart_order(due, main_topic=main_topic)
     if limit is not None:
-        due = due[:limit]
+        if smart or main_topic:
+            due = take_balanced(due, limit)
+        else:
+            due = due[:limit]
     if not due:
         print("No due cards today.")
         return
@@ -371,6 +678,8 @@ def review_session(
         print("\n" + "=" * 72)
         print(f"{item['card_id']}")
         print(f"Source: {item['file_name']}")
+        if "_priority" in item:
+            print(f"Priority: {item['_priority']}")
         print(f"Question: {item['question_text']}")
 
         cmd = input("Press Enter to show answer, or type q to stop: ").strip().lower()
@@ -415,10 +724,18 @@ def main() -> None:
         "command",
         nargs="?",
         default="today",
-        choices=["today", "list", "stats", "tags"],
-        help="today: interactive review session, list: due cards, stats: summary, tags: available strict tags",
+        choices=["today", "list", "stats", "tags", "plan"],
+        help="today: interactive review, list: due cards, plan: time-weighted smart plan, stats: summary, tags: available strict tags",
     )
     parser.add_argument("--limit", type=int, default=None, help="Only show/review the first N due cards.")
+    parser.add_argument("--minutes", type=int, default=None, help="Available study minutes; auto-sets review budget and card limit when used with plan/today.")
+    parser.add_argument(
+        "--block",
+        action="append",
+        type=parse_time_block,
+        default=[],
+        help="Available time block, repeatable. Examples: --block morning:60 --block evening=120",
+    )
     parser.add_argument("--grep", type=str, default=None, help="Only include cards whose file name or question text contains this keyword.")
     parser.add_argument("--tag", type=str, default=None, help="Strict exact tag filter, e.g. 结构体指针, 补码, 输入缓冲")
     parser.add_argument(
@@ -427,6 +744,8 @@ def main() -> None:
         default=None,
         help="Topic preset or keyword, e.g. 03-structs, 06-projects, 补码, 文件I/O",
     )
+    parser.add_argument("--main-topic", type=str, default=None, help="Prioritize this topic without filtering out other due cards.")
+    parser.add_argument("--smart", action="store_true", help="Rank due cards by mainline relevance, weak recall, recency, and overdue days.")
     parser.add_argument(
         "--this-week",
         action="store_true",
@@ -441,13 +760,49 @@ def main() -> None:
     save_state(state)
 
     if args.command == "list":
-        cmd_list(state, keyword=args.grep, tag=args.tag, topic=args.topic, this_week=args.this_week, limit=args.limit)
+        cmd_list(
+            state,
+            keyword=args.grep,
+            tag=args.tag,
+            topic=args.topic,
+            main_topic=args.main_topic,
+            this_week=args.this_week,
+            limit=args.limit,
+            smart=args.smart,
+        )
     elif args.command == "stats":
         cmd_stats(state, keyword=args.grep, tag=args.tag, topic=args.topic, this_week=args.this_week)
     elif args.command == "tags":
         cmd_tags(state)
+    elif args.command == "plan":
+        total_minutes = total_block_minutes(args.block) if args.block else (args.minutes if args.minutes is not None else 90)
+        cmd_plan(
+            state,
+            total_minutes=total_minutes,
+            blocks=args.block,
+            keyword=args.grep,
+            tag=args.tag,
+            topic=args.topic,
+            main_topic=args.main_topic,
+            this_week=args.this_week,
+        )
     else:
-        review_session(state, keyword=args.grep, tag=args.tag, topic=args.topic, this_week=args.this_week, limit=args.limit)
+        limit = args.limit
+        smart = args.smart
+        total_minutes = total_block_minutes(args.block) if args.block else args.minutes
+        if total_minutes is not None and limit is None:
+            limit = session_budget(total_minutes)["card_limit"]
+            smart = True
+        review_session(
+            state,
+            keyword=args.grep,
+            tag=args.tag,
+            topic=args.topic,
+            main_topic=args.main_topic,
+            this_week=args.this_week,
+            limit=limit,
+            smart=smart,
+        )
 
 
 if __name__ == "__main__":

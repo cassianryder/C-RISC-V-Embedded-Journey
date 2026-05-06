@@ -33,6 +33,35 @@
       "03-structs",
       "结构体",
       "结构体指针"
+    ],
+    "2026-04-29-structs-project-migration-and-scanf.md": [
+      "03-structs",
+      "06-projects",
+      "结构体指针",
+      "scanf",
+      "项目迁移"
+    ],
+    "2026-04-30-project-time-and-status-layer.md": [
+      "06-projects",
+      "状态文本",
+      "时间戳",
+      "const char *",
+      "CSV"
+    ],
+    "2026-05-02-project-csv-return-contract.md": [
+      "06-projects",
+      "CSV",
+      "文件I/O",
+      "返回值",
+      "存储层"
+    ],
+    "2026-05-05-srs-pointer-csv-macro.md": [
+      "06-projects",
+      "SRS",
+      "结构体指针",
+      "CSV",
+      "宏",
+      "时间管理"
     ]
   },
   "card_overrides": {
@@ -87,6 +116,39 @@
     "2026-04-27-struct-object-pointer-semantics::问题 1": ["类型-对象-地址"],
     "2026-04-27-struct-object-pointer-semantics::问题 2": ["点和箭头", "scanf"],
     "2026-04-27-struct-object-pointer-semantics::问题 3": ["值传递", "指针传递"],
-    "2026-04-27-struct-object-pointer-semantics::问题 4": ["内存布局", "padding"]
+    "2026-04-27-struct-object-pointer-semantics::问题 4": ["内存布局", "padding"],
+
+    "2026-04-29-structs-project-migration-and-scanf::问题 1": ["PondRecord", "结构体指针", "函数参数"],
+    "2026-04-29-structs-project-migration-and-scanf::问题 2": ["点和箭头", "解引用", "成员地址"],
+    "2026-04-29-structs-project-migration-and-scanf::问题 3": ["值传递", "指针传递", "scanf", "while"],
+    "2026-04-29-structs-project-migration-and-scanf::问题 4": ["scanf", "EOF", "输入状态"],
+    "2026-04-29-structs-project-migration-and-scanf::问题 5": ["目录整理", "项目迁移"],
+    "2026-04-29-structs-project-migration-and-scanf::问题 6": ["真实项目定位", "项目架构"],
+
+    "2026-04-30-project-time-and-status-layer::问题 1": ["const char *", "状态文本", "函数返回值"],
+    "2026-04-30-project-time-and-status-layer::问题 2": ["字符串比较", "地址比较", "函数复用"],
+    "2026-04-30-project-time-and-status-layer::问题 3": ["time_t", "struct tm", "strftime", "时间戳"],
+    "2026-04-30-project-time-and-status-layer::问题 4": ["数组退化", "字符串缓冲区", "strftime"],
+    "2026-04-30-project-time-and-status-layer::问题 5": ["缓冲区大小", "空字符", "TIMESTAMP_SIZE"],
+    "2026-04-30-project-time-and-status-layer::问题 6": ["时间戳", "read_pond_record", "流程层"],
+
+    "2026-05-02-project-csv-return-contract::问题 1": ["time", "函数调用", "数组访问"],
+    "2026-05-02-project-csv-return-contract::问题 2": ["结构体指针", "指针层级", "函数调用"],
+    "2026-05-02-project-csv-return-contract::问题 3": ["点和箭头", "成员地址", "scanf"],
+    "2026-05-02-project-csv-return-contract::问题 4": ["返回值", "main", "函数合同"],
+    "2026-05-02-project-csv-return-contract::问题 5": ["FILE", "fopen", "fprintf", "fclose"],
+    "2026-05-02-project-csv-return-contract::问题 6": ["fprintf", "CSV字段", "打印和返回"],
+    "2026-05-02-project-csv-return-contract::问题 7": ["保存位置", "while", "数据生命周期"],
+
+    "2026-05-05-srs-pointer-csv-macro::问题 1": ["函数调用表达式", "副作用", "返回值"],
+    "2026-05-05-srs-pointer-csv-macro::问题 2": ["点和箭头", "解引用", "成员偏移"],
+    "2026-05-05-srs-pointer-csv-macro::问题 3": ["取地址", "外部对象", "指针层级"],
+    "2026-05-05-srs-pointer-csv-macro::问题 4": ["const char *", "字符串字面量", "数组退化"],
+    "2026-05-05-srs-pointer-csv-macro::问题 5": ["指针大小", "PondRecord **", "二级指针"],
+    "2026-05-05-srs-pointer-csv-macro::问题 6": ["宏", "字符串字面量", "fopen"],
+    "2026-05-05-srs-pointer-csv-macro::问题 7": ["SRS", "时间段", "理解校准"],
+    "2026-05-05-srs-pointer-csv-macro::补充问题 1": ["运行产物", ".gitignore", "CSV"],
+    "2026-05-05-srs-pointer-csv-macro::补充问题 2": ["学习脚手架", "主线代码", "notes"],
+    "2026-05-05-srs-pointer-csv-macro::补充问题 3": ["时间流复盘", "学习效率", "闭环"]
   }
 }
