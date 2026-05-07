@@ -119,6 +119,14 @@ int save_pond_record_csv(PondRecord record)
     if (fp == NULL)
     return 0;
 
+    fseek(fp,0,SEEK_END);
+    long file_size = ftell(fp);
+
+    if(file_size == 0)
+    {
+      fprintf(fp,"sampled_at,pond_id,temp,temp_status,oxygen,oxygen_status\n");
+    }
+
     fprintf(fp, "%s,%c,%.1f,%s,%.1f,%s\n",
             record.sampled_at,
             record.pond_id,
