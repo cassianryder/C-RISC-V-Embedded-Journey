@@ -142,6 +142,26 @@ python3 /Users/a15951407904/projects/C-RISC-V-Embedded-Journey/skills/local_revi
 python3 /Users/a15951407904/projects/C-RISC-V-Embedded-Journey/skills/local_review/spaced_review.py today --topic 文件I/O --limit 5
 ```
 
+如果想按“相关标签网”复习，而不是只精确匹配一个标签：
+
+```bash
+python3 /Users/a15951407904/projects/C-RISC-V-Embedded-Journey/skills/local_review/spaced_review.py list --related-tag "FILE *" --main-topic 06-projects --smart
+python3 /Users/a15951407904/projects/C-RISC-V-Embedded-Journey/skills/local_review/spaced_review.py list --related-tag CSV --main-topic 06-projects --smart
+python3 /Users/a15951407904/projects/C-RISC-V-Embedded-Journey/skills/local_review/spaced_review.py list --related-tag 结构体指针 --main-topic 06-projects --smart
+```
+
+查看完整标签地图：
+
+```bash
+python3 /Users/a15951407904/projects/C-RISC-V-Embedded-Journey/skills/local_review/spaced_review.py map
+```
+
+标签系统分三层：
+
+- `tag_groups`：严格标签分组，用来避免标签越写越散。
+- `tag_relations`：相关标签图，用来从一个卡点追踪到相邻知识点。
+- `workflow_weights`：主线权重，用来让 `06-projects` 优先抽 CSV、文件 I/O、返回值、结构体指针等当前真正相关的问题。
+
 如果只想看统计：
 
 ```bash

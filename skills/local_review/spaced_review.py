@@ -236,6 +236,25 @@ def load_tag_registry() -> Dict:
     return {"file_defaults": {}, "card_overrides": {}}
 
 
+def related_tags(seed: str | None, registry: Dict) -> set[str]:
+    if not seed:
+        return set()
+
+    relations = registry.get("tag_relations", {})
+    result = {seed}
+
+    # Keep this intentionally one-hop. Daily review should stay focused:
+    # related-tag "FILE *" should pull direct file-I/O neighbors, not the
+    # whole 06-projects graph through recursive parent links.
+    result.update(relations.get(seed, []))
+
+    for parent, children in relations.items():
+        if seed in children:
+            result.add(parent)
+
+    return result
+
+
 def save_state(state: Dict) -> None:
     STATE_FILE.write_text(
         json.dumps(state, ensure_ascii=False, indent=2, sort_keys=True),
@@ -313,6 +332,13 @@ def topic_match(item: Dict, topic: str | None) -> bool:
     return any(tag in current_tags for tag in expected_tags)
 
 
+def related_tag_match(item: Dict, related_filter: set[str] | None) -> bool:
+    if not related_filter:
+        return True
+    current_tags = set(item.get("tags", []))
+    return bool(current_tags & related_filter)
+
+
 def is_this_week(item: Dict) -> bool:
     source = item.get("source_date")
     if not source:
@@ -330,6 +356,7 @@ def due_cards(
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    related_filter: set[str] | None = None,
     this_week: bool = False,
 ) -> List[Dict]:
     today = date.today()
@@ -352,6 +379,8 @@ def due_cards(
                 continue
             if not topic_match(item, topic):
                 continue
+            if not related_tag_match(item, related_filter):
+                continue
             if this_week and not is_this_week(item):
                 continue
             result.append(item)
@@ -367,7 +396,7 @@ def days_overdue(item: Dict) -> int:
     return max(0, (date.today() - due).days)
 
 
-def card_priority(item: Dict, main_topic: str | None = None) -> int:
+def card_priority(item: Dict, main_topic: str | None = None, registry: Dict | None = None) -> int:
     """Score due cards for short daily sessions.
 
     Higher means more useful today: current mainline, weak recall, recent cards,
@@ -376,12 +405,23 @@ def card_priority(item: Dict, main_topic: str | None = None) -> int:
     """
     score = 0
 
+    registry = registry or {}
+    current_tags = set(item.get("tags", []))
+
     if main_topic:
         current_tags = set(item.get("tags", []))
         if main_topic in current_tags:
             score += 45
         elif topic_match(item, main_topic):
             score += 20
+
+        related = related_tags(main_topic, registry)
+        overlap = current_tags & related
+        score += min(25, len(overlap) * 4)
+
+        weights = registry.get("workflow_weights", {}).get(main_topic, {})
+        for tag in current_tags:
+            score += int(weights.get(tag, 0))
 
     last_score = item.get("last_score")
     if last_score is None:
@@ -450,11 +490,11 @@ def take_balanced(ordered: List[Dict], limit: int, max_per_file: int = 2) -> Lis
     return selected
 
 
-def smart_order(due: List[Dict], main_topic: str | None = None) -> List[Dict]:
+def smart_order(due: List[Dict], main_topic: str | None = None, registry: Dict | None = None) -> List[Dict]:
     ordered = []
     for item in due:
         item_with_score = dict(item)
-        item_with_score["_priority"] = card_priority(item_with_score, main_topic=main_topic)
+        item_with_score["_priority"] = card_priority(item_with_score, main_topic=main_topic, registry=registry)
         ordered.append(item_with_score)
 
     ordered.sort(
@@ -504,17 +544,20 @@ def update_schedule(payload: Dict, quality: int) -> None:
 
 def cmd_list(
     state: Dict,
+    registry: Dict,
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    related_tag: str | None = None,
     main_topic: str | None = None,
     this_week: bool = False,
     limit: int | None = None,
     smart: bool = False,
 ) -> None:
-    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
+    related_filter = related_tags(related_tag, registry)
+    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, related_filter=related_filter, this_week=this_week)
     if smart or main_topic:
-        due = smart_order(due, main_topic=main_topic)
+        due = smart_order(due, main_topic=main_topic, registry=registry)
     if limit is not None:
         if smart or main_topic:
             due = take_balanced(due, limit)
@@ -524,6 +567,8 @@ def cmd_list(
         print("No due cards today.")
         return
     print(f"Due cards: {len(due)}")
+    if related_tag:
+        print(f"Related tag filter: {related_tag} -> {', '.join(sorted(related_filter))}")
     for item in due:
         tags = ", ".join(item.get("tags", []))
         priority = f" | priority {item['_priority']}" if "_priority" in item else ""
@@ -532,17 +577,20 @@ def cmd_list(
 
 def cmd_plan(
     state: Dict,
+    registry: Dict,
     total_minutes: int,
     blocks: List[TimeBlock] | None = None,
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    related_tag: str | None = None,
     main_topic: str | None = None,
     this_week: bool = False,
 ) -> None:
     budget = session_budget(total_minutes)
-    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
-    ordered = smart_order(due, main_topic=main_topic)
+    related_filter = related_tags(related_tag, registry)
+    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, related_filter=related_filter, this_week=this_week)
+    ordered = smart_order(due, main_topic=main_topic, registry=registry)
     selected = take_balanced(ordered, budget["card_limit"])
 
     print(f"Available minutes: {total_minutes}")
@@ -553,6 +601,11 @@ def cmd_plan(
     print(f"Closeout budget: {budget['close_minutes']} min")
     if main_topic:
         print(f"Main topic priority: {main_topic}")
+        related = related_tags(main_topic, registry)
+        if related:
+            print(f"Main topic related tags: {', '.join(sorted(related))}")
+    if related_tag:
+        print(f"Related tag filter: {related_tag} -> {', '.join(sorted(related_filter))}")
 
     if blocks:
         print("\nTime blocks:")
@@ -602,6 +655,8 @@ def cmd_plan(
         command += f" --topic {topic}"
     if tag:
         command += f" --tag {tag}"
+    if related_tag:
+        command += f" --related-tag {related_tag}"
     if keyword:
         command += f" --grep {keyword}"
     if this_week:
@@ -614,10 +669,11 @@ def cmd_stats(
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    related_filter: set[str] | None = None,
     this_week: bool = False,
 ) -> None:
     cards = state.get("cards", {})
-    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
+    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, related_filter=related_filter, this_week=this_week)
     print(f"Total cards: {len(cards)}")
     print(f"Due today: {len(due)}")
     if tag:
@@ -634,7 +690,7 @@ def cmd_stats(
         print(f"Average ease: {avg_ease:.2f}")
 
 
-def cmd_tags(state: Dict) -> None:
+def cmd_tags(state: Dict, registry: Dict) -> None:
     counts: Dict[str, int] = {}
     for payload in state.get("cards", {}).values():
         for tag in payload.get("tags", []):
@@ -648,20 +704,53 @@ def cmd_tags(state: Dict) -> None:
     for tag, count in sorted(counts.items(), key=lambda x: (x[0])):
         print(f"- {tag}: {count}")
 
+    groups = registry.get("tag_groups", {})
+    if groups:
+        print("\nTag groups:")
+        for group, tags in groups.items():
+            present = [tag for tag in tags if tag in counts]
+            if present:
+                print(f"- {group}: {', '.join(present)}")
+
+
+def cmd_map(registry: Dict) -> None:
+    print("Strict tag map:")
+    for group, tags in registry.get("tag_groups", {}).items():
+        print(f"\n[{group}]")
+        for tag in tags:
+            print(f"- {tag}")
+
+    relations = registry.get("tag_relations", {})
+    if relations:
+        print("\nRelated tag graph:")
+        for tag, related in relations.items():
+            print(f"- {tag} -> {', '.join(related)}")
+
+    weights = registry.get("workflow_weights", {})
+    if weights:
+        print("\nWorkflow weights:")
+        for workflow, tag_weights in weights.items():
+            ordered = sorted(tag_weights.items(), key=lambda x: (-int(x[1]), x[0]))
+            compact = ", ".join(f"{tag}:{weight}" for tag, weight in ordered)
+            print(f"- {workflow}: {compact}")
+
 
 def review_session(
     state: Dict,
+    registry: Dict,
     keyword: str | None = None,
     tag: str | None = None,
     topic: str | None = None,
+    related_tag: str | None = None,
     main_topic: str | None = None,
     this_week: bool = False,
     limit: int | None = None,
     smart: bool = False,
 ) -> None:
-    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, this_week=this_week)
+    related_filter = related_tags(related_tag, registry)
+    due = due_cards(state, keyword=keyword, tag=tag, topic=topic, related_filter=related_filter, this_week=this_week)
     if smart or main_topic:
-        due = smart_order(due, main_topic=main_topic)
+        due = smart_order(due, main_topic=main_topic, registry=registry)
     if limit is not None:
         if smart or main_topic:
             due = take_balanced(due, limit)
@@ -724,8 +813,8 @@ def main() -> None:
         "command",
         nargs="?",
         default="today",
-        choices=["today", "list", "stats", "tags", "plan"],
-        help="today: interactive review, list: due cards, plan: time-weighted smart plan, stats: summary, tags: available strict tags",
+        choices=["today", "list", "stats", "tags", "map", "plan"],
+        help="today: interactive review, list: due cards, plan: time-weighted smart plan, stats: summary, tags/map: strict tag tools",
     )
     parser.add_argument("--limit", type=int, default=None, help="Only show/review the first N due cards.")
     parser.add_argument("--minutes", type=int, default=None, help="Available study minutes; auto-sets review budget and card limit when used with plan/today.")
@@ -738,6 +827,7 @@ def main() -> None:
     )
     parser.add_argument("--grep", type=str, default=None, help="Only include cards whose file name or question text contains this keyword.")
     parser.add_argument("--tag", type=str, default=None, help="Strict exact tag filter, e.g. 结构体指针, 补码, 输入缓冲")
+    parser.add_argument("--related-tag", type=str, default=None, help="Include cards tagged with this tag or its related tags.")
     parser.add_argument(
         "--topic",
         type=str,
@@ -762,27 +852,40 @@ def main() -> None:
     if args.command == "list":
         cmd_list(
             state,
+            registry,
             keyword=args.grep,
             tag=args.tag,
             topic=args.topic,
+            related_tag=args.related_tag,
             main_topic=args.main_topic,
             this_week=args.this_week,
             limit=args.limit,
             smart=args.smart,
         )
     elif args.command == "stats":
-        cmd_stats(state, keyword=args.grep, tag=args.tag, topic=args.topic, this_week=args.this_week)
+        cmd_stats(
+            state,
+            keyword=args.grep,
+            tag=args.tag,
+            topic=args.topic,
+            related_filter=related_tags(args.related_tag, registry),
+            this_week=args.this_week,
+        )
     elif args.command == "tags":
-        cmd_tags(state)
+        cmd_tags(state, registry)
+    elif args.command == "map":
+        cmd_map(registry)
     elif args.command == "plan":
         total_minutes = total_block_minutes(args.block) if args.block else (args.minutes if args.minutes is not None else 90)
         cmd_plan(
             state,
+            registry,
             total_minutes=total_minutes,
             blocks=args.block,
             keyword=args.grep,
             tag=args.tag,
             topic=args.topic,
+            related_tag=args.related_tag,
             main_topic=args.main_topic,
             this_week=args.this_week,
         )
@@ -795,9 +898,11 @@ def main() -> None:
             smart = True
         review_session(
             state,
+            registry,
             keyword=args.grep,
             tag=args.tag,
             topic=args.topic,
+            related_tag=args.related_tag,
             main_topic=args.main_topic,
             this_week=args.this_week,
             limit=limit,

@@ -1,4 +1,272 @@
 {
+  "tag_groups": {
+    "主线阶段": [
+      "01-basics",
+      "02-pointers",
+      "03-structs",
+      "04-data-structures",
+      "05-embedded",
+      "06-projects",
+      "07-basics-add"
+    ],
+    "项目层": [
+      "数据层",
+      "输入层",
+      "判断层",
+      "输出层",
+      "存储层",
+      "流程层",
+      "项目架构",
+      "项目迁移",
+      "运行产物",
+      "真实项目定位",
+      "项目蓝图",
+      "CLI",
+      "模块化",
+      "数据合同"
+    ],
+    "C函数语义": [
+      "函数",
+      "函数声明",
+      "函数调用",
+      "函数调用表达式",
+      "函数返回值",
+      "函数合同",
+      "返回值",
+      "副作用",
+      "形参实参",
+      "值传递",
+      "指针传递"
+    ],
+    "指针与内存": [
+      "指针",
+      "结构体",
+      "结构体指针",
+      "PondRecord",
+      "类型-对象-地址",
+      "点和箭头",
+      "解引用",
+      "取地址",
+      "成员地址",
+      "成员偏移",
+      "外部对象",
+      "指针层级",
+      "二级指针",
+      "内存布局",
+      "padding",
+      "数组退化",
+      "字符串缓冲区"
+    ],
+    "文件与存储": [
+      "CSV",
+      "CSV字段",
+      "CSV表头",
+      "文件I/O",
+      "文件入口",
+      "FILE",
+      "FILE *",
+      "fopen",
+      "fprintf",
+      "fclose",
+      "fseek",
+      "ftell",
+      "文件位置",
+      "文件大小",
+      "运行目录",
+      "append模式",
+      "缓冲输出",
+      "缓冲混用",
+      "write",
+      "printf"
+    ],
+    "时间与状态": [
+      "time",
+      "time_t",
+      "struct tm",
+      "strftime",
+      "时间戳",
+      "状态文本",
+      "状态判断输出",
+      "const char *",
+      "字符串字面量"
+    ],
+    "输入输出": [
+      "scanf",
+      "输入缓冲",
+      "输入格式",
+      "输入状态",
+      "getchar",
+      "putchar",
+      "EOF",
+      "输出格式"
+    ],
+    "学习工作流": [
+      "SRS",
+      "时间管理",
+      "时间段",
+      "理解校准",
+      "时间流复盘",
+      "学习效率",
+      "闭环",
+      "主线收口",
+      "学习脚手架",
+      "上下文工程",
+      "恢复能力",
+      "严格标签",
+      "相关标签",
+      "workflow_weights",
+      "daily",
+      "prompts",
+      "脱敏",
+      "git",
+      "本地未提交"
+    ]
+  },
+  "tag_relations": {
+    "06-projects": [
+      "项目映射",
+      "项目架构",
+      "状态判断输出",
+      "接口设计",
+      "存储层",
+      "CSV",
+      "文件I/O",
+      "时间戳",
+      "返回值",
+      "函数合同",
+      "运行产物"
+    ],
+    "03-structs": [
+      "结构体",
+      "结构体指针",
+      "PondRecord",
+      "类型-对象-地址",
+      "点和箭头",
+      "成员地址",
+      "成员偏移",
+      "值传递",
+      "指针传递"
+    ],
+    "CSV": [
+      "CSV字段",
+      "CSV表头",
+      "文件I/O",
+      "存储层",
+      "运行产物",
+      "fprintf",
+      "fopen"
+    ],
+    "文件I/O": [
+      "FILE",
+      "FILE *",
+      "文件入口",
+      "fopen",
+      "fprintf",
+      "fclose",
+      "fseek",
+      "ftell",
+      "文件位置",
+      "文件大小",
+      "缓冲输出"
+    ],
+    "FILE *": [
+      "FILE",
+      "文件入口",
+      "fopen",
+      "fprintf",
+      "fclose",
+      "fseek",
+      "ftell"
+    ],
+    "fseek": [
+      "FILE *",
+      "文件位置",
+      "文件大小",
+      "ftell"
+    ],
+    "ftell": [
+      "FILE *",
+      "文件位置",
+      "文件大小",
+      "fseek"
+    ],
+    "结构体指针": [
+      "PondRecord",
+      "点和箭头",
+      "解引用",
+      "取地址",
+      "成员地址",
+      "成员偏移",
+      "指针层级"
+    ],
+    "返回值": [
+      "函数合同",
+      "函数返回值",
+      "副作用",
+      "main"
+    ],
+    "const char *": [
+      "字符串字面量",
+      "状态文本",
+      "函数返回值",
+      "数组退化"
+    ],
+    "时间戳": [
+      "time",
+      "time_t",
+      "struct tm",
+      "strftime",
+      "字符串缓冲区"
+    ]
+  },
+  "workflow_weights": {
+    "06-projects": {
+      "CSV": 12,
+      "CSV表头": 14,
+      "文件I/O": 12,
+      "FILE *": 14,
+      "文件入口": 12,
+      "fseek": 14,
+      "ftell": 14,
+      "文件位置": 12,
+      "文件大小": 10,
+      "存储层": 12,
+      "返回值": 8,
+      "函数合同": 8,
+      "函数调用表达式": 8,
+      "副作用": 8,
+      "结构体指针": 6,
+      "时间戳": 6,
+      "运行产物": 6
+    },
+    "03-structs": {
+      "结构体": 12,
+      "结构体指针": 14,
+      "PondRecord": 10,
+      "类型-对象-地址": 12,
+      "点和箭头": 12,
+      "解引用": 10,
+      "成员地址": 10,
+      "成员偏移": 8,
+      "值传递": 8,
+      "指针传递": 8
+    },
+    "文件I/O": {
+      "文件I/O": 14,
+      "FILE": 10,
+      "FILE *": 14,
+      "文件入口": 12,
+      "fopen": 10,
+      "fprintf": 10,
+      "fclose": 8,
+      "fseek": 14,
+      "ftell": 14,
+      "文件位置": 12,
+      "文件大小": 10,
+      "CSV": 8,
+      "CSV表头": 10
+    }
+  },
   "file_defaults": {
     "2026-04-19-deep-questions-memory-twos-complement.md": [
       "补码",
@@ -52,7 +320,9 @@
       "06-projects",
       "CSV",
       "文件I/O",
+      "FILE *",
       "返回值",
+      "函数合同",
       "存储层"
     ],
     "2026-05-05-srs-pointer-csv-macro.md": [
@@ -62,6 +332,17 @@
       "CSV",
       "宏",
       "时间管理"
+    ],
+    "2026-05-07-csv-file-io-recovery-context-srs.md": [
+      "06-projects",
+      "CSV",
+      "CSV表头",
+      "文件I/O",
+      "FILE *",
+      "上下文工程",
+      "SRS",
+      "恢复能力",
+      "存储层"
     ]
   },
   "card_overrides": {
@@ -136,8 +417,8 @@
     "2026-05-02-project-csv-return-contract::问题 2": ["结构体指针", "指针层级", "函数调用"],
     "2026-05-02-project-csv-return-contract::问题 3": ["点和箭头", "成员地址", "scanf"],
     "2026-05-02-project-csv-return-contract::问题 4": ["返回值", "main", "函数合同"],
-    "2026-05-02-project-csv-return-contract::问题 5": ["FILE", "fopen", "fprintf", "fclose"],
-    "2026-05-02-project-csv-return-contract::问题 6": ["fprintf", "CSV字段", "打印和返回"],
+    "2026-05-02-project-csv-return-contract::问题 5": ["FILE", "FILE *", "文件入口", "fopen", "fprintf", "fclose", "文件I/O"],
+    "2026-05-02-project-csv-return-contract::问题 6": ["fprintf", "CSV字段", "CSV表头", "打印和返回"],
     "2026-05-02-project-csv-return-contract::问题 7": ["保存位置", "while", "数据生命周期"],
 
     "2026-05-05-srs-pointer-csv-macro::问题 1": ["函数调用表达式", "副作用", "返回值"],
@@ -147,8 +428,17 @@
     "2026-05-05-srs-pointer-csv-macro::问题 5": ["指针大小", "PondRecord **", "二级指针"],
     "2026-05-05-srs-pointer-csv-macro::问题 6": ["宏", "字符串字面量", "fopen"],
     "2026-05-05-srs-pointer-csv-macro::问题 7": ["SRS", "时间段", "理解校准"],
-    "2026-05-05-srs-pointer-csv-macro::补充问题 1": ["运行产物", ".gitignore", "CSV"],
+    "2026-05-05-srs-pointer-csv-macro::补充问题 1": ["运行产物", ".gitignore", "CSV", "CSV表头"],
     "2026-05-05-srs-pointer-csv-macro::补充问题 2": ["学习脚手架", "主线代码", "notes"],
-    "2026-05-05-srs-pointer-csv-macro::补充问题 3": ["时间流复盘", "学习效率", "闭环"]
+    "2026-05-05-srs-pointer-csv-macro::补充问题 3": ["时间流复盘", "学习效率", "闭环"],
+
+    "2026-05-07-csv-file-io-recovery-context-srs::问题 1": ["CSV表头", "文件大小", "数据合同"],
+    "2026-05-07-csv-file-io-recovery-context-srs::问题 2": ["fopen", "append模式", "字符串字面量"],
+    "2026-05-07-csv-file-io-recovery-context-srs::问题 3": ["FILE *", "文件入口", "fseek", "ftell", "文件位置", "文件大小"],
+    "2026-05-07-csv-file-io-recovery-context-srs::问题 4": ["运行目录", "运行产物", ".gitignore"],
+    "2026-05-07-csv-file-io-recovery-context-srs::问题 5": ["git", "恢复能力", "本地未提交", ".gitignore"],
+    "2026-05-07-csv-file-io-recovery-context-srs::补充问题 1": ["上下文工程", "daily", "prompts", "脱敏", ".gitignore"],
+    "2026-05-07-csv-file-io-recovery-context-srs::补充问题 2": ["SRS", "严格标签", "相关标签", "workflow_weights"],
+    "2026-05-07-csv-file-io-recovery-context-srs::补充问题 3": ["项目蓝图", "CLI", "存储层", "模块化"]
   }
 }

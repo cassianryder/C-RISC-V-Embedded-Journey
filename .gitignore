@@ -1,7 +1,21 @@
 .DS_Store
 *.dSYM/
-daily/
-prompts/
+# Publish only sanitized daily workflow files; keep personal drafts local.
+!daily/
+daily/*
+!daily/README.md
+!daily/daily_loop.md
+!daily/daily_review.py
+!daily/engineering_gaps.md
+
+# Publish only sanitized prompt/context files; keep personal drafts local.
+!prompts/
+prompts/*
+!prompts/README.md
+!prompts/core_codex_system.md
+!prompts/daily_input_template.md
+!prompts/skill_template.md
+
 skills/
 notes/aquaculture_coupling_layers.md
 
@@ -21,4 +35,3 @@ pond_records.csv
 
 bin/.gdb_history
 bin/program
-
