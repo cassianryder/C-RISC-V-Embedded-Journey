@@ -13,11 +13,11 @@
   - 误删仓库后已从 GitHub 恢复主仓，并重建今天未提交的 CSV 表头逻辑。
 
 - 当前未解决问题：
-  - `FILE *fp`、`fseek(fp, 0, SEEK_END)`、`ftell(fp)` 的底层模型仍需继续费曼校准。
-  - `save_pond_record_csv()` 目前能工作，但缩进、失败路径和注释还需要收干净。
-  - `prompts/` 已本地重建，但当前 `.gitignore` 仍忽略它；后续需要决定是否提交脱敏版提示词工程。
+  - `FILE *fp`、`fseek(fp, 0, SEEK_END)`、`ftell(fp)` 已完成项目级理解，但后续仍可结合 CSAPP / OS 深挖。
+  - `save_pond_record_csv()` 已能工作并完成基本代码风格收口，下一步需要决定先做最小测试还是拆多文件模块。
+  - `daily/`、`prompts/` 的脱敏版已纳入 Git；个人 SRS 状态和运行产物继续保持本地忽略。
 
 - 下一步自然衔接：
-  - 先用启发带练复盘：文件名、`FILE *`、文件位置指针、文件大小之间的关系。
-  - 再运行验证两次：第一次新建 CSV 写 header，第二次追加记录但不重复 header。
-  - 最后收口 `save_pond_record_csv()` 的代码风格，并决定是否把脱敏版 `prompts/` 纳入 Git。
+  - 明天先用 SRS 回炉 `FILE * / fseek / ftell / fprintf`，确认不遗忘今天的文件位置模型。
+  - 主线选择一条：要么为 CSV 保存层加最小测试，要么开始拆 `record / judge / csv_store / input_cli / main`。
+  - 收口时继续保持“先项目小闭环，再问题沉淀，再 git 分组提交”的节奏。

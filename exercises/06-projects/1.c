@@ -114,17 +114,18 @@ void print_pond_record(PondRecord record)
 int save_pond_record_csv(PondRecord record)
 {
     // FILE *fp = fopen("pond_records_csv","a");
-    FILE *fp = fopen(CSV_FILE_NAME,"a");
-    
-    if (fp == NULL)
-    return 0;
+    FILE *fp = fopen(CSV_FILE_NAME, "a");
 
-    fseek(fp,0,SEEK_END);
+    if (fp == NULL)
+        return 0;
+
+    // Check whether this is a new CSV file before writing the header.
+    fseek(fp, 0, SEEK_END);
     long file_size = ftell(fp);
 
-    if(file_size == 0)
+    if (file_size == 0)
     {
-      fprintf(fp,"sampled_at,pond_id,temp,temp_status,oxygen,oxygen_status\n");
+        fprintf(fp, "sampled_at,pond_id,temp,temp_status,oxygen,oxygen_status\n");
     }
 
     fprintf(fp, "%s,%c,%.1f,%s,%.1f,%s\n",

@@ -72,6 +72,9 @@
       "ftell",
       "文件位置",
       "文件大小",
+      "文件流",
+      "SEEK_END",
+      "偏移量",
       "运行目录",
       "append模式",
       "缓冲输出",
@@ -120,6 +123,17 @@
       "脱敏",
       "git",
       "本地未提交"
+    ],
+    "代码风格": [
+      "代码风格",
+      "英文注释",
+      "why-not-what",
+      "nvim",
+      "Allman",
+      "Linux kernel",
+      "early return",
+      "函数收口",
+      "工程闭环"
     ]
   },
   "tag_relations": {
@@ -343,6 +357,19 @@
       "SRS",
       "恢复能力",
       "存储层"
+    ],
+    "2026-05-08-file-position-code-style-comments.md": [
+      "06-projects",
+      "文件I/O",
+      "FILE *",
+      "fseek",
+      "ftell",
+      "文件位置",
+      "文件大小",
+      "代码风格",
+      "英文注释",
+      "nvim",
+      "存储层"
     ]
   },
   "card_overrides": {
@@ -439,6 +466,14 @@
     "2026-05-07-csv-file-io-recovery-context-srs::问题 5": ["git", "恢复能力", "本地未提交", ".gitignore"],
     "2026-05-07-csv-file-io-recovery-context-srs::补充问题 1": ["上下文工程", "daily", "prompts", "脱敏", ".gitignore"],
     "2026-05-07-csv-file-io-recovery-context-srs::补充问题 2": ["SRS", "严格标签", "相关标签", "workflow_weights"],
-    "2026-05-07-csv-file-io-recovery-context-srs::补充问题 3": ["项目蓝图", "CLI", "存储层", "模块化"]
+    "2026-05-07-csv-file-io-recovery-context-srs::补充问题 3": ["项目蓝图", "CLI", "存储层", "模块化"],
+
+    "2026-05-08-file-position-code-style-comments::问题 1": ["FILE *", "文件入口", "文件位置", "文件流"],
+    "2026-05-08-file-position-code-style-comments::问题 2": ["fseek", "SEEK_END", "偏移量", "文件位置"],
+    "2026-05-08-file-position-code-style-comments::问题 3": ["ftell", "文件大小", "CSV表头", "append模式"],
+    "2026-05-08-file-position-code-style-comments::问题 4": ["代码风格", "Allman", "Linux kernel", "early return"],
+    "2026-05-08-file-position-code-style-comments::问题 5": ["英文注释", "why-not-what", "代码风格"],
+    "2026-05-08-file-position-code-style-comments::补充问题 1": ["函数收口", "工程闭环", "存储层"],
+    "2026-05-08-file-position-code-style-comments::补充问题 2": ["项目蓝图", "CLI", "存储层", "模块化"]
   }
 }
