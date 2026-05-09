@@ -65,6 +65,13 @@ const char *oxygen_status(float oxygen)
 }
 
 
+int needs_aeration(PondRecord record)
+{
+  if (record.oxygen < OXYGEN_LOW_LIMIT)
+      return 1;
+
+  return 0;
+}
 //打印状态
 void print_temp_status(float temperature)
 {
@@ -148,6 +155,11 @@ int main(void)
     while (read_pond_record(&record))
     {
         print_pond_record(record);
+
+    if (needs_aeration(record) == 1)
+    {
+        printf("Alert: Pond %c needs aeration\n",record.pond_id);
+    }
 
     // if (save_pond_record_csv(record) == 0)
     if (!save_pond_record_csv(record))

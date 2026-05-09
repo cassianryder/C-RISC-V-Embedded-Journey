@@ -26,6 +26,7 @@ MAP = \
 32:exercises/03-structs/2.c \
 51:exercises/05-embedded/1.c \
 61:exercises/06-projects/1.c \
+62:exercises/06-projects/2.c \
 71:exercises/07-basics-add/1.c
 
 # ========= 内部解析 =========
