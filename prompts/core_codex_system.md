@@ -13,6 +13,7 @@
 - `exercises/CLASSIFICATION.md`：练习目录分层
 - 当前主线代码文件，通常是 `exercises/06-projects/1.c`
 - 如涉及复习，读取 `skills/local_review/skill_problem_spaced_review.md`
+- 如涉及项目建模或新功能设计，读取 `skills/methodology/skill_system_dynamics_to_c.md`
 
 ## 当前长期主线
 
@@ -114,6 +115,7 @@ python3 daily/daily_review.py list --minutes 60 --related-tag 结构体指针
 
 带练规则：
 
+- 如果是新功能，先用系统动力学语言定边界、存量、流量、关系、反馈、观察和记忆，再映射到 C 类型、结构体、函数和 `main` 骨架。
 - 先给现实场景：为什么今天要做这个功能
 - 再给第一性原理：数据从哪里来，到哪里去，中间经过什么层
 - 再挖空主逻辑：条件、返回值、循环体、调用位置先让我填
