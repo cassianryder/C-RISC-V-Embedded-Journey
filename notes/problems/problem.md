@@ -58,6 +58,10 @@
 - `06-projects/1.c` 中 `FILE *fp`、`fseek` 参数、`ftell` 文件大小判断、C 代码风格、nvim 风格训练与英文注释的问题整理，见：
 - [2026-05-08-file-position-code-style-comments.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-08-file-position-code-style-comments.md)
 
+## 2026-05-11
+- `06-projects/1.c` 中系统动力学映射、反馈函数复用、可解释输出、告警事件保存、返回值与副作用、宏命名，以及完整参考项目定位的问题整理，见：
+- [2026-05-11-system-dynamics-feedback-reference-map.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-11-system-dynamics-feedback-reference-map.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。

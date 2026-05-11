@@ -58,6 +58,14 @@ typedef struct
     PondFeedback feedback;
 } PondSystem;
 
+void judge_pond_feedback (PondFeedback *feedback, PondStock stock, PondParams params)
+{
+    if (pond.stock.oxygen < pond.params.oxygen_low_limit)
+        feedback->needs_aeration = 1;
+    else 
+        feedback->needs_aeration = 0;
+}
+
 int main(void)
 {
     PondSystem pond = {0};

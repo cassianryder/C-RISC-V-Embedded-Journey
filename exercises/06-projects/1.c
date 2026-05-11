@@ -12,6 +12,8 @@
 #define OXYGEN_LOW_LIMIT 5.0f
 #define TIMESTAMP_SIZE 20
 #define CSV_FILE_NAME "pond_records.csv"
+#define OXYGEN_ALERT_FILE_NAME "oxygen_alert.csv"
+
 
 //数据层
 typedef struct
@@ -60,18 +62,56 @@ const char *oxygen_status(float oxygen)
 {
   if (oxygen < OXYGEN_LOW_LIMIT)
     return "low";
-  else 
+  else
     return "normal";
 }
 
 
-int needs_aeration(PondRecord record)
+int needs_aeration (PondRecord record)
 {
   if (record.oxygen < OXYGEN_LOW_LIMIT)
       return 1;
 
   return 0;
 }
+
+void print_aeration_action (PondRecord record)
+{
+  if (needs_aeration(record))
+      printf("Action: turn Pond %c aeration ON (oxygen %.1f < %.1f)\n",
+             record.pond_id, record.oxygen, OXYGEN_LOW_LIMIT);
+  else 
+      printf("Action: keep Pond %c aeration OFF (oxygen %.1f >= %.1f)\n",
+             record.pond_id, record.oxygen, OXYGEN_LOW_LIMIT);
+}
+
+void print_oxygen_alert (PondRecord record)
+{
+  if (needs_aeration(record))
+      printf("Alert: Pond %c low oxygen detected (oxygen %.1f < %.1f)\n",
+               record.pond_id, record.oxygen, OXYGEN_LOW_LIMIT);
+}
+
+int save_oxygen_alert_csv (PondRecord record)
+{
+  if (!needs_aeration(record))
+      return 1;
+
+  FILE *fp = fopen(OXYGEN_ALERT_FILE_NAME,"a");
+
+  if (fp == NULL)
+    return 0;
+
+  fprintf(fp, "%s,%c,%.1f,%.1f\n",
+          record.sampled_at,
+          record.pond_id,
+          record.oxygen,
+          OXYGEN_LOW_LIMIT);
+
+  fclose(fp);
+  return 1;
+}
+
 //打印状态
 void print_temp_status(float temperature)
 {
@@ -156,15 +196,21 @@ int main(void)
     {
         print_pond_record(record);
 
-    if (needs_aeration(record) == 1)
-    {
-        printf("Alert: Pond %c needs aeration\n",record.pond_id);
-    }
-
+    // if (needs_aeration(record) == 1)
+    // {
+    //     printf("Alert: Pond %c needs aeration\n",record.pond_id);
+    // }
+       print_aeration_action(record);
+       print_oxygen_alert(record);
     // if (save_pond_record_csv(record) == 0)
     if (!save_pond_record_csv(record))
     {
-      printf("Error: failed to save.\n");
+        printf("Error: failed to save.\n");
+    }
+
+    if (!save_oxygen_alert_csv(record))
+    {
+        printf("Error: failed to save oxygen alert.\n");
     }
     }
     // save_pond_record_csv(record);
