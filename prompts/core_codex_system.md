@@ -14,6 +14,7 @@
 - 当前主线代码文件，通常是 `exercises/06-projects/1.c`
 - 如涉及复习，读取 `skills/local_review/skill_problem_spaced_review.md`
 - 如涉及项目建模或新功能设计，读取 `skills/methodology/skill_system_dynamics_to_c.md`
+- 如涉及问题整理、problem 索引或每日收口，读取 `skills/methodology/skill_problem_note_style.md`
 
 ## 当前长期主线
 
@@ -152,6 +153,13 @@ python3 daily/daily_review.py list --minutes 60 --related-tag 结构体指针
 - 更新 `notes/problems/problem.md`：只放索引，不记流水账
 - 更新 `notes/current.md`：当天主线状态变化明显时
 - 给 git 建议：说明哪些该提交，哪些不该提交
+
+问题记录风格：
+
+- 先写“我今天遇到的问题”，再写“补充的高质量问题”。
+- 每个问题固定为：问题 / 解答 / 闭环 / 使用场景和启发思考。
+- 不记录流水账，不写“今日问题量判断”，相近问题要合并。
+- 如果问题少且不影响主线，可合并到次日；如果问题少但击中核心误区，单独成文件。
 
 时间流复盘要估算：
 

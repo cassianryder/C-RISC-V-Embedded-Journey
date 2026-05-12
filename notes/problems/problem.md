@@ -1,5 +1,9 @@
 # Problems Index
 
+## 记录规则
+- 当天问题少且不影响主线理解时，可合并到次日一起记录。
+- 当天问题虽少但击中核心误区、会影响后续主线时，单独成文件。
+
 ## 2026-04-19
 - 从 `Pending Deep Questions` 中拆出的内存、信号、补码与最高位专题问题单，见：
 - [2026-04-19-deep-questions-memory-twos-complement.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-04-19-deep-questions-memory-twos-complement.md)
@@ -61,6 +65,10 @@
 ## 2026-05-11
 - `06-projects/1.c` 中系统动力学映射、反馈函数复用、可解释输出、告警事件保存、返回值与副作用、宏命名，以及完整参考项目定位的问题整理，见：
 - [2026-05-11-system-dynamics-feedback-reference-map.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-11-system-dynamics-feedback-reference-map.md)
+
+## 2026-05-12
+- `06-projects/1.c` 中告警 CSV 表头、文件名与 `FILE *fp` 的区别、`LOW_OXYGEN` 字符串字面量、返回值/副作用和运行产物边界的问题整理，见：
+- [2026-05-12-alert-csv-header-and-string-literal.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-12-alert-csv-header-and-string-literal.md)
 
 
 ## Pending Deep Questions

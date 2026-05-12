@@ -75,6 +75,11 @@ int needs_aeration (PondRecord record)
   return 0;
 }
 
+int aerator_should_be_on (PondRecord record)
+{
+  return
+}
+
 void print_aeration_action (PondRecord record)
 {
   if (needs_aeration(record))
@@ -97,14 +102,23 @@ int save_oxygen_alert_csv (PondRecord record)
   if (!needs_aeration(record))
       return 1;
 
-  FILE *fp = fopen(OXYGEN_ALERT_FILE_NAME,"a");
+  FILE *fp = fopen(OXYGEN_ALERT_FILE_NAME, "a");
 
   if (fp == NULL)
     return 0;
 
-  fprintf(fp, "%s,%c,%.1f,%.1f\n",
+  fseek(fp, 0, SEEK_END);
+  long file_size = ftell(fp);
+
+  if (file_size == 0)
+  {
+      fprintf(fp, "sampled_at,pond_id,event,oxygen,oxygen_low_limit\n");
+  }
+
+  fprintf(fp, "%s,%c,%s,%.1f,%.1f\n",
           record.sampled_at,
           record.pond_id,
+          "LOW_OXYGEN",
           record.oxygen,
           OXYGEN_LOW_LIMIT);
 
