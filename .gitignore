@@ -35,6 +35,7 @@ skills/methodology/*
 CSV_FILE_NAME
 pond_records_csv
 pond_records.csv
+oxygen_alert.csv
 
 bin/.gdb_history
 bin/program

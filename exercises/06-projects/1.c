@@ -75,14 +75,15 @@ int needs_aeration (PondRecord record)
   return 0;
 }
 
+// Convert water-quality state into an aerator control decision.
 int aerator_should_be_on (PondRecord record)
 {
-  return
+  return needs_aeration(record);
 }
 
 void print_aeration_action (PondRecord record)
 {
-  if (needs_aeration(record))
+  if (aerator_should_be_on(record))
       printf("Action: turn Pond %c aeration ON (oxygen %.1f < %.1f)\n",
              record.pond_id, record.oxygen, OXYGEN_LOW_LIMIT);
   else 
