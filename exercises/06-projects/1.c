@@ -13,6 +13,7 @@
 #define TIMESTAMP_SIZE 20
 #define CSV_FILE_NAME "pond_records.csv"
 #define OXYGEN_ALERT_FILE_NAME "oxygen_alert.csv"
+#define CONTROL_LOG_FILE_NAME "control_log.csv"
 
 
 //数据层
@@ -66,7 +67,6 @@ const char *oxygen_status(float oxygen)
     return "normal";
 }
 
-
 int needs_aeration (PondRecord record)
 {
   if (record.oxygen < OXYGEN_LOW_LIMIT)
@@ -79,6 +79,22 @@ int needs_aeration (PondRecord record)
 int aerator_should_be_on (PondRecord record)
 {
   return needs_aeration(record);
+}
+
+const char *action (PondRecord record)
+{
+ if (aerator_should_be_on(record) == 1)
+     return "ON";
+ else
+     return "OFF";
+}
+
+const char *reason (PondRecord record)
+{
+  if (needs_aeration(record) == 1)
+      return "LOW_OXYGEN";
+  else
+      return "NORMAL_OXYGEN";
 }
 
 void print_aeration_action (PondRecord record)
@@ -94,8 +110,33 @@ void print_aeration_action (PondRecord record)
 void print_oxygen_alert (PondRecord record)
 {
   if (needs_aeration(record))
-      printf("Alert: Pond %c low oxygen detected (oxygen %.1f < %.1f)\n",
+      printf ("Alert: Pond %c low oxygen detected (oxygen %.1f < %.1f)\n",
                record.pond_id, record.oxygen, OXYGEN_LOW_LIMIT);
+}
+
+int save_control_log_csv (PondRecord record)
+{
+  FILE *fp = fopen (CONTROL_LOG_FILE_NAME,"a");
+
+  if (fp == NULL)
+      return 0;
+
+  fseek (fp, 0, SEEK_END);
+  long file_size = ftell (fp);
+
+  if (file_size == 0)
+  {
+    fprintf(fp, "sampled_at,pond_id,actuator,action,reason\n");
+  }
+
+  fprintf (fp, "%s,%c,%s,%s,%s\n",
+           record.sampled_at,
+           record.pond_id,
+           "ACTUATOR",
+           action(record),
+           reason(record));
+  fclose (fp);
+  return 1;
 }
 
 int save_oxygen_alert_csv (PondRecord record)
@@ -103,32 +144,32 @@ int save_oxygen_alert_csv (PondRecord record)
   if (!needs_aeration(record))
       return 1;
 
-  FILE *fp = fopen(OXYGEN_ALERT_FILE_NAME, "a");
+  FILE *fp = fopen (OXYGEN_ALERT_FILE_NAME, "a");
 
   if (fp == NULL)
     return 0;
 
-  fseek(fp, 0, SEEK_END);
-  long file_size = ftell(fp);
+  fseek (fp, 0, SEEK_END);
+  long file_size = ftell (fp);
 
   if (file_size == 0)
   {
-      fprintf(fp, "sampled_at,pond_id,event,oxygen,oxygen_low_limit\n");
+      fprintf (fp, "sampled_at,pond_id,event,oxygen,oxygen_low_limit\n");
   }
 
-  fprintf(fp, "%s,%c,%s,%.1f,%.1f\n",
+  fprintf (fp, "%s,%c,%s,%.1f,%.1f\n",
           record.sampled_at,
           record.pond_id,
           "LOW_OXYGEN",
           record.oxygen,
           OXYGEN_LOW_LIMIT);
 
-  fclose(fp);
+  fclose (fp);
   return 1;
 }
 
 //打印状态
-void print_temp_status(float temperature)
+void print_temp_status (float temperature)
 {
 //     if (temperature < TEMP_LOW_LIMIT) //v_1:
 //         printf("temp:%.1f(Low)", temperature);
@@ -227,6 +268,11 @@ int main(void)
     {
         printf("Error: failed to save oxygen alert.\n");
     }
+    if (!save_control_log_csv(record))
+    {
+    printf("Error: failed to save control log.\n");
+    }
+
     }
     // save_pond_record_csv(record);
     printf("Done\n");

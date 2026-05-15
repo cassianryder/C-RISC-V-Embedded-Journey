@@ -70,6 +70,10 @@
 - `06-projects/1.c` 中告警 CSV 表头、文件名与 `FILE *fp` 的区别、`LOW_OXYGEN` 字符串字面量、返回值/副作用和运行产物边界的问题整理，见：
 - [2026-05-12-alert-csv-header-and-string-literal.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-12-alert-csv-header-and-string-literal.md)
 
+## 2026-05-15
+- `06-projects/1.c` 中控制日志、函数实参类型、保存函数合同、告警日志与控制日志边界的问题整理，见：
+- [2026-05-15-control-log-function-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-15-control-log-function-contract.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。

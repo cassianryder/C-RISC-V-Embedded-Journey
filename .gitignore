@@ -36,6 +36,7 @@ CSV_FILE_NAME
 pond_records_csv
 pond_records.csv
 oxygen_alert.csv
+control_log.csv
 
 bin/.gdb_history
 bin/program
