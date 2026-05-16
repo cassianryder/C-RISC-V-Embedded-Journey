@@ -1,8 +1,7 @@
-// 06-projects/1.c
+// 01-basics/16.c
 // 这份文件讲什么：
-// 1. 这是池塘记录 CLI 的项目种子版本
-// 2. 用结构体承载一条记录，并把输入和输出分别封装
-// 3. main 只负责循环控制和收尾，后续可继续加阈值常量、CSV、日志
+// 1. 这是 06-projects/1.c 的学习痕迹副本
+// 2. 用来保留旧注释、探索过程和阶段性理解，不作为当前项目主线推进
 
 #include <stdio.h>
 #include <time.h>
@@ -250,10 +249,15 @@ int main(void)
 
     while (read_pond_record(&record))
     {
-       print_pond_record(record);
+        print_pond_record(record);
+
+    // if (needs_aeration(record) == 1)
+    // {
+    //     printf("Alert: Pond %c needs aeration\n",record.pond_id);
+    // }
        print_aeration_action(record);
        print_oxygen_alert(record);
-
+    // if (save_pond_record_csv(record) == 0)
     if (!save_pond_record_csv(record))
     {
         printf("Error: failed to save.\n");
@@ -265,10 +269,12 @@ int main(void)
     }
     if (!save_control_log_csv(record))
     {
-        printf("Error: failed to save control log.\n");
+    printf("Error: failed to save control log.\n");
     }
 
     }
+    // save_pond_record_csv(record);
     printf("Done\n");
     return 0;
 }
+
