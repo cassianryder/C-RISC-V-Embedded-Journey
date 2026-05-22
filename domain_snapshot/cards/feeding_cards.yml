@@ -1,0 +1,93 @@
+- id: FEED-GROWOUT-ROUTINE-001
+  source_id: SRC-001
+  stage: grow_out
+  scenario: 成虾常规投喂
+  feed_type: "配合饲料（粗蛋白质含量 36% 左右，粗脂肪含量 4%～6%）"
+  feeding_time: "每天 2 次：上午 8:00—9:00，下午 17:00—18:00"
+  feeding_ratio: "上午 30%，下午 70%"
+  feeding_rate_percent_body_weight: "前期为虾体重的 8%～10%，中后期为虾体重的 4%～7%"
+  adjustment_factors: 
+    - water_temperature
+    - weather
+    - water_quality
+    - growth_status
+    - feeding_status
+  action_candidates:
+    - feed_routine
+    - adjustment_required
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "“前期”与“中后期”的界定标准（如按天数或规格）未明确化，需结合具体业务设定。"
+  test_idea:
+    - "输入当前池塘总虾重，依据前期/中后期标志，按百分比计算日总投喂量，并自动生成 3:7 的早晚投喂任务。"
+
+- id: FEED-GROWOUT-ADJUST-001
+  source_id: SRC-001
+  stage: grow_out
+  scenario: 残饵与异常情况投喂调整
+  feed_type: null
+  feeding_time: null
+  feeding_ratio: null
+  feeding_rate_percent_body_weight: null
+  adjustment_factors:
+    - leftover_feed
+  action_candidates:
+    - reduce_feed
+    - adjustment_required
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "发现残饵后具体的减料比例未量化（如减 10% 还是 20%），系统仅能做方向性提示。"
+  test_idea:
+    - "当巡塘记录录入“有残饵”时，系统向次日投喂任务添加【建议减料】标识及弹窗提示。"
+
+- id: FEED-BROODSTOCK-001
+  source_id: SRC-002, SRC-003
+  stage: broodstock
+  scenario: 亲虾/种虾常规投喂
+  feed_type: "粗蛋白质含量为 38%～40%或以上的配合饲料，辅以新鲜螺蛳肉/杂鱼等"
+  feeding_time: "每天早晚各 1 次"
+  feeding_ratio: "早晨 30%，傍晚 70%"
+  feeding_rate_percent_body_weight: "亲虾总重的 3%~5%"
+  adjustment_factors:
+    - weather
+    - water_quality
+    - feeding_status
+  action_candidates:
+    - feed_broodstock
+    - adjustment_required
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "相比成虾阶段，亲虾阶段未明确早晨的具体时间点。"
+  test_idea:
+    - "基于种虾登记总重核算投喂区间基数，验证系统是否能够强制在傍晚分配 70% 的投喂量。"
+
+- id: FEED-NURSERY-LARVAE-001
+  source_id: SRC-002, SRC-003
+  stage: nursery
+  scenario: 虾苗按发育阶段投喂
+  feed_type: "孵出3d内/溞状幼体期：蛋黄、豆浆、轮虫；孵出5d后/幼虾期：粉状或破碎配合饲料；后期：颗粒配合饲料"
+  feeding_time: "每天 2~4 次"
+  feeding_ratio: null
+  feeding_rate_percent_body_weight: null
+  adjustment_factors:
+    - development_stage
+    - weather
+    - water_temperature
+    - feeding_status
+  action_candidates:
+    - feed_larvae
+    - adjustment_required
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "幼体期的具体投喂量和百分比未给出，依赖现场经验。"
+    - "两份标准对于投喂次数存在微小差异（SRC-002建议 2~3次，SRC-003建议 3~4次）。"
+  test_idea:
+    - "根据批次孵化天数（age in days）自动切换推荐词典：1-3天推荐豆浆/蛋黄，5天以上推荐粉料。"
