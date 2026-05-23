@@ -1,0 +1,66 @@
+version: "1.0"
+name: "Aquaculture Cycle Map"
+species: "日本沼虾 / 青虾"
+strategy: "dual_spiral"
+description: "真实养殖周期 × C/嵌入式能力双螺旋推进"
+
+policy:
+  domain_fact_source: "domain_snapshot/cards/ 或 domain_snapshot/source_index.md"
+  no_source_rule: "标记为 hypothesis 或 needs_human_verification"
+
+active_cycle:
+  id: growout_water_quality
+  name: "成虾养殖 - 水质监测"
+  active_scenario: "water_quality_record_and_judge_v0"
+
+scenarios:
+  - id: low_do_aeration_v0
+    name: "低溶氧 + 增氧建议 v0"
+    status: "single_file_completed"
+    domain_cards:
+      - "WQ-DO-GROWOUT-001"
+      - "AERATION-LOW-DO-001"
+    c_skills:
+      - struct
+      - macro
+      - if_else
+      - function
+      - csv_logging
+      - feedback_logic
+
+  - id: water_quality_record_and_judge_v0
+    name: "水质记录结构 + judge 模块拆分 v0"
+    status: "active"
+    reference_file: "exercises/06-projects/1.c"
+    target_modules:
+      - "record"
+      - "judge"
+    c_skills:
+      - header_file
+      - source_file_split
+      - function_declaration
+      - struct_shared_across_files
+      - makefile_multi_file
+
+  - id: ph_risk_v0
+    name: "pH 风险判断 v0"
+    status: "locked"
+    unlock_condition: "judge module stable"
+
+  - id: feeding_advice_v0
+    name: "投喂建议 v0"
+    status: "locked"
+    unlock_condition: "domain feeding cards reviewed"
+
+  - id: multi_pond_v0
+    name: "多塘口记录 v0"
+    status: "locked"
+    unlock_condition: "stage_2 modules stable"
+
+forbidden_now:
+  - hardware_control
+  - mqtt
+  - http_api
+  - ai_prediction
+  - computer_vision
+  - full_expert_system

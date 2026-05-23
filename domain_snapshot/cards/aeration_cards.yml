@@ -1,0 +1,107 @@
+- id: AERATION-EQ-GROWOUT-001
+  source_id: SRC-001
+  stage: grow_out
+  scenario: 增氧设备配置
+  trigger_conditions: "池塘建设及设施配备阶段"
+  recommended_actions: "每 667m² (1亩) 配备 0.3kW～0.5kW 底部微孔增氧设施或水车式增氧机。"
+  reason: "满足成虾养殖期水体的基本溶氧需求。"
+  variables_needed:
+    - pond_area_m2
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "设备类型（微孔或水车式）无强制绑定，系统可仅做功率下限核算。"
+  test_idea:
+    - "输入池塘面积后，自动输出建议配置的总增氧功率（0.3-0.5kW * 亩数）。"
+
+- id: AERATION-EQ-NURSERY-001
+  source_id: SRC-003
+  stage: nursery
+  scenario: 增氧设备配置
+  trigger_conditions: "育苗池塘准备阶段"
+  recommended_actions: "每 667㎡ (1亩) 配备 0.5 kW 左右增氧能力的底层微孔增氧设施或叶轮式等增氧机。"
+  reason: "保障虾苗高密度繁育期的充足溶氧。"
+  variables_needed:
+    - pond_area_m2
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "相比成虾阶段，育苗阶段的功率建议值更高且明确提及了叶轮式增氧机。"
+  test_idea:
+    - "在育苗准备工作流中，校验登记的增氧机功率是否达到 0.5kW/亩的标准。"
+
+- id: AERATION-WEATHER-SUNNY-001
+  source_id: SRC-001
+  stage: grow_out
+  scenario: 晴天中午
+  trigger_conditions: "天气状况为晴朗，且时间到达中午。"
+  recommended_actions: "开启增氧机。"
+  reason: "资料原文要求合理开增氧机（行业常识为打破水体热成层，但遵循规则仅记录操作要求）。"
+  variables_needed:
+    - weather_condition
+    - time_of_day
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "“中午”的具体时间窗口（如 12:00-14:00）未量化，需在系统配置中明确。"
+  test_idea:
+    - "获取天气预报为 Sunny 且时间等于 12:00 时，推送开启增氧机建议。"
+
+- id: AERATION-WEATHER-CLOUDY-RAIN-001
+  source_id: SRC-001
+  stage: grow_out
+  scenario: 阴天与连绵阴雨天
+  trigger_conditions: "天气为阴天且处于清晨，或遭遇连绵阴雨天气且处于半夜。"
+  recommended_actions: "阴天时清晨开机；连绵阴雨天时半夜开机。"
+  reason: "防范光照不足及连续恶劣天气带来的水体溶氧下降。"
+  variables_needed:
+    - weather_condition
+    - time_of_day
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "“清晨”与“半夜”的触发节点需要转换为具体的小时数字。"
+  test_idea:
+    - "气象接口判定为阴雨连绵状态且时间超过 00:00，触发增氧设备自动开启指令。"
+
+- id: AERATION-WEATHER-SEVERE-001
+  source_id: SRC-001
+  stage: grow_out
+  scenario: 闷热天气与雷阵雨天气
+  trigger_conditions: "遭遇闷热天气或雷阵雨，夜间/清晨巡塘发现缺氧状况。"
+  recommended_actions: "增加夜间和清晨的巡塘次数；发现缺氧及时采取开增氧机、加注新水等措施。"
+  reason: "气压与水温剧变极易引起严重缺氧。"
+  variables_needed:
+    - weather_alert
+    - dissolved_oxygen_sensor_value
+    - user_observation
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "加注新水的补水量未明确，需依赖现场经验或水质传感器反馈。"
+  test_idea:
+    - "系统捕获闷热/雷暴气象预警后，向养殖户下发夜间加急巡塘任务，并在界面高亮“加注新水”及“强启增氧”按钮。"
+
+- id: AERATION-WEATHER-NURSERY-DAWN-001
+  source_id: SRC-003
+  stage: nursery
+  scenario: 育苗阶段凌晨至日出
+  trigger_conditions: "时间处于凌晨至日出阶段，或人工观察到虾苗有浮头迹象。"
+  recommended_actions: "及时开机增氧。"
+  reason: "此时段无光合作用产氧且生物耗氧累积至最高，为全天最危险缺氧期。"
+  variables_needed:
+    - time_of_day
+    - sunrise_time_api
+    - shrimp_behavior
+  evidence_level: A
+  can_enter_code: true
+  code_policy: qualitative_rule
+  uncertainty:
+    - "“浮头”属非结构化视觉信息，如果无 AI 监控需依赖人工上报触发。"
+  test_idea:
+    - "根据气象 API 的日出时间，提前 2 小时自动打开育苗池增氧机直至日出后。"

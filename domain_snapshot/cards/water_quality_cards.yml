@@ -1,0 +1,265 @@
+- id: WQ-DO-GROWOUT-001
+  source_id: SRC-001
+  stage: grow_out
+  parameter: dissolved_oxygen
+  claim: "保持水体溶解氧在 5 mg/L 以上。"
+  value: 5
+  unit: mg/L
+  condition: "成虾池塘养殖期"
+  action_candidates:
+    - aeration
+    - add_fresh_water
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "边界值等于阈值时的风险等级需要在系统策略中明确"
+  test_idea:
+    - "DO 低于 5 mg/L 时输出 WARNING 或 DANGER"
+    - "DO 为负数时输出 SENSOR_INVALID"
+
+- id: WQ-DO-NURSERY-001
+  source_id: SRC-003
+  stage: nursery
+  parameter: dissolved_oxygen
+  claim: "育苗期溶解氧控制在 5 mg/L 及以上。"
+  value: 5
+  unit: mg/L
+  condition: "苗种生产繁育期"
+  action_candidates:
+    - continuous_aeration
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "育苗期要求增氧机常开，硬件联动逻辑需判定设备运行状态"
+  test_idea:
+    - "DO 低于 5 mg/L 时强制启动增氧机并输出 DANGER"
+
+- id: WQ-PH-GROWOUT-001
+  source_id: SRC-001
+  stage: grow_out
+  parameter: pH
+  claim: "pH值 7.0～8.5。"
+  value: 7.0-8.5
+  unit: N/A
+  condition: "成虾池塘养殖期"
+  action_candidates:
+    - apply_water_treatment
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "日内波动幅度标准未明确说明，需结合业务逻辑设定"
+  test_idea:
+    - "pH < 7.0 或 pH > 8.5 时触发告警"
+
+- id: WQ-PH-NURSERY-001
+  source_id: SRC-003
+  stage: nursery
+  parameter: pH
+  claim: "pH值在 7.0~8.5 之间。"
+  value: 7.0-8.5
+  unit: N/A
+  condition: "苗种生产繁育期"
+  action_candidates:
+    - apply_water_treatment
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "日内波动幅度标准未明确说明"
+  test_idea:
+    - "pH 不在 7.0-8.5 区间时触发育苗环境异常告警"
+
+- id: WQ-TRANS-GROWOUT-001
+  source_id: SRC-001
+  stage: grow_out
+  parameter: transparency
+  claim: "透明度以 30 cm 左右为宜。"
+  value: 30
+  unit: cm
+  condition: "成虾池塘养殖期"
+  action_candidates:
+    - fertilize_water
+    - add_fresh_water
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "“左右”一词属模糊语义，建议代码中转化为合理的容差范围（如 25-35cm）"
+  test_idea:
+    - "透明度远低于 30cm 判定为过浓，远高于 30cm 判定为偏清"
+
+- id: WQ-TRANS-NURSERY-001
+  source_id: SRC-003
+  stage: nursery
+  parameter: transparency
+  claim: "透明度 30 cm 左右。"
+  value: 30
+  unit: cm
+  condition: "苗种生产繁育期"
+  action_candidates:
+    - apply_microbes
+    - fertilize_water
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "同样存在“左右”的模糊语义需定义系统容差区"
+  test_idea:
+    - "设置 30cm 为理想基准线进行透明度评级"
+
+- id: WQ-LEVEL-GROWOUT-001
+  source_id: SRC-001
+  stage: grow_out
+  parameter: water_level
+  claim: "水温升高期间加注新水，保持水位在 1.2 m～1.5 m；越冬期保持水深 1.5 m 左右。"
+  value: 1.2-1.5
+  unit: m
+  condition: "成虾养殖中后期或越冬期"
+  action_candidates:
+    - add_fresh_water
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "放养前初级水位标准为 60cm-80cm，需根据日历和养殖阶段切换阈值"
+  test_idea:
+    - "高温期水位 < 1.2m 触发缺水告警"
+    - "越冬期检查水位目标设定为 1.5m"
+
+- id: WQ-LEVEL-NURSERY-001
+  source_id: SRC-003
+  stage: nursery
+  parameter: water_level
+  claim: "育苗前期池水深度保持在 60 cm~80 cm；随着气温升高和水质变化，逐步加深水位至 1.0 m~1.2 m。"
+  value: 1.0-1.2
+  unit: m
+  condition: "育苗中后期（随气温升高阶段）"
+  action_candidates:
+    - gradually_add_water
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "需结合时间序列建立从 0.6m 平滑过渡到 1.2m 的曲线目标"
+  test_idea:
+    - "育苗后期水位 < 1.0m 时提示加注新水"
+
+- id: WQ-TEMP-GROWOUT-STOCKING
+  source_id: SRC-001
+  stage: grow_out
+  parameter: water_temperature
+  claim: "水温稳定在 10 ℃ 以上时放养。"
+  value: 10
+  unit: ℃
+  condition: "成虾苗种放养前"
+  action_candidates:
+    - start_stocking
+    - delay_stocking
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "“稳定”的时间窗口（如连续3天）需在代码逻辑中明确"
+  test_idea:
+    - "计划放养日期水温 < 10 ℃ 拦截放养操作并预警"
+
+- id: WQ-TEMP-NURSERY-STOCKING
+  source_id: SRC-003
+  stage: nursery
+  parameter: water_temperature
+  claim: "水温持续稳定在 15 ℃ 以上时，进行亲虾放养。"
+  value: 15
+  unit: ℃
+  condition: "育苗亲虾放养前"
+  action_candidates:
+    - start_stocking_broodstock
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "需对比室外温度进行提前趋势预测"
+  test_idea:
+    - "繁育模块在水温 < 15 ℃ 时禁用亲虾投放记录功能"
+
+- id: WQ-PATROL-GROWOUT-001
+  source_id: SRC-001
+  stage: grow_out
+  parameter: patrol_frequency
+  claim: "坚持每天早、中、晚各巡塘一次。遇闷热或雷阵雨天气，夜间和清晨应增加巡塘次数。"
+  value: 3
+  unit: 次/天
+  condition: "常规天气"
+  action_candidates:
+    - log_patrol
+    - increase_patrol
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "“增加次数”的具体频率取决于农户的执行力，系统只能做任务下发"
+  test_idea:
+    - "生成日常巡塘待办任务 3 次/天"
+    - "接入天气 API，雷阵雨天气自动生成夜间附加巡塘任务"
+
+- id: WQ-PATROL-NURSERY-001
+  source_id: SRC-003
+  stage: nursery
+  parameter: patrol_frequency
+  claim: "每天早晚各巡塘一次。高温或闷热天气，增加夜间巡塘次数。"
+  value: 2
+  unit: 次/天
+  condition: "常规天气"
+  action_candidates:
+    - log_patrol
+    - increase_patrol
+  evidence_level: A
+  can_enter_code: true
+  code_policy: configurable_threshold
+  uncertainty:
+    - "相比成虾养殖去掉了中午的硬性巡塘要求，需在工作流中体现差异"
+  test_idea:
+    - "育苗期常规生成早晚共 2 个巡塘待办项"
+    - "当气象预报出现高温标签时派发夜间额外巡塘任务"
+
+- id: WQ-COLOR-GROWOUT-TREATMENT
+  source_id: SRC-001
+  stage: grow_out
+  parameter: water_color_treatment
+  claim: "发现水质过浓时，应及时加注新水、排出部分老水或使用微生物制剂调水；水质偏清时，可适量追施肥料。"
+  value: null
+  unit: N/A
+  condition: "水体透明度异常时"
+  action_candidates:
+    - add_fresh_water
+    - drain_old_water
+    - apply_microbes
+    - fertilize_water
+  evidence_level: A
+  can_enter_code: false
+  code_policy: null
+  uncertainty:
+    - "换水量和制剂使用量未量化"
+  test_idea:
+    - "前端界面触发水质过浓警告时，推送建议菜单（换水/微生物）供用户选择执行"
+
+- id: WQ-COLOR-NURSERY-TREATMENT
+  source_id: SRC-003
+  stage: nursery
+  parameter: water_color_treatment
+  claim: "水色变清时，应及时使用肥料进行追肥；水质变浓时，可使用微生态制剂进行水质调控。"
+  value: null
+  unit: N/A
+  condition: "水体透明度异常时"
+  action_candidates:
+    - fertilize_water
+    - apply_microbes
+  evidence_level: A
+  can_enter_code: false
+  code_policy: null
+  uncertainty:
+    - "与成虾养殖不同，育苗期水质过浓时未建议换水（可能防止虾苗流失），强调使用微生态制剂"
+  test_idea:
+    - "育苗模块水质变浓时，只推荐微生态制剂策略，隐藏排换水建议"

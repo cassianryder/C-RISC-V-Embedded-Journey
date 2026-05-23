@@ -1,0 +1,84 @@
+version: "1.0"
+name: "C Embedded Skill Graph"
+
+current_level:
+  c_level: "B"
+  description: "能写 struct、数组、文件读写，但多文件模块化、Makefile、测试仍需训练"
+  current_stage: "Stage 2 - multi-file modularization"
+
+stages:
+  - id: stage_1
+    name: "单文件参考版"
+    status: "completed"
+    skills:
+      - variables
+      - if_else
+      - functions
+      - struct
+      - pointer_to_struct
+      - file_io
+      - csv_logging
+      - simple_feedback
+    reference_files:
+      - exercises/06-projects/1.c
+
+  - id: stage_2
+    name: "多文件模块化"
+    status: "active"
+    target_skills:
+      - header_file
+      - source_file_split
+      - function_declaration
+      - include_guard
+      - makefile_multi_file
+      - module_boundary
+      - minimal_unit_test
+    modules:
+      - record
+      - input_cli
+      - judge
+      - control
+      - output
+      - csv_store
+      - main
+    first_module: judge
+
+  - id: stage_3
+    name: "多塘口结构"
+    status: "locked"
+    unlock_condition: "stage_2_core_modules_stable"
+
+  - id: stage_4
+    name: "采样任务模型"
+    status: "locked"
+
+  - id: stage_5
+    name: "设备控制模型"
+    status: "locked"
+
+  - id: stage_6
+    name: "传感器模拟"
+    status: "locked"
+
+  - id: stage_7
+    name: "板子接入准备"
+    status: "locked"
+
+daily_modes:
+  mini:
+    duration: "30min"
+    goal: "SRS + one small change"
+  standard:
+    duration: "60-90min"
+    goal: "one module-level closure"
+  deep:
+    duration: "2-3h"
+    goal: "module migration + test + bug lab"
+  review:
+    duration: "20-40min"
+    goal: "SRS + mapping + reflection"
+
+mode_policy:
+  if_srs_failed: "A"
+  if_srs_partially_passed: "B"
+  if_srs_passed_and_task_complex: "C"
