@@ -74,6 +74,10 @@
 - `06-projects/1.c` 中控制日志、函数实参类型、保存函数合同、告警日志与控制日志边界的问题整理，见：
 - [2026-05-15-control-log-function-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-15-control-log-function-contract.md)
 
+## 2026-05-23
+- Judge 模块 v0 中围绕 `float` 字段与 `PondRecord` 整条记录的函数参数合同混用问题整理，见：
+- [2026-05-23-judge-parameter-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-23-judge-parameter-contract.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
