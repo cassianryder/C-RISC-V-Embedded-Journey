@@ -78,6 +78,10 @@
 - Judge 模块 v0 中围绕 `float` 字段与 `PondRecord` 整条记录的函数参数合同混用问题整理，见：
 - [2026-05-23-judge-parameter-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-23-judge-parameter-contract.md)
 
+## 2026-05-24
+- `Test Judge Build v0` 中围绕 `judge.h` 声明、`src/judge.c` 实现、`Makefile` 构建入口与 `Undefined symbols` 链接错误的问题整理，见：
+- [2026-05-24-judge-build-link-error.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-24-judge-build-link-error.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
