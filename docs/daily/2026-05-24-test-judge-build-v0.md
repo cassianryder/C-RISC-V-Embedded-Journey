@@ -48,7 +48,7 @@ A3: .h负责接口层面，.c 负责主要逻辑模块
 
 Q4: 为什么测试 judge 模块时需要把 `src/judge.c` 和 `tests/test_judge.c` 一起编译？
 
-A4: 因为需要斤judge和test进行链接
+A4: 因为需要将judge和test进行链接
 
 ```text
 tests/test_judge.c 负责调用 judge 函数，src/judge.c 负责提供 judge 函数实现。只有测试文件没有实现文件，会在链接阶段找不到函数定义。
