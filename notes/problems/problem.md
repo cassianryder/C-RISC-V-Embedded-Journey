@@ -86,6 +86,10 @@
 - `Control Module v0` 中围绕 `control.h` / `control.c` 接口合同一致性、`conflicting types` 编译错误、control 与 judge 职责边界的问题整理，见：
 - [2026-05-25-control-interface-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-25-control-interface-contract.md)
 
+## 2026-05-26
+- `CSV Store Module v0` 中围绕 `fopen` 追加/覆盖模式、CSV 历史记录保存、文件 I/O 行为退化、`filename` 与 `FILE *fp` 边界的问题整理，见：
+- [2026-05-26-csv-store-file-mode.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-26-csv-store-file-mode.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
