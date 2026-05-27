@@ -71,11 +71,11 @@ $(foreach id,$(IDS),\
 								-o 'memory read -s 8 -f x -c 12 $sp')))
 # ========= 工具命令 =========
 
-.PHONY: clean list help test test_judge test_control
+.PHONY: clean list help test test_judge test_control test_csv_store
 
 help: list
 
-test: test_judge test_control
+test: test_judge test_control test_csv_store
 test_judge:
 	@mkdir -p build
 	$(CC) $(CFLAGS) -Wextra -Iinclude src/judge.c tests/test_judge.c -o build/test_judge
@@ -85,6 +85,14 @@ test_control:
 	@mkdir -p build
 	$(CC) $(CFLAGS) -Wextra -Iinclude src/judge.c src/control.c tests/test_control.c -o build/test_control
 	./build/test_control
+
+test_csv_store:
+	@mkdir -p build
+	$(CC) $(CFLAGS) -Wextra -Iinclude src/csv_store.c tests/test_csv_store.c -o build/test_csv_store
+	./build/test_csv_store
+
+
+
 
 list:
 	@echo "🛠️ 可用命令格式:"
