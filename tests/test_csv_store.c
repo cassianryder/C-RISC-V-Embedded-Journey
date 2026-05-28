@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "csv_store.h"
 
 int main(void)
@@ -9,6 +10,8 @@ int main(void)
 
   PondRecord record_test_1 = {"", 23.6f, 4.5f, 'A'};
   PondRecord record_test_2 = {"", 23.8f, 5.7f, 'B'};
+  PondRecord record_test_3 = {"", 23.7f, 5.9f, 'C'};
+
 
   if(csv_store_append_record(filename, record_test_1) != 0)
   {
@@ -22,7 +25,15 @@ int main(void)
     fail_test++;
   }
 
+    if(csv_store_append_record(filename, record_test_3) != 0)
+  {
+    printf("csv_store_append_record函数测试未通过！\n");
+    fail_test++;
+  }
+
+  int header_count = 0;
   int line_count = 0;
+  char line[128];
   int ch;
   FILE *fp = fopen(filename, "r");
 
@@ -48,8 +59,6 @@ int main(void)
     }
   }
   
-
-
   if(fail_test == 0)
     printf("csv_store_append_record函数测试通过！\n");
   return fail_test;
