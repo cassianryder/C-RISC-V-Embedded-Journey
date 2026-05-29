@@ -1,6 +1,6 @@
+#include "csv_store.h"
 #include <stdio.h>
 #include <string.h>
-#include "csv_store.h"
 
 int main(void)
 {
@@ -12,20 +12,19 @@ int main(void)
   PondRecord record_test_2 = {"", 23.8f, 5.7f, 'B'};
   PondRecord record_test_3 = {"", 23.7f, 5.9f, 'C'};
 
-
-  if(csv_store_append_record(filename, record_test_1) != 0)
+  if (csv_store_append_record(filename, record_test_1) != 0)
   {
     printf("csv_store_append_record函数测试未通过！\n");
     fail_test++;
   }
 
-  if(csv_store_append_record(filename, record_test_2) != 0)
+  if (csv_store_append_record(filename, record_test_2) != 0)
   {
     printf("csv_store_append_record函数测试未通过！\n");
     fail_test++;
   }
 
-    if(csv_store_append_record(filename, record_test_3) != 0)
+  if (csv_store_append_record(filename, record_test_3) != 0)
   {
     printf("csv_store_append_record函数测试未通过！\n");
     fail_test++;
@@ -34,34 +33,36 @@ int main(void)
   int header_count = 0;
   int line_count = 0;
   char line[128];
-  int ch;
   FILE *fp = fopen(filename, "r");
 
-  if(fp == NULL)
+  if (fp == NULL)
   {
     printf("打开csv失败！\n");
     fail_test++;
   }
   else
   {
-    while((ch = fgetc(fp)) != EOF)
+    while (fgets(line, sizeof(line), fp) != NULL)
     {
-     if(ch == '\n')
-        line_count++;
+      line_count++;
+      if (strcmp(line, "sampled_at,pond_id,temp,oxygen\n") == 0)
+      {
+        header_count++;
+      }
     }
 
     fclose(fp);
 
-    if(line_count < 2)
+    if (line_count != 4 || header_count != 1)
     {
       printf("csv_store_append_record写入行数测试未通过！\n");
       fail_test++;
     }
   }
-  
-  if(fail_test == 0)
+
+  if (fail_test == 0)
+  {
     printf("csv_store_append_record函数测试通过！\n");
-  return fail_test;
-
   }
-
+  return fail_test;
+}

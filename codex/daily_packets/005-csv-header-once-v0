@@ -396,7 +396,41 @@ daily_srs/tag_index.yml
 2. 今日结束后新增 SRS 候选。
 3. docs/daily 中记录。
 ```
+## 4. C Foundation Gate
 
+本任务在进入主线手写前，必须先完成 C 基础闸门，根据用户回答判断是否进入主线，如何不适合，需要带领用户补齐今天所需要的c基础，才进入主线，除非用户授权才可以跳过此阶段。
+
+今日任务涉及的 C 基础：
+
+```yaml
+c_foundation_gate:
+  array:
+    required: true
+    reason: "tests/test_csv_store.c 需要使用 char line[] 读取 CSV 行，也可能使用计数变量统计行数和 header 次数。"
+
+  string:
+    required: true
+    reason: "CSV header 是字符串；filename 是文件路径字符串；测试需要比较读取到的行内容。"
+
+  pointer:
+    required: true
+    reason: "const char *filename 表示文件路径字符串入口；FILE *fp 表示文件流操作入口。"
+
+  file_io:
+    required: true
+    reason: "本任务核心是 fopen / fprintf / fseek / ftell / fclose。"
+
+  struct:
+    required: true
+    reason: "PondRecord 是被写入 CSV 的结构体记录。"
+
+  makefile:
+    required: true
+    reason: "必须通过 make test_csv_store 和 make test 验证行为。"
+
+  data_structure_mapping:
+    required: true
+    reason: "PondRecord 是内存中的结构化数据对象；CSV header + 多行记录可弱映射为外存顺序记录。"
 ## 4. 用户手动执行步骤
 
 Codex 不允许替用户执行闭环。
