@@ -94,6 +94,10 @@
 - `CSV Header Once v0` 中围绕 header 只写一次、`fgets` 逐行读取、`strcmp` 字符串比较、`FILE *fp` 生命周期与 header 重复写入行为退化的问题整理，见：
 - [2026-05-27-csv-header-once-and-duplication.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-27-csv-header-once-and-duplication.md)
 
+## 2026-05-29
+- `Output Module v0` 中围绕 `char buffer[]`、`size_t buffer_size`、`snprintf` 返回值、small buffer 截断检测与 output 模块边界的问题整理，见：
+- [2026-05-29-output-buffer-truncation.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-29-output-buffer-truncation.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
