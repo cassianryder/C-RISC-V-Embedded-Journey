@@ -71,11 +71,11 @@ $(foreach id,$(IDS),\
 								-o 'memory read -s 8 -f x -c 12 $sp')))
 # ========= 工具命令 =========
 
-.PHONY: clean list help test test_judge test_control test_csv_store test_output
+.PHONY: clean list help test test_judge test_control test_csv_store test_output test_input_cli
 
 help: list
 
-test: test_judge test_control test_csv_store test_output
+test: test_judge test_control test_csv_store test_output test_input_cli
 test_judge:
 	@mkdir -p build
 	$(CC) $(CFLAGS) -Wextra -Iinclude src/judge.c tests/test_judge.c -o build/test_judge
@@ -95,6 +95,11 @@ test_output:
 	@mkdir -p build
 	$(CC) $(CFLAGS) -Wextra -Iinclude src/output.c tests/test_output.c -o build/test_output
 	./build/test_output
+
+test_input_cli:
+	@mkdir -p build
+	$(CC) $(CFLAGS) -Wextra -Iinclude src/input_cli.c tests/test_input_cli.c -o build/test_input_cli
+	./build/test_input_cli
 
 
 
