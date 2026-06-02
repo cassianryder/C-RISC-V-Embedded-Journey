@@ -98,6 +98,10 @@
 - `Output Module v0` 中围绕 `char buffer[]`、`size_t buffer_size`、`snprintf` 返回值、small buffer 截断检测与 output 模块边界的问题整理，见：
 - [2026-05-29-output-buffer-truncation.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-29-output-buffer-truncation.md)
 
+## 2026-05-30
+- `Input CLI Module v0` 中围绕 `sscanf` 字段数量检查、`PondRecord *out_record` 指针输出参数、`matched != 3` 解析合同、`matched = 3` 条件赋值 bug 与尾部脏数据拒绝的问题整理，见：
+- [2026-05-30-input-cli-parse-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-30-input-cli-parse-contract.md)
+
 
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
