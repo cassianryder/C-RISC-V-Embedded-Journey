@@ -103,9 +103,5 @@
 - [2026-05-30-input-cli-parse-contract.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-05-30-input-cli-parse-contract.md)
 
 
-## 2026-06-02
-- `Main One-Shot Integration v0` 规划中围绕 `main` 程序入口、模块调用顺序、返回值检查、错误路径合同、one-shot pipeline、`main` 与 unit test 边界的问题整理，见：
-- [2026-06-02-main-one-shot-integration-plan.md](/Users/a15951407904/projects/C-RISC-V-Embedded-Journey/notes/problems/2026-06-02-main-one-shot-integration-plan.md)
-
 ## Pending Deep Questions
 - 已拆分到 `2026-04-19` 的专题问题单中，后续按 `COA / CSAPP / 位运算 / 结构体内存布局` 继续闭环。
